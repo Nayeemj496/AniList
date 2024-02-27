@@ -367,8 +367,47 @@ const userHomeControllerGET = async (req, res) => {
         userid = req.session.user.USER_ID
     }
 
+    const connection = await connect()
+
+    const watching = (await connection.execute(`
+        SELECT *
+        FROM USER_ANIME UA JOIN ANIME A ON UA.ANIME_ID = A.ANIME_ID
+        WHERE UA.USER_ID = :userid AND UPPER(UA.STATUS) = 'WATCHING'
+        ORDER BY A.ENGLISH
+    `, [userid], {outFormat: oracledb.OUT_FORMAT_OBJECT})).rows
+
+
+    const reading = (await connection.execute(`
+        SELECT *
+        FROM USER_MANGA UM JOIN MANGA M ON UM.MANGA_ID = M.MANGA_ID
+        WHERE UM.USER_ID = :userid AND UPPER(UM.STATUS) = 'WATCHING'
+        ORDER BY M.ENGLISH
+    `, [userid], {outFormat: oracledb.OUT_FORMAT_OBJECT})).rows
+
+    console.log(reading)
+
+    const userAnimeReviews = (await connection.execute(`
+        SELECT *
+        FROM REVIEW_ANIME RA JOIN ANIME A ON RA.ANIME_ID = A.ANIME_ID
+        WHERE RA.USER_ID = :userid
+    `, [userid], {outFormat: oracledb.OUT_FORMAT_OBJECT})).rows
+
+
+    const userMangaReviews = (await connection.execute(`
+        SELECT *
+        FROM REVIEW_MANGA RM JOIN MANGA M ON RM.MANGA_ID = M.MANGA_ID
+        WHERE RM.USER_ID = :userid
+    `, [userid], {outFormat: oracledb.OUT_FORMAT_OBJECT})).rows
+
+
+    await connection.close()
+
     if (req.session.user) {
         res.render("user_homepage", {
+            watching,
+            reading,
+            userAnimeReviews,
+            userMangaReviews,
             isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
             userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
             username: req.session.user.USERNAME

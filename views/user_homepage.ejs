@@ -37,7 +37,7 @@
           </a>
 
           <div class="details">
-            <a href="" class="name">Nayeemj496</a>
+            <a href="" class="name"><%=username%></a>
             <span>Plans to watch</span>
             <a href="" class="title"
               >Attack on Titan Final Season THE FINAL CHAPTERS Special 2</a
@@ -102,45 +102,47 @@
       </div>
 
       <div class="right-section">
-        <div class="list-preview-wrap">
-          <h2 class="section-headline">In Progress</h2>
-          <div class="list-previews">
-            <a href="">
-              <img
-                src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21170-aDHIDkp1L2jC.jpg"
-                alt=""
-              />
-            </a>
 
-            <a href="">
-              <img
-                src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1535-lawCwhzhi96X.jpg"
-                alt=""
-              />
-            </a>
+        <% if(watching.length) { %>
+          <div class="list-preview-wrap">
+            <h2 class="section-headline">In Progress</h2>
+            <div class="list-previews">
 
-            <a href="">
-              <img
-                src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx116741-rfUHo8Vh4WYF.jpg"
-                alt=""
-              />
-            </a>
+              <% for(let i = 0; i < watching.length; ++i) { %>
 
-            <a href="">
-              <img
-                src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx19-ham53gnijfiN.jpg"
-                alt=""
-              />
-            </a>
+                  <a href="/anime/<%=watching[i].ANIME_ID%>/<%=watching[i].ENGLISH%>">
+                    <img
+                      src="<%=watching[i].COVER_IMAGE%>"
+                      alt=""
+                    />
+                  </a>
 
-            <a href="">
-              <img
-                src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx11061-sIpBprNRfzCe.png"
-                alt=""
-              />
-            </a>
+              <% } %>
+            
+            </div>
           </div>
-        </div>
+        <% } %>
+
+        <% if(reading.length) { %>
+          <div class="list-preview-wrap">
+            <h2 class="section-headline">In Progress</h2>
+            <div class="list-previews">
+
+              <% for(let i = 0; i < reading.length; ++i) { %>
+
+                  <a href="/manga/<%=reading[i].MANGA_ID%>/<%=reading[i].ENGLISH%>">
+                    <img
+                      src="<%=reading[i].COVER_IMAGE%>"
+                      alt=""
+                    />
+                  </a>
+
+              <% } %>
+            
+            </div>
+          </div>
+        <% } %>
+
 
         <div class="recent-threads">
           <h2 class="section-headline">Forum Activity</h2>
@@ -205,8 +207,9 @@
           </div>
         </div>
 
+        
         <div class="recent-reviews">
-          <h2 class="section-headline">Recent Reviews</h2>
+          <h2 class="section-headline">Recent Anime Reviews</h2>
           <div class="review-wrap">
             <a href="" class="review-card">
               <div class="banner">
