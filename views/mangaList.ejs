@@ -52,12 +52,12 @@
 
         <span class="status">
           <div class="st">All</div>
-          <div class="numbers"><%= watching.length + completed.length + paused.length + planning.length + dropped.length %></div>
+          <div class="numbers"><%= reading.length + completed.length + paused.length + planning.length + dropped.length %></div>
         </span>
 
         <span class="status">
-          <div class="st">Watching</div>
-          <div class="numbers"><%=watching.length%></div>
+          <div class="st">Reading</div>
+          <div class="numbers"><%=reading.length%></div>
         </span>
 
         <span class="status">
@@ -83,24 +83,24 @@
 
       <div class="list-wrap">
         
-        <% if(watching.length) { %>
+        <% if(reading.length) { %>
           <div class="list-wrapper">
-            <h3 class="section-name">Watching</h3>
+            <h3 class="section-name">Reading</h3>
               <div class="list-entries">
 
-                <% for(let i = 0; i < watching.length; ++i) { %>
+                <% for(let i = 0; i < reading.length; ++i) { %>
                   <div class="entry">
                     <div class="entry-img">
                       <img
-                        src="<%=watching[i].COVER_IMAGE%>"
+                        src="<%=reading[i].COVER_IMAGE%>"
                         alt=""
                       />
                     </div>
                     <div class="sub-title">
-                      <a class="title" href="/manga/<%=watching[i].MANGA_ID%>/<%=watching[i].ENGLISH%>"><%=watching[i].ENGLISH%></a>
+                      <a class="title" href="/manga/<%=reading[i].MANGA_ID%>/<%=reading[i].ENGLISH%>"><%=reading[i].ENGLISH%></a>
                       <div class="counter">
-                        <div><%=watching[i].CHAPTERS%></div>
-                        <div style="margin-left: auto"><%=watching[i].AVERAGE_SCORE%></div>
+                        <div><%=reading[i].CHAPTERS%></div>
+                        <div style="margin-left: auto"><%=reading[i].AVERAGE_SCORE%></div>
                       </div>
                     </div>
                   </div>

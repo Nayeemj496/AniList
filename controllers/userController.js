@@ -259,7 +259,7 @@ const userMangaListControllerGET = async (req, res) => {
 
     const connection = await connect();
 
-    const watching = (
+    const reading = (
         await connection.execute(
             `
                 SELECT UM.*, M.* , (
@@ -268,7 +268,7 @@ const userMangaListControllerGET = async (req, res) => {
             WHERE UMANGA.MANGA_ID = M.MANGA_ID
         ) AS AVERAGE_SCORE
         FROM USER_MANGA UM JOIN MANGA M ON UM.MANGA_ID = M.MANGA_ID
-        WHERE UM.USER_ID = :userid AND UM.STATUS = 'WATCHING'
+        WHERE UM.USER_ID = :userid AND UM.STATUS = 'READING'
         `,
             [userid],
             { outFormat: oracledb.OUT_FORMAT_OBJECT }
@@ -316,7 +316,7 @@ const userMangaListControllerGET = async (req, res) => {
             WHERE UMANGA.MANGA_ID = M.MANGA_ID
         ) AS AVERAGE_SCORE
         FROM USER_MANGA UM JOIN MANGA M ON UM.MANGA_ID = M.MANGA_ID
-        WHERE UM.USER_ID = :userid AND UM.STATUS = 'PLAN_TO_WATCH'
+        WHERE UM.USER_ID = :userid AND UM.STATUS = 'PLAN_TO_READ'
         `,
             [userid],
             { outFormat: oracledb.OUT_FORMAT_OBJECT }
@@ -345,7 +345,7 @@ const userMangaListControllerGET = async (req, res) => {
             isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
             userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
             username: req.session.user.USERNAME,
-            watching,
+            reading,
             completed,
             paused,
             planning,
@@ -380,7 +380,7 @@ const userHomeControllerGET = async (req, res) => {
     const reading = (await connection.execute(`
         SELECT *
         FROM USER_MANGA UM JOIN MANGA M ON UM.MANGA_ID = M.MANGA_ID
-        WHERE UM.USER_ID = :userid AND UPPER(UM.STATUS) = 'WATCHING'
+        WHERE UM.USER_ID = :userid AND UPPER(UM.STATUS) = 'READING'
         ORDER BY M.ENGLISH
     `, [userid], {outFormat: oracledb.OUT_FORMAT_OBJECT})).rows
 

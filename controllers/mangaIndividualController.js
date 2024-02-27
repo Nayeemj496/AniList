@@ -126,9 +126,9 @@ const mangaIndividualControllerGET = async (req, res) => {
     let watching = (
       await connection.execute(
         `
-        SELECT COUNT(*) AS "WATCHING"
+        SELECT COUNT(*) AS "READING"
         FROM USER_MANGA UM
-        WHERE MANGA_ID = :mangaid AND STATUS = 'WATCHING'
+        WHERE MANGA_ID = :mangaid AND STATUS = 'READING'
     `,
         [obj.id]
       )
@@ -139,7 +139,7 @@ const mangaIndividualControllerGET = async (req, res) => {
         `
         SELECT COUNT(*) AS "PLANNING"
         FROM USER_MANGA UM
-        WHERE MANGA_ID = :mangaid AND STATUS = 'PLAN_TO_WATCH'
+        WHERE MANGA_ID = :mangaid AND STATUS = 'PLAN_TO_READ'
     `,
         [obj.id]
       )
