@@ -1,0 +1,123 @@
+.banner {
+    background-size: cover;
+    background-position: 50% 35%;
+    background-repeat: no-repeat;
+    box-shadow: inset 0 0 250px #2f3133;
+    height: 400px;
+}
+
+/* .banner::after {
+    background: rgba(31, 37, 45, .65);
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 68px;
+    z-index: 5;
+} */
+
+a {
+    text-decoration: none;
+}
+
+.headline, .author, .review-content {
+    font-family: 'Roboto';
+}
+
+.headline {
+    color: rgba(255, 255, 255, .9);
+    font-size: 28px;
+    font-weight: 500;
+    display: block;
+    text-align: center;
+    margin-bottom: 16px;;
+    transition: color 0.2s;
+}
+
+.headline:hover {
+    color: #3DB4F2;
+}
+
+.author {
+    color: rgba(255, 255, 255, .7);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 16px;
+    display: block;
+    text-align: center;
+    margin-bottom: 100px;
+}
+
+.content {
+    width: 850px;
+    margin: 0px auto;
+    position: absolute;
+    top: 150px;
+    left: 250px;
+}
+
+.review-content {
+    background: rgb(21, 31, 46);
+    color: #9FADBD;
+    border-radius: 4px;
+    padding: 40px;
+    line-height: 25.6px;
+    font-size: 16px;
+    /* new changes */
+    position: relative;
+}
+
+.rating {
+    width: 300px;
+    height: 120px;
+    padding: 20px;
+    /* background-color: rgb(11, 22, 34); */
+    background-color: rgb(21, 31, 46);
+    /* margin: 100px auto; */
+    border-radius: 4px;
+    /* new changes */
+    position: absolute;
+    bottom: -200px;
+    left: 275px;
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.icon {
+    width: 35px;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    margin: 0px 10px;
+    border-radius: 4px;
+}
+
+.icon svg {
+    width: 15px;
+    height: 15px;
+    color: #fff;
+    align-self: center;
+}
+
+.rating p {
+    color: #8596A5;
+    font-size: 15px;
+    text-align: center;
+    font-family: 'Roboto';
+}
+
+#like-btn {
+    background-color: #7bd555;
+    opacity: 1;
+    transition: opacity 0.15s ease-in;
+}
+
+/* #E85D75 */
+
+#like-btn:hover {
+    opacity: 0.7;
+}

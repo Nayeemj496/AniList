@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://anilist.co/img/icons/favicon-32x32.png"
+    />
+    <title><%= staff.FULL_NAME %> &#183; AniList</title>
+    <link rel="stylesheet" href="/styles/character.css" />
+  </head>
+
+  <body>
+    <%- include("navcontainer.ejs", { isAdmin, userimage, username }) %>
+
+    <div class="container">
+      <div class="" style="width: 230px"></div>
+
+      <div class="header">
+        <div class="english"><%= staff.FULL_NAME %></div>
+        <div class="native"><%= staff.NATIVE %></div>
+      </div>
+
+      <button class="like">
+        <svg
+          data-v-0228dea0=""
+          aria-hidden="true"
+          focusable="false"
+          data-prefix="fas"
+          data-icon="heart"
+          role="img"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 512 512"
+          class="like-icon"
+        >
+          <path
+            data-v-0228dea0=""
+            fill="currentColor"
+            d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"
+            class=""
+          ></path>
+        </svg>
+        <div class="like-title"><%=counter%></div>
+      </button>
+    </div>
+
+    <div class="body">
+      <div class="" style="width: 200px"></div>
+
+      <img class="image" src="<%= staff.IMAGE %>" alt="" />
+
+      <div class="description">
+        <div class="data-point"><span>Gender:</span> <%= staff.GENDER %></div>
+        <div class="data-point"><span>Role:</span> <%= staff.ROLE %></div>
+        <div
+          style="
+            font-family: 'Roboto';
+            color: #9fadbd;
+            line-height: 28px;
+            font-size: 14px;
+            margin-top: 20px;
+          "
+        >
+          Eren is Shingeki no Kyojin's protagonist. His foster sister, Mikasa,
+          notes on numerous occasions that he acts on impulse without thinking
+          things through, and she often pulls/carries/throws him when he starts
+          fighting with others to protect him from himself. Along with Mikasa,
+          he tends to spend his free time with their mutual friend, Armin. His
+          father is a doctor (who is well respected by Hannes and potentially
+          many more) whilst his mother is a housewife. When Eren was a child, he
+          saved Mikasa from being sold off when he visited her home with his
+          father. Three men—killers of her parents—were in her house, and he
+          killed two of them—one by slitting his throat and the other by
+          charging at with a quickly assembled spear. Mikasa herself killed the
+          third man after Eren urged her to fight whilst the man strangled Eren.
+          After this, he gave Mikasa his scarf and Eren's father adopted Mikasa
+          into their family. Later, when the colossal titan broke through Wall
+          Maria the debris from this attack scattered and hurtled towards his
+          home. He could only watch on as his mother—trapped under the rubble of
+          their house—was eaten by a titan. This event lit the fire of revenge
+          within Eren that he would kill every giant and not live a life
+          cowering in fear. Sometime after this—before the time skip that jumped
+          a few years ahead, to when he became a soldier—his father injected him
+          with something. It's unknown what at this time but it turns out,
+          because of the injection, Eren can utilize the ability to transform
+          into a titan himself (which explains how his limbs were able to
+          regenerate) with side effects of high fever and massive stamina drain.
+          It is later revealed that Eren has both the Attack Titan and the
+          Founding Titan. Eren later inherits the Warhammer Titan as well. At
+          the end of the series, Eren is killed by Mikasa.
+        </div>
+      </div>
+    </div>
+
+    <script src="/scripts/tooltip.js"></script>
+    <script>
+
+      let url =
+        "http://localhost:8080/staff/<%=staff.STAFF_ID%>/<%=staff.FULL_NAME%>";
+
+      const likeButton = document.querySelector(".like")
+      const likeIcon = document.querySelector(".like-icon")
+      const likeTitle = document.querySelector(".like-title")
+
+      let isLiked = "<%=isLiked%>"
+
+      if(isLiked === "true") {
+        likeIcon.style.color = "#ffaebc"
+      } else likeIcon.style.color = "#fff"
+
+      likeButton.onclick = async () => {
+        console.log(likeButton);
+        console.log(likeIcon)
+        console.log(likeTitle)
+
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+          }
+        })
+
+        const data = await response.json()
+        console.log(data)
+
+        if(data.isLiked) {
+          likeIcon.style.color = "#ffaebc"
+        } else {
+          likeIcon.style.color = "#fff"
+        }
+
+        likeTitle.innerHTML = data.counter
+      };
+
+    </script>
+  </body>
+</html>

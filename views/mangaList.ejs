@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://anilist.co/img/icons/favicon-32x32.png"
+    />
+    <title><%=username%>'s mangaList &#183; AniList</title>
+    <link rel="stylesheet" href="/styles/generic.css" />
+    <link rel="stylesheet" href="/styles/profile.css" />
+    <link rel="stylesheet" href="/styles/animeList.css" />
+  </head>
+
+  <body>
+    <%-include("navcontainer.ejs", { isAdmin, userimage, username}) %>
+
+    <div
+      class="banner"
+      data-tooltip="https://s4.anilist.co/file/anilistcdn/user/banner/b5553733-gSRRUqqEcbE3.jpg"
+    >
+      <div class="shadow">
+        <div class="banner-content">
+          <img
+            src="<%=userimage%>"
+            alt=""
+          />
+          <div><%=username%></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-wrapper" style="background-color: rgb(21, 31, 46)">
+      <div class="container nav">
+        <a href="/user/<%=username%>">Overview</a>
+        <a href="/user/<%=username%>/animeList">AnimeList</a>
+        <a href="/user/<%=username%>/mangaList">MangaList</a>
+        <a href="/user/<%=username%>/anime/reviews">Anime Reviews</a>
+        <a href="/user/<%=username%>/manga/reviews">Manga Reviews</a>
+        <a href="">Social</a>
+      </div>
+    </div>
+
+    <div class="mediaList container">
+      <div>
+        <h2 class="section-header" style="font-size: 13px; margin-bottom: 30px">
+          Lists
+        </h2>
+
+        <span class="status">
+          <div class="st">All</div>
+          <div class="numbers"><%= watching.length + completed.length + paused.length + planning.length + dropped.length %></div>
+        </span>
+
+        <span class="status">
+          <div class="st">Watching</div>
+          <div class="numbers"><%=watching.length%></div>
+        </span>
+
+        <span class="status">
+          <div class="st">Completed</div>
+          <div class="numbers"><%=completed.length%></div>
+        </span>
+
+        <span class="status">
+          <div class="st">Paused</div>
+          <div class="numbers"><%=paused.length%></div>
+        </span>
+
+        <span class="status">
+          <div class="st">Planning</div>
+          <div class="numbers"><%=planning.length%></div>
+        </span>
+
+        <span class="status">
+          <div class="st">Dropped</div>
+          <div class="numbers"><%=dropped.length%></div>
+        </span>
+      </div>
+
+      <div class="list-wrap">
+        
+        <% if(watching.length) { %>
+          <div class="list-wrapper">
+            <h3 class="section-name">Watching</h3>
+              <div class="list-entries">
+
+                <% for(let i = 0; i < watching.length; ++i) { %>
+                  <div class="entry">
+                    <div class="entry-img">
+                      <img
+                        src="<%=watching[i].COVER_IMAGE%>"
+                        alt=""
+                      />
+                    </div>
+                    <div class="sub-title">
+                      <a class="title" href="/manga/<%=watching[i].MANGA_ID%>/<%=watching[i].ENGLISH%>"><%=watching[i].ENGLISH%></a>
+                      <div class="counter">
+                        <div><%=watching[i].CHAPTERS%></div>
+                        <div style="margin-left: auto"><%=watching[i].AVERAGE_SCORE%></div>
+                      </div>
+                    </div>
+                  </div>
+                <% } %>
+
+              </div>
+          </div>
+        <% } %>
+
+
+          <% if(completed.length) { %>
+          <div class="list-wrapper">
+            <h3 class="section-name">Completed</h3>
+              <div class="list-entries">
+
+                <% for(let i = 0; i < completed.length; ++i) { %>
+                  <div class="entry">
+                    <div class="entry-img">
+                      <img
+                        src="<%=completed[i].COVER_IMAGE%>"
+                        alt=""
+                      />
+                    </div>
+                    <div class="sub-title">
+                      <a class="title" href="/manga/<%=completed[i].MANGA_ID%>/<%=completed[i].ENGLISH%>"><%=completed[i].ENGLISH%></a>
+                      <div class="counter">
+                        <div><%=completed[i].CHAPTERS%></div>
+                        <div style="margin-left: auto"><%=completed[i].AVERAGE_SCORE%></div>
+                      </div>
+                    </div>
+                  </div>
+                <% } %>
+                
+              </div>
+          </div>
+        <% } %>
+
+        <% if(paused.length) { %>
+          <div class="list-wrapper">
+            <h3 class="section-name">Paused</h3>
+              <div class="list-entries">
+
+                <% for(let i = 0; i < paused.length; ++i) { %>
+                  <div class="entry">
+                    <div class="entry-img">
+                      <img
+                        src="<%=paused[i].COVER_IMAGE%>"
+                        alt=""
+                      />
+                    </div>
+                    <div class="sub-title">
+                      <a class="title" href="/manga/<%=paused[i].MANGA_ID%>/<%=paused[i].ENGLISH%>"><%=paused[i].ENGLISH%></a>
+                      <div class="counter">
+                        <div><%=paused[i].CHAPTERS%></div>
+                        <div style="margin-left: auto"><%=paused[i].AVERAGE_SCORE%></div>
+                      </div>
+                    </div>
+                  </div>
+                <% } %>
+                
+              </div>
+          </div>
+        <% } %>
+
+        <% if(planning.length) { %>
+          <div class="list-wrapper">
+            <h3 class="section-name">Planning</h3>
+              <div class="list-entries">
+
+                <% for(let i = 0; i < planning.length; ++i) { %>
+                  <div class="entry">
+                    <div class="entry-img">
+                      <img
+                        src="<%=planning[i].COVER_IMAGE%>"
+                        alt=""
+                      />
+                    </div>
+                    <div class="sub-title">
+                      <a class="title" href="/manga/<%=planning[i].MANGA_ID%>/<%=planning[i].ENGLISH%>"><%=paused[i].ENGLISH%></a>
+                      <div class="counter">
+                        <div><%=planning[i].CHAPTERS%></div>
+                        <div style="margin-left: auto"><%=planning[i].AVERAGE_SCORE%></div>
+                      </div>
+                    </div>
+                  </div>
+                <% } %>
+                
+              </div>
+          </div>
+        <% } %>
+
+        <% if(dropped.length) { %>
+          <div class="list-wrapper">
+            <h3 class="section-name">dropped</h3>
+              <div class="list-entries">
+
+                <% for(let i = 0; i < dropped.length; ++i) { %>
+                  <div class="entry">
+                    <div class="entry-img">
+                      <img
+                        src="<%=dropped[i].COVER_IMAGE%>"
+                        alt=""
+                      />
+                    </div>
+                    <div class="sub-title">
+                      <a class="title" href="/manga/<%=dropped[i].MANGA_ID%>/<%=dropped[i].ENGLISH%>"><%=dropped[i].ENGLISH%></a>
+                      <div class="counter">
+                        <div><%=dropped[i].CHAPTERS%></div>
+                        <div style="margin-left: auto"><%=dropped[i].AVERAGE_SCORE%></div>
+                      </div>
+                    </div>
+                  </div>
+                <% } %>
+                
+              </div>
+          </div>
+        <% } %>
+
+      </div>
+    </div>
+
+    <script src="/scripts/tooltip.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        let banner = document.querySelector(".banner");
+
+        let imageURLBanner = banner.getAttribute("data-tooltip");
+
+        banner.style.backgroundImage = "url(" + imageURLBanner + ")";
+      });
+    </script>
+  </body>
+</html>

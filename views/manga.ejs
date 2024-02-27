@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://anilist.co/img/icons/favicon-32x32.png"
+    />
+    <title>Search Manga &#183; AniList</title>
+    <link rel="stylesheet" href="/styles/manga.css" />
+    <style>
+      .a-style {
+        text-decoration: none;
+        color: #a0b1c5;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <%- include("navcontainer.ejs", { isAdmin, userimage, username }) %>
+
+    <form action="/search/manga" method="post">
+      <div class="filters">
+        <div class="filter">
+          <div class="name">Search</div>
+          <div class="search-wrap">
+            <img
+              src="/svgs/icons8-search.svg"
+              alt=""
+              width="15px"
+              height="15px"
+              style="opacity: 0.5; align-self: center"
+            />
+            <input
+              type="text"
+              id="manga-search"
+              name="name"
+              style="width: 118px"
+            />
+          </div>
+        </div>
+
+        <div class="filter">
+          <div class="name">Genres</div>
+          <div class="select">
+            <input
+              type="text"
+              id="manga-genre"
+              name="genre"
+              placeholder="Any"
+            />
+          </div>
+        </div>
+
+        <div class="filter">
+          <div class="name">Format</div>
+          <div class="select">
+            <input
+              type="text"
+              id="manga-format"
+              name="format"
+              placeholder="Any"
+            />
+          </div>
+        </div>
+
+        <div class="filter">
+          <div class="name">Publishing Status</div>
+          <div class="select">
+            <input
+              type="text"
+              id="manga-status"
+              name="status"
+              placeholder="Any"
+            />
+          </div>
+        </div>
+
+        <div class="filter">
+          <div class="name">Country Of Origin</div>
+          <div class="select">
+            <input
+              type="text"
+              id="manga-origin"
+              name="origin"
+              placeholder="Any"
+            />
+          </div>
+        </div>
+
+        <button class="form-button filter" type="submit">Filter</button>
+      </div>
+    </form>
+
+    <% let length=Object.keys(search).length %> <% if(length> 0) { %> <%
+    if(mangas.length===0) { %>
+    <div class="no-results">No Results</div>
+    <% } else { %>
+    <div class="results-grid-container">
+      <% mangas.forEach((manga)=> { %>
+      <div class="media-card">
+        <img class="media-card-image" src="<%= manga.COVER_IMAGE %>" alt="" />
+        <a
+          href="/manga/<%= manga.MANGA_ID %>/<%= manga.ENGLISH %>"
+          class="media-card-title"
+          data-hover-color="<%= manga.COVER_IMAGE_COLOR %>"
+          style="text-decoration: none"
+        >
+          <%= manga.ENGLISH %>
+        </a>
+      </div>
+      <% }); %>
+    </div>
+    <% } %> <% } else { %>
+    <div class="results-grid-container">
+      <% mangas.forEach((manga)=> { %>
+      <div class="media-card">
+        <img class="media-card-image" src="<%= manga.COVER_IMAGE %>" alt="" />
+        <a
+          href="/manga/<%= manga.MANGA_ID %>/<%= manga.ENGLISH %>"
+          class="media-card-title"
+          data-hover-color="<%= manga.COVER_IMAGE_COLOR %>"
+          style="text-decoration: none"
+        >
+          <%= manga.ENGLISH %>
+        </a>
+      </div>
+      <% }); %>
+    </div>
+    <% } %>
+
+    <script src="/scripts/tooltip.js"></script>
+  </body>
+</html>

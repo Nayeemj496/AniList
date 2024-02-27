@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://anilist.co/img/icons/favicon-32x32.png">
+    <title>Log in to Anilist &#183; Anilist</title>
+    <link rel="stylesheet" href="/styles/login.css">
+    <style>
+        .a-style {
+            text-decoration: none;
+            color: #a0b1c5;
+            font-size: 14px;
+        }
+
+        .sign-up {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="nav-container">
+        <div class="wrap">
+            <a href="/" class="wrap-flex-item"><img class="logo" src="https://anilist.co/img/icons/icon.svg" alt=""></a>
+            <div class="links">
+                <a class="a-style nav-flex-item" href="/login">Search</a>
+                <a class="a-style nav-flex-item" href="#">Social</a>
+                <a class="a-style nav-flex-item" href="#">Forum</a>
+                <a class="a-style nav-flex-item" href="/login">Login</a>
+                <button class="sign-up nav-flex-item"><a class="a-style" href="/signup" style="color: white;">Sign Up</a></button>
+            </div>
+        </div>
+    </nav>
+
+    <form class="login-container" action="/login" method="post">
+        <h2 class="login-title">Login</h2>
+        <input id="login-email" type="text" name="username" placeholder="Username" required>
+        <input id="login-password" type="password" name="password" placeholder="password" required>
+        <div style="text-align: center;"><button class="login" type="submit">Login</button></div>
+        <p style="color: #8596A5; margin-top: 80px; font-size: 13px; text-align: center;">Not registered? <span
+                class="create-account"><a class="a-style" href="/signup" style="color: #3DB4F2;">Create an account</a>
+        </span>
+        </p>
+    </form>
+
+    <script>
+        const createAccount = document.querySelector(".create-account")
+        console.log(createAccount)
+        const login = document.querySelector(".login")
+        const signUp = document.querySelector(".sign-up")
+        console.log(login, signUp)
+    </script>
+</body>
+
+</html>

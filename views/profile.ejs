@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://anilist.co/img/icons/favicon-32x32.png"
+    />
+    <title><%=username%>'s profile &#183; AniList</title>
+    <link rel="stylesheet" href="/styles/generic.css" />
+    <link rel="stylesheet" href="/styles/profile.css" />
+  </head>
+
+  <body>
+    <%- include("navcontainer.ejs", { isAdmin, userimage, username }) %>
+
+    <div
+      class="banner"
+      data-tooltip="https://s4.anilist.co/file/anilistcdn/user/banner/b5553733-gSRRUqqEcbE3.jpg"
+    >
+      <div class="shadow">
+        <div class="banner-content">
+          <img
+            src="<%=userimage%>"
+            alt=""
+          />
+          <div><%=username%></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-wrapper" style="background-color: rgb(21, 31, 46)">
+      <div class="container nav">
+        <a href="/user/<%=username%>">Overview</a>
+        <a href="/user/<%=username%>/animeList">AnimeList</a>
+        <a href="/user/<%=username%>/mangaList">MangaList</a>
+        <a href="/user/<%=username%>/anime/reviews">Anime Reviews</a>
+        <a href="/user/<%=username%>/manga/reviews">Manga Reviews</a>
+        <a href="">Social</a>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="overview">
+
+        <div class="section">
+
+          <div class="wrapper">
+            <h2 class="section-header">Genre Overview</h2>
+            <div class="genres">
+              <div class="genre">
+                <div class="name" style="background-color: #68d639">Action</div>
+                <div class="amount" style="color: #68d639">
+                  <%=actionLength%> <span class="labell">Entries</span>
+                </div>
+              </div>
+
+              <div class="genre">
+                <div class="name" style="background-color: #02a9ff">Drama</div>
+                <div class="amount" style="color: #02a9ff">
+                  <%=dramaLength%> <span class="labell">Entries</span>
+                </div>
+              </div>
+
+              <div class="genre">
+                <div class="name" style="background-color: #9256f3">Fantasy</div>
+                <div class="amount" style="color: #9256f3">
+                  <%=fantasyLength%> <span class="labell">Entries</span>
+                </div>
+              </div>
+
+              <div class="genre">
+                <div class="name" style="background-color: #f779a4">Adventure</div>
+                <div class="amount" style="color: #f779a4">
+                  <%=adventureLength%> <span class="labell">Entries</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+
+          <% if(animes.length) { %>
+              <div class="wrapper">
+                <h2 class="section-header">Anime</h2>
+                <div class="medias">
+
+                  <%for(let i = 0; i < animes.length; ++i) {%>
+                    <a href="/anime/<%=animes[i].ANIME_ID%>/<%=animes[i].ENGLISH%>" class="media">
+                      <img
+                        src="<%=animes[i].COVER_IMAGE%>"
+                        alt=""
+                      />
+                    </a>
+                    <%}%>
+
+                </div>
+              </div>
+          <% } %>
+
+
+          <% if(mangas.length) { %>
+            <div class="wrapper">
+              <h2 class="section-header">Manga</h2>
+              <div class="medias">
+
+                <%for(let i = 0; i < mangas.length; ++i) {%>
+                  <a href="/manga/<%=mangas[i].MANGA_ID%>/<%=mangas[i].ENGLISH%>" class="media">
+                    <img
+                      src="<%=mangas[i].COVER_IMAGE%>"
+                      alt=""
+                    />
+                  </a>
+                  <%}%>
+                  
+              </div>
+            </div>
+          <% } %>
+
+
+          <% if(characters.length) { %>
+              <div class="wrapper">
+                <h2 class="section-header">Characters</h2>
+                <div class="medias">
+
+                  <%for(let i = 0; i < characters.length; ++i) {%>
+                    <a href="/character/<%=characters[i].CHARACTER_ID%>/<%=characters[i].FULL_NAME%>" class="media">
+                      <img
+                        src="<%=characters[i].IMAGE%>"
+                        alt=""
+                      />
+                    </a>
+                    <%}%>
+                    
+                </div>
+              </div>
+          <% } %>
+
+
+          <% if(staffs.length) { %>
+              <div class="wrapper">
+                <h2 class="section-header">Staff</h2>
+                <div class="medias">
+
+                  <%for(let i = 0; i < staffs.length; ++i) {%>
+                    <a href="/staff/<%=staffs[i].STAFF_ID%>/<%=staffs[i].FULL_NAME%>" class="media">
+                      <img
+                        src="<%=staffs[i].IMAGE%>"
+                        alt=""
+                      />
+                    </a>
+                    <%}%>
+                    
+                </div>
+              </div>
+          <% } %>
+
+          <% if(voiceArtists.length) { %>
+              <div class="wrapper">
+                <h2 class="section-header">Voice Actor</h2>
+                <div class="medias">
+
+                  <%for(let i = 0; i < voiceArtists.length; ++i) {%>
+                    <a href="/va/<%=voiceArtists[i].VA_ID%>/<%=voiceArtists[i].FULL_NAME%>" class="media">
+                      <img
+                        src="<%=voiceArtists[i].VA_IMAGE%>"
+                        alt=""
+                      />
+                    </a>
+                    <%}%>
+
+                </div>
+              </div>
+          <% } %>
+
+        </div>
+
+        <div class="section">
+          <div class="wrapper">
+            <h2 class="section-header">Activity</h2>
+
+            <div>
+              <div class="activity">
+                <a href="">
+                  <img
+                    src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx162314-ocaEhYmvznFO.jpg"
+                    alt=""
+                  />
+                </a>
+
+                <div class="details">
+                  <span style="font-family: 'Roboto'">Plans to watch</span>
+                  <span style="color: #da4127; font-family: 'Roboto'"
+                    >Summer Time Rendering</span
+                  >
+                </div>
+
+                <div class="time">5 months ago</div>
+              </div>
+
+              <div class="activity">
+                <a href="">
+                  <img
+                    src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx162314-ocaEhYmvznFO.jpg"
+                    alt=""
+                  />
+                </a>
+
+                <div class="details">
+                  <span style="font-family: 'Roboto'">Plans to watch</span>
+                  <span style="color: #da4127; font-family: 'Roboto'"
+                    >Summer Time Rendering</span
+                  >
+                </div>
+
+                <div class="time">5 months ago</div>
+              </div>
+
+              <div class="activity">
+                <a href="">
+                  <img
+                    src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx162314-ocaEhYmvznFO.jpg"
+                    alt=""
+                  />
+                </a>
+
+                <div class="details">
+                  <span style="font-family: 'Roboto'">Plans to watch</span>
+                  <span style="color: #da4127; font-family: 'Roboto'"
+                    >Summer Time Rendering</span
+                  >
+                </div>
+
+                <div class="time">5 months ago</div>
+              </div>
+
+              <div class="activity">
+                <a href="">
+                  <img
+                    src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx162314-ocaEhYmvznFO.jpg"
+                    alt=""
+                  />
+                </a>
+
+                <div class="details">
+                  <span style="font-family: 'Roboto'">Plans to watch</span>
+                  <span style="color: #da4127; font-family: 'Roboto'"
+                    >Summer Time Rendering</span
+                  >
+                </div>
+
+                <div class="time">5 months ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script src="/scripts/tooltip.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        let banner = document.querySelector(".banner");
+
+        let imageURLBanner = banner.getAttribute("data-tooltip");
+
+        banner.style.backgroundImage = "url(" + imageURLBanner + ")";
+      });
+    </script>
+  </body>
+</html>

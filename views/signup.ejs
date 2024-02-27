@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://anilist.co/img/icons/favicon-32x32.png">
+    <title>Sign up for Anilist &#183; Anilist</title>
+    <link rel="stylesheet" href="/styles/signup.css">
+    <style>
+        .a-style {
+            text-decoration: none;
+            color: #a0b1c5;
+            font-size: 14px;
+        }
+
+        .sign-up {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="nav-container">
+        <div class="wrap">
+            <a href="/" class="wrap-flex-item"><img class="logo" src="https://anilist.co/img/icons/icon.svg" alt=""></a>
+            <div class="links">
+                <a class="a-style nav-flex-item" href="/search/anime">Search</a>
+                <a class="a-style nav-flex-item" href="#">Social</a>
+                <a class="a-style nav-flex-item" href="#">Forum</a>
+                <a class="a-style nav-flex-item login" href="/login">Login</a>
+                <button class="sign-up nav-flex-item"><a class="a-style" href="/signup" style="color: white;">Sign Up</a></button>
+            </div>
+        </div>
+    </nav>
+
+    <form class="signup-container" method="POST" action="/signup">
+        <h2 class="signup-title">Sign up to AniList</h2>
+        <input id="singup-email" type="email" name="email" placeholder="Email" required>
+        <input id="signup-username" type="text" name="username" placeholder="Username" required>
+        <input id="signup-password" type="password" name="password" placeholder="password" required>
+        <input id="signup-confirm-password" type="password" name="confirmPassword" placeholder="Confirm Password" required>
+        <div style="text-align: center; color: #728AA1; font-size: 13px;"><input type="checkbox"
+                style="width: 14px; height: 14px; display: inline-block;"
+                required><span style="margin-left: 5px;">You agree to our terms of service</span></div>
+        <div style="text-align: center;"><button class="signup">Sign Up</button></div>
+    </form>
+
+    <script>
+        const signUp = document.querySelector(".signup")
+        console.log(signUp)
+        const login = document.querySelector(".login")
+        console.log(login)
+        const navSignUp = document.querySelector(".sign-up")
+        console.log(navSignUp)
+    </script>
+</body>
+
+</html>

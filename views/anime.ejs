@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://anilist.co/img/icons/favicon-32x32.png"
+    />
+    <title>Search Anime &#183; AniList</title>
+    <link rel="stylesheet" href="/styles/anime.css" />
+    <style>
+      .a-style {
+        text-decoration: none;
+        color: #a0b1c5;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <%- include("navcontainer.ejs", { isAdmin, userimage, username }) %>
+
+    <form action="/search/anime" method="post">
+      <div class="filters">
+        <div class="filter">
+          <div class="name">Search</div>
+          <div class="search-wrap">
+            <img
+              src="/svgs/icons8-search.svg"
+              alt=""
+              width="15px"
+              height="15px"
+              style="opacity: 0.5; align-self: center"
+            />
+            <input
+              type="text"
+              id="anime-search"
+              name="name"
+              style="width: 118px"
+            />
+          </div>
+        </div>
+
+        <div class="filter">
+          <div class="name">Genres</div>
+          <div class="select">
+            <input
+              type="text"
+              id="anime-genre"
+              name="genre"
+              placeholder="Any"
+            />
+          </div>
+        </div>
+
+        <div class="filter">
+          <div class="name">Year</div>
+          <div class="select">
+            <input type="text" id="anime-year" name="year" placeholder="Any" />
+          </div>
+        </div>
+
+        <div class="filter">
+          <div class="name">Season</div>
+          <div class="select">
+            <input
+              type="text"
+              id="anime-season"
+              name="season"
+              placeholder="Any"
+            />
+          </div>
+        </div>
+
+        <div class="filter">
+          <div class="name">Format</div>
+          <div class="select">
+            <input
+              type="text"
+              id="anime-format"
+              name="format"
+              placeholder="Any"
+            />
+          </div>
+        </div>
+
+        <button class="form-button filter" type="submit">Filter</button>
+      </div>
+    </form>
+
+    <% let length=Object.keys(search).length %> <% if(length> 0) { %> <%
+    if(animes.length===0) { %>
+    <div class="no-results">No Results</div>
+    <% } else { %>
+    <div class="results-grid-container">
+      <% animes.forEach((anime)=> { %>
+      <div class="media-card">
+        <img class="media-card-image" src="<%= anime.COVER_IMAGE %>" alt="" />
+        <a
+          href="/anime/<%= anime.ANIME_ID %>/<%= anime.ENGLISH %>"
+          class="media-card-title"
+          data-hover-color="<%= anime.COVER_IMAGE_COLOR %>"
+          style="text-decoration: none"
+        >
+          <%= anime.ENGLISH %>
+        </a>
+      </div>
+      <% }); %>
+    </div>
+    <% } %> <% } else { %>
+    <div class="results-grid-container">
+      <% animes.forEach((anime)=> { %>
+      <div class="media-card">
+        <img class="media-card-image" src="<%= anime.COVER_IMAGE %>" alt="" />
+        <a
+          href="/anime/<%= anime.ANIME_ID %>/<%= anime.ENGLISH %>"
+          class="media-card-title"
+          data-hover-color="<%= anime.COVER_IMAGE_COLOR %>"
+          style="text-decoration: none"
+        >
+          <%= anime.ENGLISH %>
+        </a>
+      </div>
+      <% }); %>
+    </div>
+    <% } %>
+
+    <script src="/scripts/tooltip.js"></script>
+  </body>
+</html>

@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'League Spartan';
+    box-sizing: border-box;
+}
+
+body {
+    background: #0B1622;
+    color: white;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+    align-self: center;
+    justify-self: center;
+    margin-right: auto;
+    flex: 2;
+}
+
+.search-icon {
+    width: 18px;
+    height: 18px;
+    color: #a0b1c5;
+    align-self: center;
+    justify-self: center;
+    flex: 1;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+.search-icon:hover {
+    opacity: 1;
+}
+
+.user {
+    width: 40px;
+    height: 40px;
+    align-self: center;
+    justify-self: center;
+    flex: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-img {
+    width: 38px;
+    height: 38px;
+}
+
+.arrow {
+    width: 15px;
+    height: 15px;
+    transition: opacity 0.2s;
+}
+
+.arrow:hover {
+    opacity: 0.7;
+}
+
+.nav-flex-item {
+    padding: 18px 16px;
+    transition: color 0.2s;
+}
+
+.nav-flex-item:hover {
+    color: white;
+}
+
+.nav-container {
+    width: 100%;
+    height: 68px;
+    background-color: #152232;
+    color: #a0b1c5;
+    display: flex;
+    justify-content: center;
+}
+
+.wrap {
+    width: 1050px;
+    height: 100%;
+    margin: 0px 50px;
+    display: flex;
+    justify-content: center;
+}
+
+.links {
+    flex: 35;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.addContainer {
+    margin: 20px auto;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    color: #a0b1c5;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+input, textarea {
+    width: 500px;
+    background-color: transparent;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    color: #a0b1c5;
+    background-color: #151D2E;
+    font-size: 16px;
+}
+
+input:hover, textarea:hover{
+    border: 1px solid #a0b1c5;
+}
+
+.submit-add {
+    width: 80px;
+    padding: 10px;
+    background-color: #3577FF;
+    color: white;
+    border: none;
+    height: 36px;
+    border-radius: 5px;
+    vertical-align: center;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-top: 50px;
+}
+
+.submit-add:hover {
+    opacity: 0.7;
+}

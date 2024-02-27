@@ -1,0 +1,117 @@
+.container {
+    width: 1140px;
+    color: #9FADBD;
+    padding: 0px 50px;
+    margin: 0px auto;
+    background-color: transparent;
+}
+
+.header-wrap {
+    display: flex;
+    margin-top: 40px;
+    margin-bottom: 30px;
+}
+
+.header-wrap h1 {
+    font-family: 'Roboto';
+    font-weight: 900;
+    font-size: 32px;
+}
+
+.review-wrap {
+    display: grid;
+    grid-gap: 30px;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.review-card {
+    display: block;
+    text-decoration: none;
+}
+
+.banner {
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 80px;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    position: relative;
+}
+
+.banner img {
+    height: 80px;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.read-review {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    background-color: rgba(31, 38, 49, 0.8);
+    position: absolute;
+    top: 0px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.read-review span {
+    font-family: 'Roboto';
+    align-self: center;
+    color: rgb(237, 241, 245);
+    font-size: 14px;
+}
+
+.content {
+    background-color: rgb(21, 31, 46);
+    /* changes here */
+    height: 143.3px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-family: 'Roboto';
+    font-size: 13px;
+    padding: 13px 15px;
+    line-height: 18px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.header, .summary {
+    font-family: 'Roboto';
+}
+
+.header {
+    padding-bottom: 8px;
+    font-weight: 500;
+    color: #9FADBD;
+}
+
+.summary {
+    font-style: italic;
+    color: #8596A5;
+    padding-bottom: 8px;
+}
+
+.like-icon {
+    display: flex;
+    justify-content: flex-end;
+    height: 18px;
+    /* changes here */
+    margin-top: auto;
+}
+
+.like-icon svg {
+    height: 11.5px;
+    
+}
+
+.like-icon .likes {
+    margin-left: 4px;
+    align-self: center;
+}
