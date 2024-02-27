@@ -386,18 +386,33 @@ const userHomeControllerGET = async (req, res) => {
 
     console.log(reading)
 
-    const userAnimeReviews = (await connection.execute(`
-        SELECT *
-        FROM REVIEW_ANIME RA JOIN ANIME A ON RA.ANIME_ID = A.ANIME_ID
-        WHERE RA.USER_ID = :userid
-    `, [userid], {outFormat: oracledb.OUT_FORMAT_OBJECT})).rows
+    const userAnimeReviews = ( await connection.execute(
+        `
+        SELECT A.*, RA.*, U.*, (
+                        SELECT COUNT(*)
+                        FROM USER_LIKES_REVIEW_ANIME URA
+                        WHERE URA.REVIEW_ANIME_ID = RA.REVIEW_ANIME_ID 
+                    ) AS LIKES 
+                FROM ANIME A JOIN REVIEW_ANIME RA ON A.ANIME_ID = RA.ANIME_ID JOIN USERR U ON RA.USER_ID = U.USER_ID
+                WHERE U.USER_ID = :userid
+    `,
+        [userid],
+        { outFormat: oracledb.OUT_FORMAT_OBJECT })
+    ).rows;
 
+    console.log(userAnimeReviews[0])
 
-    const userMangaReviews = (await connection.execute(`
-        SELECT *
-        FROM REVIEW_MANGA RM JOIN MANGA M ON RM.MANGA_ID = M.MANGA_ID
-        WHERE RM.USER_ID = :userid
-    `, [userid], {outFormat: oracledb.OUT_FORMAT_OBJECT})).rows
+    const userMangaReviews = (await connection.execute(
+        ` SELECT M.*, RM.*, U.*, (
+                        SELECT COUNT(*)
+                        FROM USER_LIKES_REVIEW_MANGA URM
+                        WHERE URM.REVIEW_MANGA_ID = RM.REVIEW_MANGA_ID 
+                    ) AS LIKES 
+                FROM MANGA M JOIN REVIEW_MANGA RM ON M.MANGA_ID = RM.MANGA_ID JOIN USERR U ON RM.USER_ID = U.USER_ID
+                WHERE U.USER_ID = :userid
+    `,
+        [userid],
+        { outFormat: oracledb.OUT_FORMAT_OBJECT })).rows;
 
 
     await connection.close()

@@ -232,6 +232,7 @@
 
 .content {
     background-color: rgb(21, 31, 46);
+    height: 143.3px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -264,6 +265,7 @@
     display: flex;
     justify-content: flex-end;
     height: 18px;
+    margin-top: auto;
 }
 
 .like-icon svg {
