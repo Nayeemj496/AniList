@@ -384,7 +384,6 @@ const userHomeControllerGET = async (req, res) => {
         ORDER BY M.ENGLISH
     `, [userid], {outFormat: oracledb.OUT_FORMAT_OBJECT})).rows
 
-    console.log(reading)
 
     const userAnimeReviews = ( await connection.execute(
         `
@@ -400,7 +399,6 @@ const userHomeControllerGET = async (req, res) => {
         { outFormat: oracledb.OUT_FORMAT_OBJECT })
     ).rows;
 
-    console.log(userAnimeReviews[0])
 
     const userMangaReviews = (await connection.execute(
         ` SELECT M.*, RM.*, U.*, (
