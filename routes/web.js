@@ -169,8 +169,8 @@ searchRouter.get("/staff", searchStaffController.searchStaffControllerGET);
 searchRouter.post("/staff", searchStaffController.searchStaffControllerPOST);
 
 // work in progress
-adminRouter.get("/add", adminController.adminControllerAddGET);
-adminRouter.post("/add", adminController.adminControllerAddPOST);
+adminRouter.get("/", adminController.adminControllerGET);
+
 
 module.exports = {
     webRouter,

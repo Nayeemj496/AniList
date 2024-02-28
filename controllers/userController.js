@@ -1,6 +1,7 @@
 const connect = require("../controllers/connect");
 const oracledb = require("oracledb");
 
+
 const userProfileControllerGET = async (req, res) => {
     console.log("in the userProfileControllerGET");
     console.log(req.url, req.method);
@@ -16,7 +17,6 @@ const userProfileControllerGET = async (req, res) => {
         WHERE U.USERNAME = :username
     `, [username], {outFormat: oracledb.OUT_FORMAT_OBJECT})).rows
 
-    console.log(user)
 
     if(user.length) {
         userid = user[0].USER_ID
@@ -127,7 +127,6 @@ const userProfileControllerGET = async (req, res) => {
 
     // console.log(animes.length, mangas.length, characters.length, staffs.length);
 
-    console.log(voiceArtists)
 
     await connection.close()
 
@@ -175,7 +174,6 @@ const userAnimeListControllerGET = async (req, res) => {
       )
     ).rows;
 
-    console.log(user);
 
     if (user.length) {
       userid = user[0].USER_ID;
@@ -280,6 +278,7 @@ const userAnimeListControllerGET = async (req, res) => {
     }
 }
 
+
 const userMangaListControllerGET = async (req, res) => {
     console.log("in the userMangaListControllerGET");
     console.log(req.url, req.method);
@@ -301,7 +300,6 @@ const userMangaListControllerGET = async (req, res) => {
       )
     ).rows;
 
-    console.log(user);
 
     if (user.length) {
       userid = user[0].USER_ID;
@@ -482,15 +480,18 @@ const userHomeControllerGET = async (req, res) => {
     }
 }
 
+
 const userSettingsControllerGET = async (req, res) => {
     console.log("in the userSettingsController")
     console.log(req.url, req.method)
 }
 
+
 const userControllerPOST = async (req, res) => {
     console.log("in the userControllerPOST");
     console.log(req.url, req.method);
 };
+
 
 module.exports = {
     userProfileControllerGET,

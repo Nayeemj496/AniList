@@ -1,10 +1,9 @@
-const adminControllerAddGET = async (req, res) => {
+const adminControllerGET = async (req, res) => {
     console.log("in the adminControllerAddGET")
     console.log(req.url, req.method)
 
-
     if(req.session.user) {
-        res.render("add", {
+        res.render("admin", {
             isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
             userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
             username: req.session.user.USERNAME
@@ -23,4 +22,4 @@ const adminControllerAddPOST = async (req, res) => {
 }
 
 
-module.exports = { adminControllerAddGET, adminControllerAddPOST }
+module.exports = { adminControllerGET, }
