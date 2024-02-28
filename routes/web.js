@@ -170,7 +170,18 @@ searchRouter.post("/staff", searchStaffController.searchStaffControllerPOST);
 
 // work in progress
 adminRouter.get("/", adminController.adminControllerGET);
-
+adminRouter.get("/add/anime", adminController.adminAddAnimeControllerGET)
+adminRouter.post("/add/anime", adminController.adminAddAnimeControllerPOST)
+adminRouter.get("/add/manga", adminController.adminAddMangaControllerGET);
+adminRouter.post("/add/manga", adminController.adminAddMangaControllerPOST);
+adminRouter.get("/update/anime", adminController.adminUpdateAnimeControllerGET);
+adminRouter.post("/update/anime", adminController.adminUpdateAnimeControllerPOST);
+adminRouter.get("/update/manga", adminController.adminUpdateMangaControllerGET);
+adminRouter.post("/update/manga", adminController.adminUpdateMangaControllerPOST);
+adminRouter.get("/delete/anime", adminController.adminDeleteAnimeControllerGET);
+adminRouter.post("/delete/anime", adminController.adminDeleteAnimeControllerPOST);
+adminRouter.get("/delete/manga", adminController.adminDeleteMangaControllerGET);
+adminRouter.post("/delete/manga", adminController.adminDeleteMangaControllerPOST);
 
 module.exports = {
     webRouter,

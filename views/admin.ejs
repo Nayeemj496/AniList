@@ -1,67 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <title>Admin &#183; AniList</title>
-    <link rel="icon" type="image/png" sizes="32x32" href="https://anilist.co/img/icons/favicon-32x32.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://anilist.co/img/icons/favicon-32x32.png"
+    />
     <!-- <link rel="stylesheet" href="/styles/add.css"> -->
     <link rel="stylesheet" href="/styles/media_individual.css" />
     <style>
-        .a-style {
-            text-decoration: none;
-            color: #a0b1c5;
-            font-size: 14px;
-        }
+      .a-style {
+        text-decoration: none;
+        color: #a0b1c5;
+        font-size: 14px;
+      }
 
-        input {
-            background-color: #151d2e;
-        }
+      input {
+        background-color: #151d2e;
+      }
     </style>
     <style>
-        .container {
-            max-width: 600px;
-            height: 80vh;
-            margin: 5vh auto;
-            padding: 30px;
-            border-radius: 4px;
-            background-color: #151f2e;
-            display: grid;
-            grid-gap: 30px;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(2, 1fr);
-        }
+      a {
+        text-decoration: none;
+        color: #fff;
+      }
 
-        .add,
-        .update,
-        .delete,
-        .logs {
-            background-color: #0b1622;
-            border-radius: 4px;
-            display: flex;
-            flex-direction: column;
-            display: grid;
-            grid-gap: 30px;
-            grid-template-columns: repeat(2, 1fr);
-            padding: 30px;
-            transition: transform 0.2s ease-in;
-        }
+      .container {
+        max-width: 600px;
+        height: 80vh;
+        margin: 5vh auto;
+        padding: 30px;
+        border-radius: 4px;
+        background-color: #151f2e;
+        display: grid;
+        grid-gap: 30px;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+      }
 
-        .add:hover, .update:hover, .delete:hover, .logs:hover {
-            transform: scale(1.1);
-            border: #A0B1C5 1px solid;
-        }
+      .add,
+      .update,
+      .delete,
+      .logs {
+        background-color: #0b1622;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 20px;
+        transition: transform 0.2s ease-in;
+      }
 
-        .addAnime, .addManga {
-            background-color: #151F2E;
-        }
+      .add:hover,
+      .update:hover,
+      .delete:hover,
+      .logs:hover {
+        transform: scale(1.1);
+      }
+
+      .admin-btn {
+        font-family: "Roboto";
+        font-size: 11px;
+        width: 50%;
+        margin: 0px auto;
+        background-color: #3db4f2;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 4px;
+        transition: opacity 0.2s;
+      }
+
+      .admin-btn:hover {
+        opacity: 0.7;
+      }
+
+      .admin-btn:active {
+        opacity: 0.5;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <%-include("navcontainer.ejs", { isAdmin, userimage, username }) %>
 
-        <!-- <div class="addContainer">
+    <!-- <div class="addContainer">
     <form action="/admin/add" method="POST">
         <div class="form-group">
             <label for="english">Title (English)</label>
@@ -158,20 +183,28 @@
     </form>
 </div> -->
 
-        <div class="container">
-            <div class="add">
-                <div class="addAnime">Add Anime</div>
-                <div class="addManga">Add Manga</div>
-            </div>
+    <div class="container">
+      <div class="add">
+        <a href="/admin/add/anime" class="admin-btn">Add Anime</a>
+        <a href="/admin/add/manga" class="admin-btn">Add Manga</a>
+      </div>
 
-            <div class="update"></div>
+      <div class="update">
+        <a href="/admin/update/anime" class="admin-btn">Update Anime</a>
+        <a href="/admin/update/manga" class="admin-btn">Update Manga</a>
+      </div>
 
-            <div class="delete"></div>
+      <div class="delete">
+        <a href="/admin/delete/anime" class="admin-btn">Delete Anime</a>
+        <a href="/admin/delete/manga" class="admin-btn">Delete Manga</a>
+      </div>
 
-            <div class="logs"></div>
-        </div>
+      <div class="logs">
+        <a href="/admin/logs/traffic" class="admin-btn">Traffic logs</a>
+        <a href="/admin/logs/database" class="admin-btn">Database logs</a>
+      </div>
+    </div>
 
-        <script src="/scripts/tooltip.js"></script>
-</body>
-
+    <script src="/scripts/tooltip.js"></script>
+  </body>
 </html>
