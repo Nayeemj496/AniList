@@ -23,6 +23,22 @@
       }
     </style>
 
+    <style>
+        .btn {
+            display: block;
+            width: 100px;
+            height: 36px;
+            text-align: center;
+            background-color: #3577FF;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #fff;
+            text-decoration: none;
+            margin-top: 50px;
+        }
+    </style>
+
   </head>
 
   <body>
@@ -117,8 +133,15 @@
             </div>
 
             <div class="form-group">
-                <label for="manga">Manga</label>
-                <input type="text" class="form-control" id="manga" name="manga">
+                <a href="/admin/add/manga" class="btn">Add Manga</a>
+                <!-- <label for="manga">Manga</label>
+                <input type="text" class="form-control" id="manga" name="manga"> -->
+            </div>
+
+            <div class="form-group">
+                <a href="/admin/add/character" class="btn">Add Character</a>
+                <!-- <label for="manga">Manga</label>
+                <input type="text" class="form-control" id="manga" name="manga"> -->
             </div>
 
             <button type="submit" class="submit-add">Submit</button>

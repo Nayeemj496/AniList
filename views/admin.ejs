@@ -1,210 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <title>Admin &#183; AniList</title>
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="https://anilist.co/img/icons/favicon-32x32.png"
-    />
+    <link rel="icon" type="image/png" sizes="32x32" href="https://anilist.co/img/icons/favicon-32x32.png" />
     <!-- <link rel="stylesheet" href="/styles/add.css"> -->
     <link rel="stylesheet" href="/styles/media_individual.css" />
     <style>
-      .a-style {
-        text-decoration: none;
-        color: #a0b1c5;
-        font-size: 14px;
-      }
+        .a-style {
+            text-decoration: none;
+            color: #a0b1c5;
+            font-size: 14px;
+        }
 
-      input {
-        background-color: #151d2e;
-      }
+        input {
+            background-color: #151d2e;
+        }
     </style>
     <style>
-      a {
-        text-decoration: none;
-        color: #fff;
-      }
+        a {
+            text-decoration: none;
+            color: #fff;
+        }
 
-      .container {
-        max-width: 600px;
-        height: 80vh;
-        margin: 5vh auto;
-        padding: 30px;
-        border-radius: 4px;
-        background-color: #151f2e;
-        display: grid;
-        grid-gap: 30px;
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(2, 1fr);
-      }
+        .container {
+            max-width: 600px;
+            height: 80vh;
+            margin: 5vh auto;
+            padding: 30px;
+            border-radius: 4px;
+            background-color: #151f2e;
+            display: grid;
+            grid-gap: 30px;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+        }
 
-      .add,
-      .update,
-      .delete,
-      .logs {
-        background-color: #0b1622;
-        border-radius: 4px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: 20px;
-        transition: transform 0.2s ease-in;
-      }
+        .add,
+        .update,
+        .delete,
+        .logs {
+            background-color: #0b1622;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px;
+            transition: transform 0.2s ease-in;
+        }
 
-      .add:hover,
-      .update:hover,
-      .delete:hover,
-      .logs:hover {
-        transform: scale(1.1);
-      }
+        .add:hover,
+        .update:hover,
+        .delete:hover,
+        .logs:hover {
+            transform: scale(1.1);
+        }
 
-      .admin-btn {
-        font-family: "Roboto";
-        font-size: 11px;
-        width: 50%;
-        margin: 0px auto;
-        background-color: #3db4f2;
-        padding: 15px;
-        margin-bottom: 20px;
-        border-radius: 4px;
-        transition: opacity 0.2s;
-      }
+        .admin-btn {
+            font-family: "Roboto";
+            font-size: 11px;
+            width: 50%;
+            margin: 0px auto;
+            background-color: #3db4f2;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            transition: opacity 0.2s;
+        }
 
-      .admin-btn:hover {
-        opacity: 0.7;
-      }
+        .admin-btn:hover {
+            opacity: 0.7;
+        }
 
-      .admin-btn:active {
-        opacity: 0.5;
-      }
+        .admin-btn:active {
+            opacity: 0.5;
+        }
     </style>
-  </head>
+</head>
 
-  <body>
+<body>
     <%-include("navcontainer.ejs", { isAdmin, userimage, username }) %>
 
-    <!-- <div class="addContainer">
-    <form action="/admin/add" method="POST">
-        <div class="form-group">
-            <label for="english">Title (English)</label>
-            <input type="text" class="form-control" id="english" name="english" required>
-        </div>
-
-        <div class="form-group">
-            <label for="english">Title (Romaji)</label>
-            <input type="text" class="form-control" id="english" name="english" required>
-        </div>
-
-        <div class="form-group">
-            <label for="english">Title (Native)</label>
-            <input type="text" class="form-control" id="english" name="english">
-        </div>
-
-        <div class="form-group">
-            <label for="format">Format</label>
-            <input type="text" class="form-control" id="format" name="format" required>
-        </div>
-
-        <div class="form-group">
-            <label for="status">Status</label>
-            <input type="text" class="form-control" id="status" name="status" required>
-        </div>
-
-        <div class="form-group">
-            <label for="description">Description</label>
-            <textarea class="form-control" id="description" name="description" rows="18" required></textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="startdate">Start Date</label>
-            <input type="date" class="form-control" id="startdate" name="startdate" required>
-        </div>
-
-        <div class="form-group">
-            <label for="enddate">End Date</label>
-            <input type="date" class="form-control" id="enddate" name="enddate" required>
-        </div>
-
-        <div class="form-group">
-            <label for="season">Season</label>
-            <input type="text" class="form-control" id="season" name="season" required>
-        </div>
-
-        <div class="form-group">
-            <label for="episodes">Season Year</label>
-            <input type="number" class="form-control" id="episodes" name="episodes" required>
-        </div>
-
-        <div class="form-group">
-            <label for="duration">Duration(Mins)</label>
-            <input type="number" class="form-control" id="duration" name="duration" required>
-        </div>
-
-        <div class="form-group">
-            <label for="origin">Country of Origin</label>
-            <input type="text" class="form-control" id="origin" name="origin" required>
-        </div>
-
-        <div class="form-group">
-            <label for="source">Source</label>
-            <input type="text" class="form-control" id="source" name="source" required>
-        </div>
-
-        <div class="form-group">
-            <label for="coverimage">Cover Image</label>
-            <textarea type="text" class="form-control" id="coverimage" name="coverimage" rows="10" required placeholder="paste url here..."></textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="coverimagecolor">Cover Image Color</label>
-            <input type="text" class="form-control" id="coverimagecolor" name="coverimagecolor" placeholder="">
-        </div>
-
-        <div class="form-group">
-            <label for="bannerimage">Banner Image</label>
-            <input type="text" class="form-control" id="bannerimage" name="bannerimage" placeholder="paste url here...">
-        </div>
-
-        <div class="form-group">
-            <label for="animeurl">Anime URL</label>
-            <input type="text" class="form-control" id="animeurl" name="animeurl"
-            placeholder="paste url here...">
-        </div>
-
-        <div class="form-group">
-            <label for="manga">Manga</label>
-            <input type="text" class="form-control" id="manga" name="manga">
-        </div>
-
-        <button type="submit" class="submit-add">Submit</button>
-    </form>
-</div> -->
-
     <div class="container">
-      <div class="add">
-        <a href="/admin/add/anime" class="admin-btn">Add Anime</a>
-        <a href="/admin/add/manga" class="admin-btn">Add Manga</a>
-      </div>
+        <div class="add">
+            <a href="/admin/add/anime" class="admin-btn">Add Anime</a>
+            <a href="/admin/add/manga" class="admin-btn">Add Manga</a>
+        </div>
 
-      <div class="update">
-        <a href="/admin/update/anime" class="admin-btn">Update Anime</a>
-        <a href="/admin/update/manga" class="admin-btn">Update Manga</a>
-      </div>
+        <div class="update">
+            <a href="/admin/update/anime" class="admin-btn">Update Anime</a>
+            <a href="/admin/update/manga" class="admin-btn">Update Manga</a>
+        </div>
 
-      <div class="delete">
-        <a href="/admin/delete/anime" class="admin-btn">Delete Anime</a>
-        <a href="/admin/delete/manga" class="admin-btn">Delete Manga</a>
-      </div>
+        <div class="delete">
+            <a href="/admin/delete/anime" class="admin-btn">Delete Anime</a>
+            <a href="/admin/delete/manga" class="admin-btn">Delete Manga</a>
+        </div>
 
-      <div class="logs">
-        <a href="/admin/logs/traffic" class="admin-btn">Traffic logs</a>
-        <a href="/admin/logs/database" class="admin-btn">Database logs</a>
-      </div>
+        <div class="logs">
+            <a href="/admin/logs/traffic" class="admin-btn">Traffic logs</a>
+            <a href="/admin/logs/database" class="admin-btn">Database logs</a>
+        </div>
     </div>
 
     <script src="/scripts/tooltip.js"></script>
-  </body>
+</body>
+
 </html>

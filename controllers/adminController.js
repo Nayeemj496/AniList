@@ -16,6 +16,16 @@ const adminControllerGET = async (req, res) => {
 const adminAddAnimeControllerGET = async (req, res) => {
     console.log("in the adminAddAnimeControllerGET")
     console.log(req.url, req.method)
+
+    if(req.session.user) {
+        res.render("admin_add", {
+            isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
+            userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
+            username: req.session.user.USERNAME
+        })
+    } else {
+        res.redirect("/login")
+    }
 }
 
 const adminAddAnimeControllerPOST = async (req, res) => {
@@ -26,6 +36,16 @@ const adminAddAnimeControllerPOST = async (req, res) => {
 const adminAddMangaControllerGET = async (req, res) => {
   console.log("in the adminAddMangaControllerGET");
   console.log(req.url, req.method);
+
+    if(req.session.user) {
+        res.render("admin_add", {
+            isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
+            userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
+            username: req.session.user.USERNAME
+        })
+    } else {
+        res.redirect("/login")
+    }
 };
 
 const adminAddMangaControllerPOST = async (req, res) => {
