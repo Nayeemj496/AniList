@@ -2,17 +2,29 @@ const connect = require("../controllers/connect");
 const oracledb = require("oracledb");
 
 const userProfileControllerGET = async (req, res) => {
-    console.log("in the userControllerGET");
+    console.log("in the userProfileControllerGET");
     console.log(req.url, req.method);
 
-    let userid = null;
-
-    if (req.session.user) {
-        userid = req.session.user.USER_ID;
-    }
+    let username = req.url.split("/")[2]
+    let userid = null
 
     const connection = await connect();
 
+    let user = (await connection.execute(`
+        SELECT *
+        FROM USERR U
+        WHERE U.USERNAME = :username
+    `, [username], {outFormat: oracledb.OUT_FORMAT_OBJECT})).rows
+
+    console.log(user)
+
+    if(user.length) {
+        userid = user[0].USER_ID
+    } else {
+        res.redirect("/login")
+    }
+
+    
     const action = (
         await connection.execute(
             `
@@ -127,8 +139,10 @@ const userProfileControllerGET = async (req, res) => {
             staffs,
             voiceArtists,
             isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
-            userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
-            username: req.session.user.USERNAME,
+            userimage: user[0].USER_IMAGE || "/images/photos/user.png",
+            mainuserimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
+            username: user[0].USERNAME,
+            mainusername: req.session.user.USERNAME,
             actionLength: action.length,
             dramaLength: drama.length,
             fantasyLength: fantasy.length,
@@ -144,13 +158,30 @@ const userAnimeListControllerGET = async (req, res) => {
     console.log("in the userAnimeListControllerGET")
     console.log(req.url, req.method)
 
-    let userid = null
+    let username = req.url.split("/")[2];
+    let userid = null;
 
-    if (req.session.user) {
-        userid = req.session.user.USER_ID
+    const connection = await connect();
+
+    let user = (
+      await connection.execute(
+        `
+        SELECT *
+        FROM USERR U
+        WHERE U.USERNAME = :username
+    `,
+        [username],
+        { outFormat: oracledb.OUT_FORMAT_OBJECT }
+      )
+    ).rows;
+
+    console.log(user);
+
+    if (user.length) {
+      userid = user[0].USER_ID;
+    } else {
+      res.redirect("/login");
     }
-
-    const connection = await connect()
 
     const watching = (await connection.execute(
         `
@@ -234,8 +265,10 @@ const userAnimeListControllerGET = async (req, res) => {
     if (req.session.user) {
         res.render("animeList", {
             isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
-            userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
-            username: req.session.user.USERNAME,
+            userimage: user[0].USER_IMAGE || "/images/photos/user.png",
+            mainuserimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
+            username: user[0].USERNAME,
+            mainusername: req.session.user.USERNAME,
             watching,
             completed,
             paused,
@@ -251,13 +284,30 @@ const userMangaListControllerGET = async (req, res) => {
     console.log("in the userMangaListControllerGET");
     console.log(req.url, req.method);
 
+    let username = req.url.split("/")[2];
     let userid = null;
 
-    if (req.session.user) {
-        userid = req.session.user.USER_ID;
-    }
-
     const connection = await connect();
+
+    let user = (
+      await connection.execute(
+        `
+        SELECT *
+        FROM USERR U
+        WHERE U.USERNAME = :username
+    `,
+        [username],
+        { outFormat: oracledb.OUT_FORMAT_OBJECT }
+      )
+    ).rows;
+
+    console.log(user);
+
+    if (user.length) {
+      userid = user[0].USER_ID;
+    } else {
+      res.redirect("/login");
+    }
 
     const reading = (
         await connection.execute(
@@ -343,8 +393,10 @@ const userMangaListControllerGET = async (req, res) => {
     if (req.session.user) {
         res.render("mangaList", {
             isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
-            userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
-            username: req.session.user.USERNAME,
+            userimage: user[0].USER_IMAGE || "/images/photos/user.png",
+            mainuserimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
+            username: user[0].USERNAME,
+            mainusername: req.session.user.USERNAME,
             reading,
             completed,
             paused,
@@ -385,7 +437,7 @@ const userHomeControllerGET = async (req, res) => {
     `, [userid], {outFormat: oracledb.OUT_FORMAT_OBJECT})).rows
 
 
-    const userAnimeReviews = ( await connection.execute(
+    const recentAnimeReviews = ( await connection.execute(
         `
         SELECT A.*, RA.*, U.*, (
                         SELECT COUNT(*)
@@ -393,23 +445,23 @@ const userHomeControllerGET = async (req, res) => {
                         WHERE URA.REVIEW_ANIME_ID = RA.REVIEW_ANIME_ID 
                     ) AS LIKES 
                 FROM ANIME A JOIN REVIEW_ANIME RA ON A.ANIME_ID = RA.ANIME_ID JOIN USERR U ON RA.USER_ID = U.USER_ID
-                WHERE U.USER_ID = :userid
+                ORDER BY RA.DATE_OF_CREATION_ANIME DESC
     `,
-        [userid],
+        [],
         { outFormat: oracledb.OUT_FORMAT_OBJECT })
     ).rows;
 
 
-    const userMangaReviews = (await connection.execute(
+    const recentMangaReviews = (await connection.execute(
         ` SELECT M.*, RM.*, U.*, (
                         SELECT COUNT(*)
                         FROM USER_LIKES_REVIEW_MANGA URM
                         WHERE URM.REVIEW_MANGA_ID = RM.REVIEW_MANGA_ID 
                     ) AS LIKES 
                 FROM MANGA M JOIN REVIEW_MANGA RM ON M.MANGA_ID = RM.MANGA_ID JOIN USERR U ON RM.USER_ID = U.USER_ID
-                WHERE U.USER_ID = :userid
+                ORDER BY RM.DATE_OF_CREATION_MANGA DESC
     `,
-        [userid],
+        [],
         { outFormat: oracledb.OUT_FORMAT_OBJECT })).rows;
 
 
@@ -419,8 +471,8 @@ const userHomeControllerGET = async (req, res) => {
         res.render("user_homepage", {
             watching,
             reading,
-            userAnimeReviews,
-            userMangaReviews,
+            recentAnimeReviews,
+            recentMangaReviews,
             isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
             userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
             username: req.session.user.USERNAME

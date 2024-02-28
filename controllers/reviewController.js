@@ -38,7 +38,9 @@ const animeReviewControllerGET = async (req, res) => {
             reviews: allAnimeReviews,
             isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
             userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
-            username: req.session.user.USERNAME
+            username: req.session.user.USERNAME,
+            mainusername: req.session.user.USERNAME,
+            mainuserimage: req.session.user.USER_IMAGE
         });
     } else {
         res.redirect("/login");
@@ -150,7 +152,9 @@ const mangaReviewControllerGET = async (req, res) => {
             reviews: allMangaReviews,
             isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
             userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
-            username: req.session.user.USERNAME
+            username: req.session.user.USERNAME,
+            mainusername: req.session.user.USERNAME,
+            mainuserimage: req.session.user.USER_IMAGE,
         });
     } else {
         res.redirect("/login");
@@ -328,13 +332,30 @@ const userAnimeReviewControllerGET = async (req, res) => {
   console.log(req.url, req.method);
   console.log("in the userReviewControllerGET");
 
-    let userid = null
+    let username = req.url.split("/")[2];
+    let userid = null;
 
-    if(req.session.user) {
-        userid = req.session.user.USER_ID
+    const connection = await connect();
+
+    let user = (
+      await connection.execute(
+        `
+        SELECT *
+        FROM USERR U
+        WHERE U.USERNAME = :username
+    `,
+        [username],
+        { outFormat: oracledb.OUT_FORMAT_OBJECT }
+      )
+    ).rows;
+
+    console.log(user);
+
+    if (user.length) {
+      userid = user[0].USER_ID;
+    } else {
+      res.redirect("/login");
     }
-
-    const connection = await connect()
     
     const animeReviews = (await connection.execute(`
                     SELECT A.*, RA.*, U.*, (
@@ -353,8 +374,10 @@ const userAnimeReviewControllerGET = async (req, res) => {
         res.render("reviews_anime", {
             reviews: animeReviews,
             isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
-            userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
-            username: req.session.user.USERNAME,
+            userimage: user[0].USER_IMAGE || "/images/photos/user.png",
+            username: user[0].USERNAME,
+            mainuserimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
+            mainusername: req.session.user.USERNAME,
         });
     } else {
         res.redirect("/login");
@@ -366,13 +389,30 @@ const userMangaReviewControllerGET = async (req, res) => {
   console.log(req.url, req.method);
   console.log("in the userMangaReviewControllerGET");
 
+  let username = req.url.split("/")[2];
   let userid = null;
 
-  if (req.session.user) {
-    userid = req.session.user.USER_ID;
-  }
-
   const connection = await connect();
+
+  let user = (
+    await connection.execute(
+      `
+        SELECT *
+        FROM USERR U
+        WHERE U.USERNAME = :username
+    `,
+      [username],
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    )
+  ).rows;
+
+  console.log(user);
+
+  if (user.length) {
+    userid = user[0].USER_ID;
+  } else {
+    res.redirect("/login");
+  }
 
   const mangaReviews = (
     await connection.execute(
@@ -396,8 +436,10 @@ const userMangaReviewControllerGET = async (req, res) => {
     res.render("reviews_manga", {
       reviews: mangaReviews,
       isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
-      userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
-      username: req.session.user.USERNAME,
+      userimage: user[0].USER_IMAGE || "/images/photos/user.png",
+      username: user[0].USERNAME,
+      mainuserimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
+      mainusername: req.session.user.USERNAME,
     });
   } else {
     res.redirect("/login");
