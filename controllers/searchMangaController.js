@@ -20,8 +20,6 @@ const searchMangaControllerGET = async (req, res) => {
 
     let length = Object.keys(req.query).length
 
-    console.log("length", length)
-
     if (length === 1) {
         if (req.query.hasOwnProperty("name")) {
             const mangaData = await connection.execute(sqlMangaQuery.sqlManga, {
@@ -277,8 +275,6 @@ const searchMangaControllerGET = async (req, res) => {
     }
 
     await connection.close()
-
-    console.log(allMangas)
 
     if(req.session.user) {
         if (!Object.keys(req.query).length) {

@@ -130,6 +130,8 @@ const userProfileControllerGET = async (req, res) => {
 
     await connection.close()
 
+    console.log(req.session.user)
+
     if (req.session.user) {
         res.render("profile", {
             animes,
@@ -139,6 +141,7 @@ const userProfileControllerGET = async (req, res) => {
             voiceArtists,
             isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
             userimage: user[0].USER_IMAGE || "/images/photos/user.png",
+            userbannerimage: user[0].USER_BANNER_IMAGE,
             mainuserimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
             username: user[0].USERNAME,
             mainusername: req.session.user.USERNAME,
@@ -264,6 +267,7 @@ const userAnimeListControllerGET = async (req, res) => {
         res.render("animeList", {
             isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
             userimage: user[0].USER_IMAGE || "/images/photos/user.png",
+            userbannerimage: user[0].USER_BANNER_IMAGE,
             mainuserimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
             username: user[0].USERNAME,
             mainusername: req.session.user.USERNAME,
@@ -392,6 +396,7 @@ const userMangaListControllerGET = async (req, res) => {
         res.render("mangaList", {
             isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
             userimage: user[0].USER_IMAGE || "/images/photos/user.png",
+            userbannerimage: user[0].USER_BANNER_IMAGE,
             mainuserimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
             username: user[0].USERNAME,
             mainusername: req.session.user.USERNAME,
@@ -484,12 +489,58 @@ const userHomeControllerGET = async (req, res) => {
 const userSettingsControllerGET = async (req, res) => {
     console.log("in the userSettingsController")
     console.log(req.url, req.method)
+
+    if(req.session.user) {
+        res.render("user_settings", {
+            isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
+            userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
+            username: req.session.user.USERNAME
+        })
+    } else {
+        res.redirect("/login")
+    }
 }
 
 
-const userControllerPOST = async (req, res) => {
-    console.log("in the userControllerPOST");
+const userSettingsControllerPOST = async (req, res) => {
+    console.log("in the userSettingsControllerPOST");
     console.log(req.url, req.method);
+
+    console.log(req.body)
+
+    let userid = null
+
+    if(req.session.user) userid = req.session.user.USER_ID
+
+    const connection = await connect()
+
+    if(req.session.user) {
+        if(req.body.Cover) {
+            let cover = req.body.Cover
+            await connection.execute(`
+                UPDATE USERR SET USER_IMAGE = :cover WHERE USER_ID = :userid
+            `, [cover, userid], {autoCommit: true})
+        } if(req.body.Banner) {
+            let banner = req.body.Banner
+            await connection.execute(`
+                UPDATE USERR SET USER_BANNER_IMAGE = :banner WHERE USER_ID = :userid
+            `, [banner, userid], {autoCommit: true})
+        }
+    }
+
+    await connection.close()
+
+    if(req.session.user) {
+        if(req.body.Cover) {
+            req.session.user.USER_IMAGE = req.body.Cover
+        } 
+        if(req.body.Banner) {
+            req.session.user.USER_BANNER_IMAGE = req.body.Banner
+        }
+        res.redirect("/home")
+    } else {
+        res.redirect("/login")
+    }
 };
 
 
@@ -499,5 +550,5 @@ module.exports = {
     userMangaListControllerGET,
     userHomeControllerGET,
     userSettingsControllerGET,
-    userControllerPOST,
+    userSettingsControllerPOST,
 };

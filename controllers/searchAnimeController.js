@@ -273,6 +273,7 @@ const searchAnimeControllerGET = async (req, res) => {
     }
 
     await connection.close()
+
     if(req.session.user) {
         if (!Object.keys(req.query).length) {
           res.render("anime", {
@@ -294,7 +295,6 @@ const searchAnimeControllerGET = async (req, res) => {
     } else {
         res.redirect("/login")
     }
-    
 }
 
 

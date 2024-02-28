@@ -34,8 +34,8 @@ const adminAddAnimeControllerPOST = async (req, res) => {
 }
 
 const adminAddMangaControllerGET = async (req, res) => {
-  console.log("in the adminAddMangaControllerGET");
-  console.log(req.url, req.method);
+    console.log("in the adminAddMangaControllerGET");
+    console.log(req.url, req.method);
 
     if(req.session.user) {
         res.render("admin_add", {

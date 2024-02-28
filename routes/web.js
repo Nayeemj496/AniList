@@ -89,6 +89,7 @@ webRouter.post("/va/:id/:name", voiceArtistController.voiceArtistControllerPOST)
 // user individual
 webRouter.get("/home", userController.userHomeControllerGET);
 webRouter.get("/settings", userController.userSettingsControllerGET);
+webRouter.post("/settings", userController.userSettingsControllerPOST)
 webRouter.get("/user/:name", userController.userProfileControllerGET);
 webRouter.get(
     "/user/:name/animeList",
@@ -155,14 +156,8 @@ searchRouter.get("/manga", searchMangaController.searchMangaControllerGET);
 searchRouter.post("/manga", searchMangaController.searchMangaControllerPOST);
 
 // search character
-searchRouter.get(
-    "/characters",
-    searchCharacterController.searchCharacterControllerGET
-);
-searchRouter.post(
-    "/characters",
-    searchCharacterController.searchCharacterControllerPOST
-);
+searchRouter.get("/characters", searchCharacterController.searchCharacterControllerGET);
+searchRouter.post("/characters", searchCharacterController.searchCharacterControllerPOST);
 
 // search staff
 searchRouter.get("/staff", searchStaffController.searchStaffControllerGET);
@@ -182,6 +177,7 @@ adminRouter.get("/delete/anime", adminController.adminDeleteAnimeControllerGET);
 adminRouter.post("/delete/anime", adminController.adminDeleteAnimeControllerPOST);
 adminRouter.get("/delete/manga", adminController.adminDeleteMangaControllerGET);
 adminRouter.post("/delete/manga", adminController.adminDeleteMangaControllerPOST);
+
 
 module.exports = {
     webRouter,
