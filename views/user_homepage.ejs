@@ -330,38 +330,71 @@
         </div>
         <% } %>
 
-        <div class="newly-added-wrap">
-          <h2 class="section-headline">Newly Added Anime</h2>
-          <div class="newly-added">
-            <a href="">
-              <img
-                src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx153518-7FNR7zCxO2X5.jpg"
-                alt=""
-              />
-            </a>
+        <% if(newAnimes.length) { %>
+          <div class="newly-added-wrap">
+            <h2 class="section-headline">Newly Added Anime</h2>
+            <div class="newly-added">
 
-            <a href="">
-              <img
-                src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx153518-7FNR7zCxO2X5.jpg"
-                alt=""
-              />
-            </a>
+              <% for(let i = 0; i < newAnimes.length; ++i) { %>
 
-            <a href="">
-              <img
-                src="https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30013-tZVlfBCHbrNL.jpg"
-                alt=""
-              />
-            </a>
+                  <% if(i < 4) { %>
+                    <a href="/anime/<%=newAnimes[i].ANIME_ID%>/<%=newAnimes[i].ENGLISH%>">
+                      <img
+                        src="<%=newAnimes[i].COVER_IMAGE%>"
+                        alt=""
+                      />
+                    </a>
+                  <% } %>
 
-            <a href="">
-              <img
-                src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx98437-5q0GWqHhNAgJ.jpg"
-                alt=""
-              />
-            </a>
+              <% } %>
+
+              <!-- <a href="">
+                <img
+                  src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx153518-7FNR7zCxO2X5.jpg"
+                  alt=""
+                />
+              </a>
+
+              <a href="">
+                <img
+                  src="https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30013-tZVlfBCHbrNL.jpg"
+                  alt=""
+                />
+              </a>
+
+              <a href="">
+                <img
+                  src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx98437-5q0GWqHhNAgJ.jpg"
+                  alt=""
+                />
+              </a> -->
+
+            </div>
           </div>
-        </div>
+        <% } %>
+
+        <% if(newMangas.length) { %>
+          <div class="newly-added-wrap">
+            <h2 class="section-headline">Newly Added Manga</h2>
+            <div class="newly-added">
+
+              <% for(let i = 0; i < newMangas.length; ++i) { %>
+
+                  <% if(i < 4) { %>
+                    <a href="/manga/<%=newMangas[i].MANGA_ID%>/<%=newMangas[i].ENGLISH%>">
+                      <img
+                        src="<%=newMangas[i].COVER_IMAGE%>"
+                        alt=""
+                      />
+                    </a>
+                  <% } %>
+
+              <% } %>
+
+            </div>
+          </div>
+        <% } %>
+
       </div>
     </div>
 

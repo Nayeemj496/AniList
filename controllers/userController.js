@@ -675,6 +675,26 @@ const userHomeControllerGET = async (req, res) => {
     )
   ).rows;
 
+
+  const newAnimes = (await connection.execute(`
+        SELECT ANIME_ID, ENGLISH, COVER_IMAGE
+        FROM ANIME A
+        ORDER BY A.DATE_OF_CREATION DESC
+  `, [], {outFormat: oracledb.OUT_FORMAT_OBJECT})).rows
+
+
+  const newMangas = (
+    await connection.execute(
+      `
+        SELECT MANGA_ID, ENGLISH, COVER_IMAGE
+        FROM MANGA M
+        ORDER BY M.DATE_OF_CREATION DESC
+  `,
+      [],
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    )
+  ).rows;
+
   await connection.close();
 
   if (req.session.user) {
@@ -684,6 +704,8 @@ const userHomeControllerGET = async (req, res) => {
       reading,
       recentAnimeReviews,
       recentMangaReviews,
+      newAnimes,
+      newMangas,
       isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
       userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
       username: req.session.user.USERNAME,
@@ -724,8 +746,9 @@ const userSettingsControllerPOST = async (req, res) => {
     if (req.body.Cover) {
       let cover = req.body.Cover;
       await connection.execute(
-        `
-                UPDATE USERR SET USER_IMAGE = :cover WHERE USER_ID = :userid
+        `       BEGIN 
+                  UPDATE_USER_IMAGE(:cover, :userid);
+                END;
             `,
         [cover, userid],
         { autoCommit: true }
@@ -735,7 +758,9 @@ const userSettingsControllerPOST = async (req, res) => {
       let banner = req.body.Banner;
       await connection.execute(
         `
-                UPDATE USERR SET USER_BANNER_IMAGE = :banner WHERE USER_ID = :userid
+                BEGIN
+                  UPDATE_USER_BANNER_IMAGE(:banner, :userid);
+                END;
             `,
         [banner, userid],
         { autoCommit: true }

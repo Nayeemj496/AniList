@@ -98,8 +98,9 @@ const voiceArtistControllerPOST = async (req, res) => {
   if (userdata.length === 0) {
     await connection.execute(
       `
-            INSERT INTO USER_LIKES_VA(USER_ID, VA_ID) 
-            VALUES (:userid, :vaid)
+            BEGIN
+              UPDATE_USER_LIKES_VA(:userid, :vaid);
+            END;
         `,
       [userid, vaid],
       { autoCommit: true }
