@@ -274,6 +274,157 @@ const animeIndividualControllerGET = async (req, res) => {
   }
 };
 
+const animeIndividualSocialControllerGET = async (req, res) => {
+  console.log("in the animeIndividualSocialControllerGET")
+  console.log(req.url, req.method)
+  console.log(req.params)
+
+  const obj = req.params
+
+  req.session.anime = {
+    id: obj.id,
+    name: obj.name,
+  }
+
+  const connection = await connect();
+
+  // animes
+  const animes = (
+    await connection.execute(
+      `
+        SELECT * FROM ANIME
+        WHERE ANIME_ID = :id
+    `,
+      {
+        id: obj.id,
+      },
+      {
+        outFormat: oracledb.OUT_FORMAT_OBJECT,
+      }
+    )
+  ).rows;
+
+  req.session.anime.banner = animes[0].BANNER_IMAGE;
+
+  // genres
+  const genres = (
+    await connection.execute(
+      `
+        SELECT GENRE_NAME
+        FROM ANIME A JOIN ANIME_GENRE AG ON A.ANIME_ID = AG.ANIME_ID JOIN GENRE G ON AG.GENRE_ID = G.GENRE_ID
+        WHERE A.ANIME_ID = :id
+    `,
+      {
+        id: obj.id,
+      },
+      {
+        outFormat: oracledb.OUT_FORMAT_OBJECT,
+      }
+    )
+  ).rows;
+
+  // studios
+  const studios = (
+    await connection.execute(
+      `
+        SELECT A.*, S.*
+        FROM ANIME A JOIN ANIME_STUDIO AST ON A.ANIME_ID = AST.ANIME_ID JOIN STUDIO S ON AST.STUDIO_ID = S.STUDIO_ID
+        WHERE A.ANIME_ID = :id
+        ORDER BY A.ENGLISH
+    `,
+      {
+        id: obj.id,
+      },
+      {
+        outFormat: oracledb.OUT_FORMAT_OBJECT,
+      }
+    )
+  ).rows;
+
+
+  let isLiked = null;
+  let preference = null;
+
+  if (req.session.user) {
+    const userdata = (
+      await connection.execute(
+        `
+            SELECT * FROM USER_ANIME UA
+            WHERE UA.USER_ID = :userid AND UA.ANIME_ID = :animeid
+        `,
+        { userid: req.session.user.USER_ID, animeid: obj.id },
+        { outFormat: oracledb.OUT_FORMAT_OBJECT }
+      )
+    ).rows;
+
+    if (userdata.length == 0) isLiked = false;
+    else {
+      console.log("usedata: ", userdata[0]);
+      if (userdata[0].IS_LIKED === "TRUE") isLiked = true;
+      else isLiked = false;
+      // newly added property
+      preference = userdata[0];
+    }
+  }
+
+  console.log(isLiked);
+
+  let avgScore = (
+    await connection.execute(
+      `
+        SELECT AVG(SCORE)
+        FROM USER_ANIME UA 
+        WHERE ANIME_ID = :animeid
+    `,
+      [obj.id]
+    )
+  ).rows[0][0];
+
+  let userid = null;
+  if (req.session.user) userid = req.session.user.USER_ID;
+
+  let status = (
+    await connection.execute(
+      `
+        SELECT UA.STATUS
+        FROM ANIME A JOIN USER_ANIME UA ON A.ANIME_ID = UA.ANIME_ID
+        WHERE UA.USER_ID = :userid AND A.ANIME_ID = :animeid
+    `,
+      [userid, obj.id]
+    )
+  ).rows;
+
+  const activities = (await connection.execute(`
+       SELECT *
+        FROM USER_ANIME_ACTIVITY UAA JOIN USERR U ON UAA.USER_ID = U.USER_ID JOIN ANIME A ON UAA.ANIME_ID = A.ANIME_ID
+        WHERE UAA.ANIME_ID = :animeid
+        ORDER BY UAA.DATE_OF_CREATION DESC
+  `, [obj.id], {outFormat: oracledb.OUT_FORMAT_OBJECT})).rows 
+
+  await connection.close();
+
+  if (req.session.user) {
+    res.render("anime_individual_social", {
+      anime: animes[0],
+      genres,
+      studios,
+      isLiked,
+      preference,
+      avgScore,
+      activities,
+      status:
+        status.length === 0 || status[0][0] === null
+          ? "Add to List"
+          : status[0][0],
+      isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
+      userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
+      username: req.session.user.USERNAME,
+    });
+  } else {
+    res.redirect("/login");
+  }
+}
+
 const animeIndividualControllerPOST = async (req, res) => {
   console.log("in the animeIndividualControllerPOST");
   console.log(req.url, req.method);
@@ -437,4 +588,5 @@ module.exports = {
   animeIndividualControllerGET,
   animeIndividualControllerPOST,
   animeIndividualReviewControllerGET,
+  animeIndividualSocialControllerGET,
 };

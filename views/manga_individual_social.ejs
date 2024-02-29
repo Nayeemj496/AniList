@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://anilist.co/img/icons/favicon-32x32.png"
+    />
+    <title><%= manga.ENGLISH %> &#183; AniList</title>
+    <link rel="stylesheet" href="/styles/media_individual.css" />
+    <link rel="stylesheet" href="/styles/social.css">
+  </head>
+
+  <body>
+    <% function convertToMonth(integerValue) { %> <% const months = ['Jan',
+    'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov',
+    'Dec']; %> <%= months[integerValue - 1] %> <% } %> <%-
+    include("navcontainer.ejs", { isAdmin, userimage, username }) %>
+
+    <div class="banner" data-tooltip="<%= manga.BANNER_IMAGE %>">
+      <div class="shadow"></div>
+    </div>
+
+    <div class="container-wrap" style="background-color: rgb(21, 31, 46)">
+      <div class="container">
+        <div class="cover-wrap">
+          <img class="cover" src="<%= manga.COVER_IMAGE %>" alt="" />
+          <button class="addToList" onclick="addToList()"><%=status%></button>
+        </div>
+
+        <div class="content">
+          <div class="headline"><%= manga.ENGLISH %></div>
+          <div class="description"><%- manga.DESCRIPTION %></div>
+          <div class="nav">
+            <a class="nav-item" href="/manga/<%=manga.MANGA_ID%>/<%=manga.ENGLISH%>">Overview</a>
+            <a class="nav-item" href="/manga/<%=manga.MANGA_ID%>/<%=manga.ENGLISH%>/reviews">Reviews</a>
+            <a class="nav-item" href="/manga/<%=manga.MANGA_ID%>/<%=manga.ENGLISH%>/social">Social</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-container">
+        <div>
+            <div class="main-container-trailer" style="height: 700px">
+            <div class="data-set">
+                <div class="type">Format</div>
+                <div class="value"><%= manga.FORMAT %></div>
+            </div>
+
+            <% if(manga.CHAPTERS) { %>
+            <div class="data-set">
+                <div class="type">Episodes</div>
+                <div class="value"><%= manga.CHAPTERS %></div>
+            </div>
+            <% } %> <% if(manga.VOLUMES) { %>
+            <div class="data-set">
+                <div class="type">Volumes</div>
+                <div class="value"><%= manga.VOLUMES %></div>
+            </div>
+            <% } %>
+
+            <div class="data-set">
+                <div class="type">Status</div>
+                <div class="value"><%= manga.STATUS %></div>
+            </div>
+
+            <% if(manga.START_YEAR && manga.START_MONTH && manga.START_DAY) { %>
+            <div class="data-set">
+                <div class="type">Start Date</div>
+                <div class="value">
+                <%= convertToMonth(manga.START_MONTH) %> <%= manga.START_DAY %>,
+                <%= manga.START_YEAR %>
+                </div>
+            </div>
+            <% } %> <% if(manga.END_YEAR && manga.END_MONTH && manga.END_DAY) { %>
+            <div class="data-set">
+                <div class="type">End Date</div>
+                <div class="value">
+                <%= convertToMonth(manga.END_MONTH) %> <%= manga.END_DAY %>, <%=
+                manga.END_YEAR %>
+                </div>
+            </div>
+            <% } %>
+
+            <% if(avgScore) { %>
+                <div class="data-set">
+                <div class="type">Average Score</div>
+                <div class="value"><%=avgScore%> / 10</div>
+                </div>
+            <% } %>
+
+            <div class="data-set">
+                <div class="type">Source</div>
+                <div class="value"><%= manga.SOURCE %></div>
+            </div>
+
+            <div class="data-set">
+                <div class="type">Genres</div>
+
+                <% for(let i = 0; i < genres.length; ++i) { %>
+                <div class="value"><%= genres[i].GENRE_NAME %></div>
+                <% } %>
+            </div>
+
+            <div class="data-set">
+                <div class="type">Romaji</div>
+                <div class="value"><%= manga.ROMAJI %></div>
+            </div>
+
+            <div class="data-set">
+                <div class="type">English</div>
+                <div class="type"><%= manga.ENGLISH %></div>
+            </div>
+
+            <div class="data-set">
+                <div class="type">Native</div>
+                <div class="value"><%= manga.NATIVE %></div>
+            </div>
+            </div>
+
+            <div style="background-color: transparent">
+            <div class="write-review">
+                <a href="/review/manga/editor/<%= manga.MANGA_ID %>">
+                <svg
+                    data-v-c93e1c70=""
+                    aria-hidden="true"
+                    focusable="false"
+                    data-prefix="fas"
+                    data-icon="edit"
+                    role="img"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 576 512"
+                    style="height: 13px; align-self: center"
+                >
+                    <path
+                    data-v-c93e1c70=""
+                    fill="currentColor"
+                    d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
+                    class=""
+                    ></path>
+                </svg>
+                <div
+                    style="
+                    align-self: center;
+                    text-align: center;
+                    font-family: 'Roboto';
+                    "
+                >
+                    Write Review
+                </div>
+                </a>
+            </div>
+            </div>
+        </div>
+
+        <div class="activity-feed">
+            <div class="activity-feed-wrap">
+            <h2 class="section-headline">Activity</h2>
+
+            <% for(let i = 0; i < activities.length; ++i) { %>
+
+                <div class="activity-feed-entry">
+                    <a
+                    href="/manga/<%=activities[i].MANGA_ID%>/<%=activities[i].ENGLISH%>"
+                    >
+                    <img src="<%=activities[i].COVER_IMAGE%>" alt="" />
+                    </a>
+
+                    <div class="details">
+                    <a href="/user/<%=activities[i].USERNAME%>" class="name"><%=activities[i].USERNAME%></a>
+                    <span><%=activities[i].STATUS%></span>
+                    <a
+                        href="/manga/<%=activities[i].MANGA_ID%>/<%=activities[i].ENGLISH%>"
+                        class="title"
+                        ><%=activities[i].ENGLISH%></a
+                    >
+                    <a href="/user/<%=activities[i].USERNAME%>" class="avatar">
+                        <img src="<%=activities[i].USER_IMAGE%>" alt="" />
+                    </a>
+                    <div class="time"><%=activities[i].time%></div>
+                    </div>
+                </div>
+
+            <% } %>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="list-editor-wrap">
+      <div class="list-editor-body">
+        <div class="header" data-tooltip="<%= manga.BANNER_IMAGE %>">
+          <div class="contentListEditor">
+            <div class="close-btn" onclick="closeList()">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </div>
+
+            <div class="cover">
+              <img
+                src="<%=manga.COVER_IMAGE%>"
+                alt=""
+                style="width: 100%; vertical-align: text-top"
+              />
+            </div>
+
+            <div class="title"><%=manga.ENGLISH%></div>
+
+            <div class="favourite">
+              <svg
+                data-v-0228dea0=""
+                aria-hidden="true"
+                focusable="false"
+                data-prefix="fas"
+                data-icon="heart"
+                role="img"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512"
+              >
+                <path
+                  data-v-0228dea0=""
+                  fill="currentColor"
+                  d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"
+                  class=""
+                ></path>
+              </svg>
+            </div>
+
+            <button class="save-btn">submit</button>
+          </div>
+        </div>
+
+        <div class="description">
+          <% if(preference) { %>
+            <div>
+                <label class="labelll">Status</label>
+
+                <select id="status">
+                  <option value="reading" <% if (preference.STATUS === 'READING') { %>selected<% } %>>Reading</option>
+                  <option value="plan_to_read" <% if (preference.STATUS === 'PLAN_TO_READ') { %>selected<% } %> >Plan to Read</option>
+                  <option value="completed" <% if (preference.STATUS === 'COMPLETED') { %>selected<% } %> >Completed</option>
+                  <option value="paused" <% if (preference.STATUS === 'PAUSED') { %>selected<% } %> >Paused</option>
+                  <option value="dropped" <% if (preference.STATUS === 'DROPPED') { %>selected<% } %> >Dropped</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="" class="labelll">Score</label>
+                <input
+                  type="number"
+                  id="media-score"
+                  class="validated-input"
+                  max="10"
+                  placeholder="Score must be out of 10"
+                  value="<%=preference.SCORE%>"
+                />
+                <p class="validation-message"></p>
+            </div>
+
+          <% } else { %>
+            <div>
+                <label class="labelll">Status</label>
+
+                <select id="status">
+                  <option value="reading">Reading</option>
+                  <option value="plan_to_read">Plan to Read</option>
+                  <option value="completed">Completed</option>
+                  <option value="paused">Paused</option>
+                  <option value="dropped">Dropped</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="" class="labelll">Score</label>
+                <input
+                  type="number"
+                  id="media-score"
+                  class="validated-input"
+                  max="10"
+                  placeholder="Score must be out of 10"
+                />
+                <p class="validation-message"></p>
+            </div>
+
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+    <script src="/scripts/tooltip.js"></script>
+    <script src="/scripts/media_individual.js"></script>
+    <script>
+      const favouriteButton = document.querySelector(".favourite");
+      const saveButton = document.querySelector(".save-btn");
+      const status = document.querySelector("#status");
+      const score = document.querySelector("#media-score");
+      const listEditor = document.querySelector(".list-editor-wrap");
+      const closeButton = document.querySelector(".contentListEditor .close-btn");
+
+      // favourite button color set
+      let favouriteButtonState = "<%=isLiked%>"
+
+      if(favouriteButtonState === "true") {
+        favouriteButton.style.color = "#e85d75"
+      } else favouriteButton.style.color = "#fff"
+      //
+
+      let url =
+        "http://localhost:8080/manga/<%=manga.MANGA_ID%>/<%=manga.ENGLISH%>";
+
+      function addToList() {
+          listEditor.style.transform = "scale(1)"
+      }
+
+      async function closeList() {
+          listEditor.style.transform = "scale(0)"
+      }
+
+      saveButton.onclick = async (url) => {
+        console.log(saveButton);
+
+        const payLoad = {
+          mediaStatus: status.value,
+          mediaScore: score.value,
+        };
+
+        const response = await fetch(url, {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+          },
+          body: JSON.stringify(payLoad)
+        })
+
+        const data = await response.json()
+
+        console.log(data)
+
+        await closeList()
+      };
+
+      
+
+      favouriteButton.onclick = async (url) => {
+        console.log(favouriteButton);
+
+        console.log(url);
+
+        const response = await fetch(url, {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({ like: true }),
+        });
+
+        const isLiked = await response.json();
+
+        if (isLiked.isLiked) {
+          favouriteButton.style.color = "#e85d75";
+        } else {
+          favouriteButton.style.color = "#fff";
+        }
+      };
+    </script>
+  </body>
+</html>

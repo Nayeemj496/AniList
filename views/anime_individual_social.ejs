@@ -9,34 +9,41 @@
       sizes="32x32"
       href="https://anilist.co/img/icons/favicon-32x32.png"
     />
-    <title><%= manga.ENGLISH %> &#183; AniList</title>
-    <link rel="stylesheet" href="/styles/media_individual.css" />
+    <title><%= anime.ENGLISH %> &#183; AniList</title>
+    <link rel="stylesheet" href="/styles/media_individual.css"/>
+    <link rel="stylesheet" href="/styles/social.css">
   </head>
 
   <body>
     <% function convertToMonth(integerValue) { %> <% const months = ['Jan',
     'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov',
-    'Dec']; %> <%= months[integerValue - 1] %> <% } %> <%-
-    include("navcontainer.ejs", { isAdmin, userimage, username }) %>
+    'Dec']; %> <%= months[integerValue - 1] %> <% } %> 
+    
+    <%-include("navcontainer.ejs", { isAdmin, userimage, username }) %>
 
-    <div class="banner" data-tooltip="<%= manga.BANNER_IMAGE %>">
+    <div class="banner" data-tooltip="<%= anime.BANNER_IMAGE %>">
       <div class="shadow"></div>
     </div>
 
     <div class="container-wrap" style="background-color: rgb(21, 31, 46)">
       <div class="container">
         <div class="cover-wrap">
-          <img class="cover" src="<%= manga.COVER_IMAGE %>" alt="" />
+          <img class="cover" src="<%= anime.COVER_IMAGE %>" alt="" />
+          <!-- here I have to work on -->
           <button class="addToList" onclick="addToList()"><%=status%></button>
         </div>
 
         <div class="content">
-          <div class="headline"><%= manga.ENGLISH %></div>
-          <div class="description"><%- manga.DESCRIPTION %></div>
+          <div class="headline"><%= anime.ENGLISH %></div>
+          <div class="description"><%- anime.DESCRIPTION %></div>
           <div class="nav">
             <a class="nav-item" href="">Overview</a>
-            <a class="nav-item" href="/manga/<%=manga.MANGA_ID%>/<%=manga.ENGLISH%>/reviews">Reviews</a>
-            <a class="nav-item" href="/manga/<%=manga.MANGA_ID%>/<%=manga.ENGLISH%>/social">Social</a>
+            <a
+              class="nav-item"
+              href="/anime/<%=anime.ANIME_ID%>/<%=anime.ENGLISH%>/reviews"
+              >Reviews</a
+            >
+            <a class="nav-item" href="/anime/<%=anime.ANIME_ID%>/<%=anime.ENGLISH%>/social">Social</a>
           </div>
         </div>
       </div>
@@ -44,46 +51,51 @@
 
     <div class="main-container">
       <div>
-        <div class="main-container-trailer" style="height: 700px">
+        <div class="main-container-trailer">
           <div class="data-set">
             <div class="type">Format</div>
-            <div class="value"><%= manga.FORMAT %></div>
+            <div class="value"><%= anime.FORMAT %></div>
           </div>
 
-          <% if(manga.CHAPTERS) { %>
           <div class="data-set">
             <div class="type">Episodes</div>
-            <div class="value"><%= manga.CHAPTERS %></div>
+            <div class="value"><%= anime.EPISODES %></div>
           </div>
-          <% } %> <% if(manga.VOLUMES) { %>
+
           <div class="data-set">
-            <div class="type">Volumes</div>
-            <div class="value"><%= manga.VOLUMES %></div>
+            <div class="type">Episode Duration</div>
+            <div class="value"><%= anime.DURATION %> mins</div>
           </div>
-          <% } %>
 
           <div class="data-set">
             <div class="type">Status</div>
-            <div class="value"><%= manga.STATUS %></div>
+            <div class="value"><%= anime.STATUS %></div>
           </div>
 
-          <% if(manga.START_YEAR && manga.START_MONTH && manga.START_DAY) { %>
           <div class="data-set">
             <div class="type">Start Date</div>
             <div class="value">
-              <%= convertToMonth(manga.START_MONTH) %> <%= manga.START_DAY %>,
-              <%= manga.START_YEAR %>
+              <%= convertToMonth(anime.START_MONTH) %> <%= anime.START_DAY %>,
+              <%= anime.START_YEAR %>
             </div>
           </div>
-          <% } %> <% if(manga.END_YEAR && manga.END_MONTH && manga.END_DAY) { %>
+
+          <% if(anime.END_YEAR && anime.END_MONTH && anime.END_DAY) { %>
           <div class="data-set">
             <div class="type">End Date</div>
             <div class="value">
-              <%= convertToMonth(manga.END_MONTH) %> <%= manga.END_DAY %>, <%=
-              manga.END_YEAR %>
+              <%= convertToMonth(anime.END_MONTH) %> <%= anime.END_DAY %>, <%=
+              anime.END_YEAR %>
             </div>
           </div>
           <% } %>
+
+          <div class="data-set">
+            <div class="type">Season</div>
+            <div class="value">
+              <%= anime.SEASON %> <%= anime.SEASON_YEAR %>
+            </div>
+          </div>
 
           <% if(avgScore) { %>
             <div class="data-set">
@@ -93,8 +105,25 @@
           <% } %>
 
           <div class="data-set">
+            <div class="type">Studios</div>
+            <% for(let i = 0; i < studios.length; ++i) { %>
+            <div class="value"><%= studios[i].STUDIO_NAME %></div>
+            <% } %>
+          </div>
+
+          <div class="data-set">
+            <div class="type">Producers</div>
+            <div class="value">Pony Canyon</div>
+            <div class="value">Kodansha</div>
+            <div class="value">Production I.G</div>
+            <div class="value">Dentsu</div>
+            <div class="value">Pony Canyon EnterPrise</div>
+            <div class="value">Mainichi Broadcasting System</div>
+          </div>
+
+          <div class="data-set">
             <div class="type">Source</div>
-            <div class="value"><%= manga.SOURCE %></div>
+            <div class="value"><%= anime.SOURCE %></div>
           </div>
 
           <div class="data-set">
@@ -107,23 +136,23 @@
 
           <div class="data-set">
             <div class="type">Romaji</div>
-            <div class="value"><%= manga.ROMAJI %></div>
+            <div class="value"><%= anime.ROMAJI %></div>
           </div>
 
           <div class="data-set">
             <div class="type">English</div>
-            <div class="type"><%= manga.ENGLISH %></div>
+            <div class="type"><%= anime.ENGLISH %></div>
           </div>
 
           <div class="data-set">
             <div class="type">Native</div>
-            <div class="value"><%= manga.NATIVE %></div>
+            <div class="value"><%= anime.NATIVE %></div>
           </div>
         </div>
 
         <div style="background-color: transparent">
           <div class="write-review">
-            <a href="/review/manga/editor/<%= manga.MANGA_ID %>">
+            <a href="/review/anime/editor/<%= anime.ANIME_ID %>">
               <svg
                 data-v-c93e1c70=""
                 aria-hidden="true"
@@ -176,138 +205,44 @@
         </div> -->
       </div>
 
-      <div class="main-container-description">
-        <div
-          style="
-            color: #9fadbd;
-            font-size: 14px;
-            font-family: 'Roboto';
-            font-weight: 500;
-            margin-bottom: 10px;
-          "
-        >
-          Relations
-        </div>
-        <div class="relations">
-          <div class="medias">
-            <% for(let i = 0; i < relations.length; ++i) { %>
-            <div class="media">
-              <div class="media-cover">
-                <img
-                  src="<%=relations[i].COVER_IMAGE%>"
-                  alt=""
-                  class="media-cover-image"
-                />
-              </div>
+      <div class="activity-feed">
+            <div class="activity-feed-wrap">
+        <h2 class="section-headline">Activity</h2>
 
-              <div class="media-description">
-                <div class="relationtype">Adaptation</div>
-                <a
-                  href="/anime/<%= relations[i].ANIME_ID %>/<%= relations[i].ENGLISH %>"
-                  class="media-name"
-                  ><%= relations[i].ENGLISH %></a
-                >
-                <div class="media-status">
-                  <%= relations[i].FORMAT %> &#183; <%= relations[i].STATUS %>
-                </div>
-              </div>
-            </div>
-            <% } %>
-          </div>
-        </div>
+        <% for(let i = 0; i < activities.length; ++i) { %>
 
-        <div>
-          <a class="section-headline" href="">Characters</a>
-          <div class="characters">
-            <% for(let i = 0; i < characters.length; ++i) { %>
-            <div class="individual-character">
-              <div class="character">
+            <div class="activity-feed-entry">
+              <a
+                href="/anime/<%=activities[i].ANIME_ID%>/<%=activities[i].ENGLISH%>"
+              >
+                <img src="<%=activities[i].COVER_IMAGE%>" alt="" />
+              </a>
+
+              <div class="details">
+                <a href="/user/<%=activities[i].USERNAME%>" class="name"><%=activities[i].USERNAME%></a>
+                <span><%=activities[i].STATUS%></span>
                 <a
-                  href="/character/<%= characters[i].CHARACTER_ID %>/<%= characters[i].FULL_NAME %>"
-                  class="character-cover"
+                  href="/anime/<%=activities[i].ANIME_ID%>/<%=activities[i].ENGLISH%>"
+                  class="title"
+                  ><%=activities[i].ENGLISH%></a
                 >
-                  <img
-                    src="<%= characters[i].IMAGE %>"
-                    alt=""
-                    class="character-cover-image"
-                  />
+                <a href="/user/<%=activities[i].USERNAME%>" class="avatar">
+                  <img src="<%=activities[i].USER_IMAGE%>" alt="" />
                 </a>
-                <div class="character-description">
-                  <div class="name"><%= characters[i].FULL_NAME %></div>
-                  <div class="role"><%= characters[i].ROLE %></div>
-                </div>
+                <div class="time"><%=activities[i].time%></div>
               </div>
             </div>
 
-            <% } %>
-          </div>
-        </div>
-
-        <div></div>
-        
-        <div class="stats-status-wrap">
-          <div class="stats-distribution">Status Distribution</div>
-          <div class="stats-status">
-            <div class="status">
-              <div
-                class="status-name"
-                style="background-color: rgb(104, 214, 57)"
-              >
-                Completed
-              </div>
-              <div class="status-amount">
-                <span style="color: rgb(104, 214, 57)"><%=completed%></span> Users
-              </div>
-            </div>
-
-            <div class="status">
-              <div
-                class="status-name"
-                style="background-color: rgb(2, 169, 255)"
-              >
-                Planning
-              </div>
-              <div class="status-amount">
-                <span style="color: rgb(2, 169, 255)"><%=planning%></span> Users
-              </div>
-            </div>
-
-            <div class="status">
-              <div class="status-name" style="background-color: #9256f3">
-                Current
-              </div>
-              <div class="status-amount">
-                <span style="color: #9256f3"><%=watching%></span> Users
-              </div>
-            </div>
-
-            <div class="status">
-              <div class="status-name" style="background-color: #f779a4">
-                Paused
-              </div>
-              <div class="status-amount">
-                <span style="color: #f779a4"><%=paused%></span> Users
-              </div>
-            </div>
-
-            <div class="status">
-              <div class="status-name" style="background-color:rgb(104, 214, 57)">
-                Dropped
-              </div>
-              <div class="status-amount">
-                <span style="color: rgb(104, 214, 57)"><%=dropped%></span> Users
-              </div>
-            </div>
-
-          </div>
-        </div>
+        <% } %>
 
       </div>
+      </div>
+      
     </div>
 
     <div class="list-editor-wrap">
       <div class="list-editor-body">
-        <div class="header" data-tooltip="<%= manga.BANNER_IMAGE %>">
+        <div class="header" data-tooltip="<%= anime.BANNER_IMAGE %>">
           <div class="contentListEditor">
             <div class="close-btn" onclick="closeList()">
               <svg
@@ -327,13 +262,13 @@
 
             <div class="cover">
               <img
-                src="<%=manga.COVER_IMAGE%>"
+                src="<%=anime.COVER_IMAGE%>"
                 alt=""
                 style="width: 100%; vertical-align: text-top"
               />
             </div>
 
-            <div class="title"><%=manga.ENGLISH%></div>
+            <div class="title"><%=anime.ENGLISH%></div>
 
             <div class="favourite">
               <svg
@@ -365,8 +300,8 @@
                 <label class="labelll">Status</label>
 
                 <select id="status">
-                  <option value="reading" <% if (preference.STATUS === 'READING') { %>selected<% } %>>Reading</option>
-                  <option value="plan_to_read" <% if (preference.STATUS === 'PLAN_TO_READ') { %>selected<% } %> >Plan to Read</option>
+                  <option value="watching" <% if (preference.STATUS === 'WATCHING') { %>selected<% } %>>Watching</option>
+                  <option value="plan_to_watch" <% if (preference.STATUS === 'PLAN_TO_WATCH') { %>selected<% } %> >Plan to Watch</option>
                   <option value="completed" <% if (preference.STATUS === 'COMPLETED') { %>selected<% } %> >Completed</option>
                   <option value="paused" <% if (preference.STATUS === 'PAUSED') { %>selected<% } %> >Paused</option>
                   <option value="dropped" <% if (preference.STATUS === 'DROPPED') { %>selected<% } %> >Dropped</option>
@@ -386,13 +321,17 @@
                 <p class="validation-message"></p>
             </div>
 
+            <div>
+                <label for="" class="labelll">Episode Progress</label>
+                <input type="number" id="media-episode-progress" value="<%=preference.EPISODE_PROGRESS%>"/>
+            </div>
           <% } else { %>
             <div>
                 <label class="labelll">Status</label>
 
                 <select id="status">
-                  <option value="reading">Reading</option>
-                  <option value="plan_to_read">Plan to Read</option>
+                  <option value="watching">Watching</option>
+                  <option value="plan_to_watch">Plan to Watch</option>
                   <option value="completed">Completed</option>
                   <option value="paused">Paused</option>
                   <option value="dropped">Dropped</option>
@@ -411,6 +350,10 @@
                 <p class="validation-message"></p>
             </div>
 
+            <div>
+                <label for="" class="labelll">Episode Progress</label>
+                <input type="number" id="media-episode-progress"/>
+            </div>
           <% } %>
         </div>
       </div>
@@ -419,15 +362,19 @@
     <script src="/scripts/tooltip.js"></script>
     <script src="/scripts/media_individual.js"></script>
     <script>
+
       const favouriteButton = document.querySelector(".favourite");
       const saveButton = document.querySelector(".save-btn");
       const status = document.querySelector("#status");
       const score = document.querySelector("#media-score");
+      const episodeProgress = document.querySelector("#media-episode-progress");
       const listEditor = document.querySelector(".list-editor-wrap");
       const closeButton = document.querySelector(".contentListEditor .close-btn");
 
       // favourite button color set
       let favouriteButtonState = "<%=isLiked%>"
+
+      //console.log("state: " + favouriteButtonState)
 
       if(favouriteButtonState === "true") {
         favouriteButton.style.color = "#e85d75"
@@ -435,7 +382,7 @@
       //
 
       let url =
-        "http://localhost:8080/manga/<%=manga.MANGA_ID%>/<%=manga.ENGLISH%>";
+        "http://localhost:8080/anime/<%=anime.ANIME_ID%>/<%=anime.ENGLISH%>";
 
       function addToList() {
           listEditor.style.transform = "scale(1)"
@@ -445,16 +392,16 @@
           listEditor.style.transform = "scale(0)"
       }
 
-      saveButton.onclick = async (url) => {
-        console.log(saveButton);
-
+      saveButton.onclick = async () => {
+      
         const payLoad = {
           mediaStatus: status.value,
           mediaScore: score.value,
+          mediaEpisodeProgress: episodeProgress.value,
         };
 
         const response = await fetch(url, {
-          method: "post",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json"
@@ -471,7 +418,7 @@
 
       
 
-      favouriteButton.onclick = async (url) => {
+      favouriteButton.onclick = async () => {
         console.log(favouriteButton);
 
         console.log(url);
@@ -487,12 +434,16 @@
 
         const isLiked = await response.json();
 
+        //console.log(isLiked);
+
         if (isLiked.isLiked) {
           favouriteButton.style.color = "#e85d75";
         } else {
           favouriteButton.style.color = "#fff";
         }
       };
+
+
     </script>
   </body>
 </html>

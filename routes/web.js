@@ -50,6 +50,7 @@ webRouter.get(
     "/anime/:id/:name/reviews",
     animeIndividualController.animeIndividualReviewControllerGET
 );
+webRouter.get("/anime/:id/:name/social", animeIndividualController.animeIndividualSocialControllerGET)
 
 
 // manga individual
@@ -65,6 +66,7 @@ webRouter.get(
     "/manga/:id/:name/reviews",
     mangaIndividualController.mangaIndividualReviewControllerGET
 );
+webRouter.get("/manga/:id/:name/social", mangaIndividualController.mangaIndividualSocialControllerGET)
 
 
 // character individual
