@@ -17,7 +17,7 @@ const characterControllerGET = async (req, res) => {
     const connection = await connect()
 
     const characters = (await connection.execute(`
-        SELECT *
+        SELECT CHARACTER_ID, FULL_NAME, NATIVE, IMAGE, MANGA_ID, VA_ID, ROLE, GENDER, AGE, CAST(SUBSTR(DESCRIPTION, 1, 2000) AS VARCHAR2(4000)) AS DESCRIPTION
         FROM CHARACTER C 
         WHERE C.CHARACTER_ID = :id
     `, {
@@ -42,6 +42,7 @@ const characterControllerGET = async (req, res) => {
     await connection.close()
 
     if(req.session.user) {
+        
         res.render("character", {
             character: characters[0],
             isLiked,

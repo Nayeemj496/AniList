@@ -17,7 +17,7 @@ const voiceArtistControllerGET = async (req, res) => {
     const connection = await connect()
 
     const voiceArtists = (await connection.execute(`
-        SELECT *
+        SELECT VA_ID,VA_IMAGE,LIKES,CAST(SUBSTR(DESCRIPTION, 1, 2000) AS VARCHAR2(4000)) AS DESCRIPTION ,FULL_NAME,NATIVE,GENDER,DATE_OF_BIRTH_YEAR,DATE_OF_BIRTH_MONTH,DATE_OF_BIRTH_DAY,DATE_OF_DEATH_YEAR,DATE_OF_DEATH_MONTH,DATE_OF_DEATH_DAY,YEARS_ACTIVE_START,YEARS_ACTIVE_END,HOME_TOWN
         FROM VOICE_ARTIST VA
         WHERE VA.VA_ID = :id
     `, {
@@ -54,6 +54,7 @@ const voiceArtistControllerGET = async (req, res) => {
     await connection.close()
 
     if(req.session.user) {
+        
         res.render("voice_artist", {
             voiceArtist: voiceArtists[0],
             isLiked,
