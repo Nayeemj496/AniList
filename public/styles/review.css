@@ -4,6 +4,17 @@
     background-repeat: no-repeat;
     box-shadow: inset 0 0 250px #2f3133;
     height: 400px;
+    /* changes have been made */
+    position: relative;
+}
+
+.banner .time {
+    color: rgba(255, 255, 255, 0.4);
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 12px;
+    font-family: 'Roboto';
 }
 
 /* .banner::after {

@@ -172,6 +172,8 @@
     color: #9FADBD;
     padding: 14px 16px;
     padding-right: 100px;
+    /* changes have been made */
+    width: 430px;
 }
 
 .time {

@@ -20,7 +20,11 @@
     <%- include("navcontainer.ejs", { isAdmin, userimage, username }) %>
 
     <div class="review">
-      <div class="banner" data-tooltip="<%=review.BANNER_IMAGE%>"></div>
+      <div class="banner" data-tooltip="<%=review.BANNER_IMAGE%>">
+        <div class="time">
+          <%=review.time%>
+        </div>
+      </div>
 
       <div class="content">
         <div style="background-color: transparent">
