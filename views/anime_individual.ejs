@@ -542,9 +542,8 @@
           listEditor.style.transform = "scale(0)"
       }
 
-      saveButton.onclick = async (url) => {
-        console.log(saveButton);
-
+      saveButton.onclick = async () => {
+      
         const payLoad = {
           mediaStatus: status.value,
           mediaScore: score.value,
@@ -552,7 +551,7 @@
         };
 
         const response = await fetch(url, {
-          method: "post",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json"
@@ -569,7 +568,7 @@
 
       
 
-      favouriteButton.onclick = async (url) => {
+      favouriteButton.onclick = async () => {
         console.log(favouriteButton);
 
         console.log(url);

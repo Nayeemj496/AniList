@@ -182,77 +182,48 @@
             <h2 class="section-header">Activity</h2>
 
             <div>
-              <div class="activity">
-                <a href="">
-                  <img
-                    src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx162314-ocaEhYmvznFO.jpg"
-                    alt=""
-                  />
-                </a>
 
-                <div class="details">
-                  <span style="font-family: 'Roboto'">Plans to watch</span>
-                  <span style="color: #da4127; font-family: 'Roboto'"
-                    >Summer Time Rendering</span
-                  >
-                </div>
+              <% for(let i = 0; i < activities.length; ++i) { %>
+                <% if(activities[i].type === "ANIME") { %>
+                  <div class="activity">
+                    <a href="/anime/<%=activities[i].ANIME_ID%>/<%=activities[i].ENGLISH%>">
+                      <img
+                        src="<%=activities[i].COVER_IMAGE%>"
+                        alt=""
+                      />
+                    </a>
 
-                <div class="time">5 months ago</div>
-              </div>
+                    <div class="details">
+                      <span style="font-family: 'Roboto'"><%=activities[i].STATUS%></span>
+                      <a href="/anime/<%=activities[i].ANIME_ID%>/<%=activities[i].ENGLISH%>"><span style="color: #da4127; font-family: 'Roboto'"
+                        ><%=activities[i].ENGLISH%></span
+                      ></a>
+                    </div>
 
-              <div class="activity">
-                <a href="">
-                  <img
-                    src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx162314-ocaEhYmvznFO.jpg"
-                    alt=""
-                  />
-                </a>
+                    <div class="time"><%=activities[i].time%></div>
+                    
+                  </div>
+                <% } else { %>
+                  <div class="activity">
+                    <a href="/manga/<%=activities[i].MANGA_ID%>/<%=activities[i].ENGLISH%>">
+                      <img
+                        src="<%=activities[i].COVER_IMAGE%>"
+                        alt=""
+                      />
+                    </a>
 
-                <div class="details">
-                  <span style="font-family: 'Roboto'">Plans to watch</span>
-                  <span style="color: #da4127; font-family: 'Roboto'"
-                    >Summer Time Rendering</span
-                  >
-                </div>
+                    <div class="details">
+                      <span style="font-family: 'Roboto'"><%=activities[i].STATUS%></span>
+                      <a href="/manga/<%=activities[i].MANGA_ID%>/<%=activities[i].ENGLISH%>"><span style="color: #da4127; font-family: 'Roboto'"
+                        ><%=activities[i].ENGLISH%></span
+                      ></a>
+                    </div>
 
-                <div class="time">5 months ago</div>
-              </div>
+                    <div class="time"><%=activities[i].time%></div>
+                  </div>
+                  <% } %>
+              <% } %>
 
-              <div class="activity">
-                <a href="">
-                  <img
-                    src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx162314-ocaEhYmvznFO.jpg"
-                    alt=""
-                  />
-                </a>
-
-                <div class="details">
-                  <span style="font-family: 'Roboto'">Plans to watch</span>
-                  <span style="color: #da4127; font-family: 'Roboto'"
-                    >Summer Time Rendering</span
-                  >
-                </div>
-
-                <div class="time">5 months ago</div>
-              </div>
-
-              <div class="activity">
-                <a href="">
-                  <img
-                    src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx162314-ocaEhYmvznFO.jpg"
-                    alt=""
-                  />
-                </a>
-
-                <div class="details">
-                  <span style="font-family: 'Roboto'">Plans to watch</span>
-                  <span style="color: #da4127; font-family: 'Roboto'"
-                    >Summer Time Rendering</span
-                  >
-                </div>
-
-                <div class="time">5 months ago</div>
-              </div>
             </div>
           </div>
         </div>

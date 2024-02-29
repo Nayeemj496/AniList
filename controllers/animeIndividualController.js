@@ -282,7 +282,9 @@ const animeIndividualControllerPOST = async (req, res) => {
 
   let animeid = Number(req.url.split("/")[2]);
 
-  console.log("animeid: ", animeid);
+  let animename = req.url.split("/")[3]
+
+  console.log(animename)
 
   const connection = await connect();
 
@@ -422,7 +424,9 @@ const animeIndividualReviewControllerGET = async (req, res) => {
       reviews,
       isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
       userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
-      username: req.session.user.USERNAME
+      username: req.session.user.USERNAME,
+      mainuserimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
+      mainusername: req.session.user.USERNAME
     });
   } else {
     res.redirect("/login");

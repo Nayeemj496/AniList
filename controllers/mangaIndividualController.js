@@ -340,13 +340,6 @@ const mangaIndividualReviewControllerGET = async (req, res) => {
     console.log("in the mangaIndividualReviewControllerGET");
     console.log(req.url, req.method);
 
-    // const arr = req.url.split("/");
-
-    // const type = arr[1];
-    // const id = Number(arr[2]);
-
-    // res.redirect(`/review/manga?id=${id}`);
-
     if (req.session.user) {
         let manga = req.session.manga;
 
@@ -379,7 +372,9 @@ const mangaIndividualReviewControllerGET = async (req, res) => {
             reviews,
             isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
             userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
-            username: req.session.user.USERNAME
+            username: req.session.user.USERNAME,
+            mainuserimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
+            mainusername: req.session.user.USERNAME
         });
     } else {
         res.redirect("/login");
