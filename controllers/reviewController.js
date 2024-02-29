@@ -23,6 +23,7 @@ const animeReviewControllerGET = async (req, res) => {
             WHERE URA.REVIEW_ANIME_ID = RA.REVIEW_ANIME_ID 
         ) AS LIKES 
     FROM ANIME A JOIN REVIEW_ANIME RA ON A.ANIME_ID = RA.ANIME_ID JOIN USERR U ON RA.USER_ID = U.USER_ID
+    ORDER BY RA.DATE_OF_CREATION_ANIME DESC
     `,
             {},
             { outFormat: oracledb.OUT_FORMAT_OBJECT }
@@ -139,6 +140,7 @@ const mangaReviewControllerGET = async (req, res) => {
             WHERE URM.REVIEW_MANGA_ID = RM.REVIEW_MANGA_ID 
         ) AS LIKES 
     FROM MANGA M JOIN REVIEW_MANGA RM ON M.MANGA_ID = RM.MANGA_ID JOIN USERR U ON RM.USER_ID = U.USER_ID
+    ORDER BY RM.DATE_OF_CREATION_MANGA DESC
         `,
             {},
             { outFormat: oracledb.OUT_FORMAT_OBJECT }
@@ -154,7 +156,8 @@ const mangaReviewControllerGET = async (req, res) => {
             userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
             username: req.session.user.USERNAME,
             mainusername: req.session.user.USERNAME,
-            mainuserimage: req.session.user.USER_IMAGE,
+            // changes have been done
+            mainuserimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
         });
     } else {
         res.redirect("/login");
@@ -365,6 +368,7 @@ const userAnimeReviewControllerGET = async (req, res) => {
                     ) AS LIKES 
                 FROM ANIME A JOIN REVIEW_ANIME RA ON A.ANIME_ID = RA.ANIME_ID JOIN USERR U ON RA.USER_ID = U.USER_ID
                 WHERE U.USER_ID = :userid
+                ORDER BY RA.DATE_OF_CREATION_ANIME DESC
             `, [userid], {outFormat: oracledb.OUT_FORMAT_OBJECT})
         ).rows;
 
@@ -424,6 +428,7 @@ const userMangaReviewControllerGET = async (req, res) => {
                     ) AS LIKES 
                 FROM MANGA M JOIN REVIEW_MANGA RM ON M.MANGA_ID = RM.MANGA_ID JOIN USERR U ON RM.USER_ID = U.USER_ID
                 WHERE U.USER_ID = :userid
+                ORDER BY RM.DATE_OF_CREATION_MANGA DESC
             `,
       [userid],
       { outFormat: oracledb.OUT_FORMAT_OBJECT }

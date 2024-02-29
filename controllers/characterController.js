@@ -26,6 +26,8 @@ const characterControllerGET = async (req, res) => {
         outFormat: oracledb.OUT_FORMAT_OBJECT
     })).rows
 
+    console.log(characters[0])
+
     let isLiked = (await connection.execute(`
         SELECT *
         FROM USER_LIKES_CHARACTER 

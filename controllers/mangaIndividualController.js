@@ -121,8 +121,6 @@ const mangaIndividualControllerGET = async (req, res) => {
         }
     }
 
-    console.log(isLiked);
-
     let watching = (
       await connection.execute(
         `
@@ -189,6 +187,17 @@ const mangaIndividualControllerGET = async (req, res) => {
       )
     ).rows[0][0];
 
+    let userid = null 
+    if(req.session.user) userid = req.session.user.USER_ID 
+
+    let status = (await connection.execute(`
+        SELECT UM.STATUS
+        FROM MANGA M JOIN USER_MANGA UM ON M.MANGA_ID = UM.MANGA_ID
+        WHERE UM.USER_ID = :userid AND M.MANGA_ID = :mangaid
+    `, [userid, obj.id])).rows
+
+    console.log(status)
+
     await connection.close();
 
     if (req.session.user) {
@@ -205,6 +214,7 @@ const mangaIndividualControllerGET = async (req, res) => {
             paused,
             dropped,
             avgScore,
+            status: status.length === 0 || status[0][0] == null ? 'Add to List' : status[0][0],
             isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
             userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
             username: req.session.user.USERNAME

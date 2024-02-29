@@ -22,7 +22,6 @@ server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 
 
-
 server.use("/", routers.webRouter);
 server.use("/search", routers.searchRouter);
 // work in progress

@@ -230,6 +230,20 @@ const animeIndividualControllerGET = async (req, res) => {
     )
   ).rows[0][0];
 
+  let userid = null
+  if(req.session.user) userid = req.session.user.USER_ID
+
+  let status = (
+    await connection.execute(
+      `
+        SELECT UA.STATUS
+        FROM ANIME A JOIN USER_ANIME UA ON A.ANIME_ID = UA.ANIME_ID
+        WHERE UA.USER_ID = :userid AND A.ANIME_ID = :animeid
+    `,
+      [userid, obj.id]
+    )
+  ).rows;
+
   await connection.close();
 
   if (req.session.user) {
@@ -250,6 +264,7 @@ const animeIndividualControllerGET = async (req, res) => {
       paused,
       dropped,
       avgScore,
+      status: status.length === 0 || status[0][0] === null ? 'Add to List' : status[0][0],
       isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
       userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
       username: req.session.user.USERNAME
@@ -287,8 +302,6 @@ const animeIndividualControllerPOST = async (req, res) => {
         }
       )
     ).rows;
-
-    console.log(userdata); //testing purpose
 
     if (req.body.hasOwnProperty("like")) {
       if (userdata.length === 0) {
@@ -377,13 +390,6 @@ const animeIndividualControllerPOST = async (req, res) => {
 const animeIndividualReviewControllerGET = async (req, res) => {
   console.log("in the animeIndividualReviewControllerGET");
   console.log(req.url, req.method);
-
-  // const arr = req.url.split("/");
-
-  // const type = arr[1];
-  // const id = Number(arr[2]);
-
-  // res.redirect(`/review/anime?id=${id}`);
 
   if (req.session.user) {
     let anime = req.session.anime;
