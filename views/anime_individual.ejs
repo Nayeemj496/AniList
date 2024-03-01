@@ -455,7 +455,7 @@
 
                 <select id="status">
                   <option value="watching" <% if (preference.STATUS === 'WATCHING') { %>selected<% } %>>Watching</option>
-                  <option value="plan_to_watch" <% if (preference.STATUS === 'PLAN_TO_WATCH') { %>selected<% } %> >Plan to Watch</option>
+                  <option value="plan to watch" <% if (preference.STATUS === 'PLAN TO WATCH') { %>selected<% } %> >Plan to Watch</option>
                   <option value="completed" <% if (preference.STATUS === 'COMPLETED') { %>selected<% } %> >Completed</option>
                   <option value="paused" <% if (preference.STATUS === 'PAUSED') { %>selected<% } %> >Paused</option>
                   <option value="dropped" <% if (preference.STATUS === 'DROPPED') { %>selected<% } %> >Dropped</option>
@@ -485,7 +485,7 @@
 
                 <select id="status">
                   <option value="watching">Watching</option>
-                  <option value="plan_to_watch">Plan to Watch</option>
+                  <option value="plan to watch">Plan to Watch</option>
                   <option value="completed">Completed</option>
                   <option value="paused">Paused</option>
                   <option value="dropped">Dropped</option>
@@ -524,6 +524,10 @@
       const episodeProgress = document.querySelector("#media-episode-progress");
       const listEditor = document.querySelector(".list-editor-wrap");
       const closeButton = document.querySelector(".contentListEditor .close-btn");
+
+      const addToListBtn = document.querySelector(".addToList")
+
+      console.log(addToListBtn)
 
       // favourite button color set
       let favouriteButtonState = "<%=isLiked%>"
@@ -568,6 +572,10 @@
         console.log(data)
 
         await closeList()
+
+        if(data.status) {
+          addToListBtn.innerHTML = data.status
+        }
       };
 
       

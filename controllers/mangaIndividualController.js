@@ -95,8 +95,7 @@ const mangaIndividualControllerGET = async (req, res) => {
     }, {
         outFormat: oracledb.OUT_FORMAT_OBJECT
     })).rows
-
-    console.log(staffs)
+    
 
     let isLiked = null;
     let preference = null;
@@ -139,7 +138,7 @@ const mangaIndividualControllerGET = async (req, res) => {
             `
         SELECT COUNT(*) AS "PLANNING"
         FROM USER_MANGA UM
-        WHERE MANGA_ID = :mangaid AND STATUS = 'PLAN_TO_READ'
+        WHERE MANGA_ID = :mangaid AND STATUS = 'PLAN TO READ'
     `,
             [obj.id]
         )
@@ -318,7 +317,7 @@ const mangaIndividualControllerPOST = async (req, res) => {
                     { autoCommit: true }
                 );
 
-                res.json({ done: true });
+                res.json({ done: true, status });
             } else {
                 await connection.execute(
                     `
@@ -330,7 +329,7 @@ const mangaIndividualControllerPOST = async (req, res) => {
                     { autoCommit: true }
                 );
 
-                res.json({ done: true });
+                res.json({ done: true, status });
             }
         }
     } else {
@@ -507,6 +506,12 @@ const mangaIndividualSocialControllerGET = async (req, res) => {
             { outFormat: oracledb.OUT_FORMAT_OBJECT }
         )
     ).rows;
+
+    for(let i = 0; i < activities.length; ++i) {
+        if(!activities[i].USER_IMAGE) {
+            activities[i].USER_IMAGE = "/images/photos/user.png"
+        }
+    }
 
     await connection.close();
 

@@ -93,8 +93,6 @@ const animeIndividualControllerGET = async (req, res) => {
       ORDER BY P.PRODUCER_NAME
   `, [obj.id], {outFormat: oracledb.OUT_FORMAT_OBJECT})).rows
 
-  console.log(producers)
-
   // manga
   const mangas = (
     await connection.execute(
@@ -171,8 +169,6 @@ const animeIndividualControllerGET = async (req, res) => {
     }
   }
 
-  console.log(isLiked);
-
   let watching = (
     await connection.execute(
       `
@@ -189,7 +185,7 @@ const animeIndividualControllerGET = async (req, res) => {
       `
         SELECT COUNT(*) AS "PLANNING"
         FROM USER_ANIME UA
-        WHERE ANIME_ID = :animeid AND STATUS = 'PLAN_TO_WATCH'
+        WHERE ANIME_ID = :animeid AND STATUS = 'PLAN TO WATCH'
     `,
       [obj.id]
     )
@@ -425,6 +421,12 @@ const animeIndividualSocialControllerGET = async (req, res) => {
         ORDER BY UAA.DATE_OF_CREATION DESC
   `, [obj.id], {outFormat: oracledb.OUT_FORMAT_OBJECT})).rows 
 
+  for(let i = 0; i < activities.length; ++i) {
+    if(!activities[i].USER_IMAGE) {
+      activities[i].USER_IMAGE = "/images/photos/user.png"
+    }
+  }
+
   await connection.close();
 
   if (req.session.user) {
@@ -545,7 +547,7 @@ const animeIndividualControllerPOST = async (req, res) => {
           { autoCommit: true }
         );
 
-        res.json({ done: true });
+        res.json({ done: true, status: status });
       } else {
         await connection.execute(
           `
@@ -557,7 +559,7 @@ const animeIndividualControllerPOST = async (req, res) => {
           { autoCommit: true }
         );
 
-        res.json({ done: true });
+        res.json({ done: true, status });
       }
     }
   } else {

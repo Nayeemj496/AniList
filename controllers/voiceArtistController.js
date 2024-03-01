@@ -16,15 +16,21 @@ const voiceArtistControllerGET = async (req, res) => {
 
     const connection = await connect()
 
-    const voiceArtists = (await connection.execute(`
-        SELECT *
+    const voiceArtists = (
+      await connection.execute(
+        `
+        SELECT VA_ID,VA_IMAGE,CAST(SUBSTR(DESCRIPTION, 1, 2000) AS VARCHAR2(4000)) AS DESCRIPTION ,FULL_NAME,NATIVE,GENDER,DATE_OF_BIRTH_YEAR,DATE_OF_BIRTH_MONTH,DATE_OF_BIRTH_DAY,DATE_OF_DEATH_YEAR,DATE_OF_DEATH_MONTH,DATE_OF_DEATH_DAY,YEARS_ACTIVE_START,YEARS_ACTIVE_END,HOME_TOWN
         FROM VOICE_ARTIST VA
         WHERE VA.VA_ID = :id
-    `, {
-        id: obj.id
-    }, {
-        outFormat: oracledb.OUT_FORMAT_OBJECT
-    })).rows
+    `,
+        {
+          id: obj.id,
+        },
+        {
+          outFormat: oracledb.OUT_FORMAT_OBJECT,
+        }
+      )
+    ).rows;
 
     let isLiked =
       (

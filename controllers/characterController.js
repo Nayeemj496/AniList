@@ -16,15 +16,23 @@ const characterControllerGET = async (req, res) => {
 
     const connection = await connect()
 
-    const characters = (await connection.execute(`
-        SELECT *
+    const characters = (
+      await connection.execute(
+        `
+        SELECT CHARACTER_ID, FULL_NAME, NATIVE, IMAGE, MANGA_ID, VA_ID, ROLE, GENDER, AGE, CAST(SUBSTR(DESCRIPTION, 1, 2000) AS VARCHAR2(4000)) AS DESCRIPTION
         FROM CHARACTER C 
         WHERE C.CHARACTER_ID = :id
-    `, {
-        id: obj.id
-    }, {
-        outFormat: oracledb.OUT_FORMAT_OBJECT
-    })).rows
+    `,
+        {
+          id: obj.id,
+        },
+        {
+          outFormat: oracledb.OUT_FORMAT_OBJECT,
+        }
+      )
+    ).rows;
+
+    console.log(characters)
 
     let isLiked = (await connection.execute(`
         SELECT *

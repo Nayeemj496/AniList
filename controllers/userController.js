@@ -156,6 +156,7 @@ const userProfileControllerGET = async (req, res) => {
   ).rows;
 
   for (let i = 0; i < animeActivities.length; ++i) {
+
     let time = new Date() - animeActivities[i].DATE_OF_CREATION;
     let timeString = "";
 
@@ -176,13 +177,9 @@ const userProfileControllerGET = async (req, res) => {
     animeActivities[i].time = timeString;
     animeActivities[i].type = "ANIME";
 
-    if (animeActivities[i].STATUS === "PLAN_TO_WATCH") {
-      animeActivities[i].STATUS = "Plans to watch";
-    } else {
-      animeActivities[i].STATUS =
-        animeActivities[i].STATUS[0] +
-        animeActivities[i].STATUS.substring(1).toLowerCase();
-    }
+    animeActivities[i].STATUS =
+    animeActivities[i].STATUS[0] +
+    animeActivities[i].STATUS.substring(1).toLowerCase();
   }
 
   const mangaActivities = (
@@ -199,6 +196,7 @@ const userProfileControllerGET = async (req, res) => {
   ).rows;
 
   for (let i = 0; i < mangaActivities.length; ++i) {
+
     let time = new Date() - mangaActivities[i].DATE_OF_CREATION;
     let timeString = "";
 
@@ -217,15 +215,11 @@ const userProfileControllerGET = async (req, res) => {
     else timeString += `${seconds} seconds ago`;
 
     mangaActivities[i].time = timeString;
-    mangaActivities[i].type = "MANGA";
+    mangaActivities[i].type = "MANGA"
 
-    if (mangaActivities[i].STATUS === "PLAN_TO_READ") {
-      mangaActivities[i].STATUS = "Plans to read";
-    } else {
-      mangaActivities[i].STATUS =
-        mangaActivities[i].STATUS[0] +
-        mangaActivities[i].STATUS.substring(1).toLowerCase();
-    }
+    mangaActivities[i].STATUS =
+    mangaActivities[i].STATUS[0] +
+    mangaActivities[i].STATUS.substring(1).toLowerCase();
   }
 
   const activities = [...animeActivities, ...mangaActivities];
@@ -346,7 +340,7 @@ const userAnimeListControllerGET = async (req, res) => {
             WHERE UANIME.ANIME_ID = A.ANIME_ID
         ) AS AVERAGE_SCORE
         FROM USER_ANIME UA JOIN ANIME A ON UA.ANIME_ID = A.ANIME_ID
-        WHERE UA.USER_ID = :userid AND UA.STATUS = 'PLAN_TO_WATCH'
+        WHERE UA.USER_ID = :userid AND UA.STATUS = 'PLAN TO WATCH'
         `,
       [userid],
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
@@ -472,7 +466,7 @@ const userMangaListControllerGET = async (req, res) => {
             WHERE UMANGA.MANGA_ID = M.MANGA_ID
         ) AS AVERAGE_SCORE
         FROM USER_MANGA UM JOIN MANGA M ON UM.MANGA_ID = M.MANGA_ID
-        WHERE UM.USER_ID = :userid AND UM.STATUS = 'PLAN_TO_READ'
+        WHERE UM.USER_ID = :userid AND UM.STATUS = 'PLAN TO READ'
         `,
       [userid],
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
@@ -540,6 +534,11 @@ const userHomeControllerGET = async (req, res) => {
   ).rows;
 
   for (let i = 0; i < animeActivities.length; ++i) {
+
+    if(!animeActivities[i].USER_IMAGE) {
+      animeActivities[i].USER_IMAGE = "/images/photos/user.png"
+    }
+
     let time = new Date() - animeActivities[i].DATE_OF_CREATION;
     let timeString = "";
 
@@ -560,13 +559,9 @@ const userHomeControllerGET = async (req, res) => {
     animeActivities[i].time = timeString;
     animeActivities[i].type = "ANIME";
 
-    if (animeActivities[i].STATUS === "PLAN_TO_WATCH") {
-      animeActivities[i].STATUS = "Plans to watch";
-    } else {
-      animeActivities[i].STATUS =
-        animeActivities[i].STATUS[0] +
-        animeActivities[i].STATUS.substring(1).toLowerCase();
-    }
+    animeActivities[i].STATUS =
+    animeActivities[i].STATUS[0] +
+    animeActivities[i].STATUS.substring(1).toLowerCase();
   }
 
   const mangaActivities = (
@@ -583,6 +578,11 @@ const userHomeControllerGET = async (req, res) => {
   ).rows;
 
   for (let i = 0; i < mangaActivities.length; ++i) {
+
+    if (!mangaActivities[i].USER_IMAGE) {
+      mangaActivities[i].USER_IMAGE = "/images/photos/user.png";
+    }
+
     let time = new Date() - mangaActivities[i].DATE_OF_CREATION;
     let timeString = "";
 
@@ -603,13 +603,9 @@ const userHomeControllerGET = async (req, res) => {
     mangaActivities[i].time = timeString;
     mangaActivities[i].type = "MANGA";
 
-    if (mangaActivities[i].STATUS === "PLAN_TO_READ") {
-      mangaActivities[i].STATUS = "Plans to read";
-    } else {
-      mangaActivities[i].STATUS =
-        mangaActivities[i].STATUS[0] +
-        mangaActivities[i].STATUS.substring(1).toLowerCase();
-    }
+    mangaActivities[i].STATUS =
+    mangaActivities[i].STATUS[0] +
+    mangaActivities[i].STATUS.substring(1).toLowerCase();
   }
 
   const activities = [...animeActivities, ...mangaActivities];

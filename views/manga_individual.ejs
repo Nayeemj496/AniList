@@ -39,6 +39,7 @@
             <a class="nav-item" href="/manga/<%=manga.MANGA_ID%>/<%=manga.ENGLISH%>/social">Social</a>
           </div>
         </div>
+
       </div>
     </div>
 
@@ -390,7 +391,7 @@
 
                 <select id="status">
                   <option value="reading" <% if (preference.STATUS === 'READING') { %>selected<% } %>>Reading</option>
-                  <option value="plan_to_read" <% if (preference.STATUS === 'PLAN_TO_READ') { %>selected<% } %> >Plan to Read</option>
+                  <option value="plan to read" <% if (preference.STATUS === 'PLAN TO READ') { %>selected<% } %> >Plan to Read</option>
                   <option value="completed" <% if (preference.STATUS === 'COMPLETED') { %>selected<% } %> >Completed</option>
                   <option value="paused" <% if (preference.STATUS === 'PAUSED') { %>selected<% } %> >Paused</option>
                   <option value="dropped" <% if (preference.STATUS === 'DROPPED') { %>selected<% } %> >Dropped</option>
@@ -450,6 +451,8 @@
       const listEditor = document.querySelector(".list-editor-wrap");
       const closeButton = document.querySelector(".contentListEditor .close-btn");
 
+
+      const addToListBtn = document.querySelector(".addToList")
       // favourite button color set
       let favouriteButtonState = "<%=isLiked%>"
 
@@ -491,6 +494,10 @@
         console.log(data)
 
         await closeList()
+
+        if(data.status) {
+          addToListBtn.innerHTML = data.status
+        }
       };
 
       

@@ -15,19 +15,23 @@ const animeReviewControllerGET = async (req, res) => {
     const connection = await connect();
 
     allAnimeReviews = (
-        await connection.execute(
-            `
+      await connection.execute(
+        `
         SELECT A.*, RA.*, U.*, (
             SELECT COUNT(*)
             FROM USER_LIKES_REVIEW_ANIME URA
             WHERE URA.REVIEW_ANIME_ID = RA.REVIEW_ANIME_ID 
         ) AS LIKES 
     FROM ANIME A JOIN REVIEW_ANIME RA ON A.ANIME_ID = RA.ANIME_ID JOIN USERR U ON RA.USER_ID = U.USER_ID
-    ORDER BY RA.DATE_OF_CREATION_ANIME DESC
+    ORDER BY (
+            SELECT COUNT(*)
+            FROM USER_LIKES_REVIEW_ANIME URA
+            WHERE URA.REVIEW_ANIME_ID = RA.REVIEW_ANIME_ID 
+        ) DESC, DATE_OF_CREATION_ANIME DESC
     `,
-            {},
-            { outFormat: oracledb.OUT_FORMAT_OBJECT }
-        )
+        {},
+        { outFormat: oracledb.OUT_FORMAT_OBJECT }
+      )
     ).rows;
 
     console.log(req.session.user)
@@ -41,7 +45,7 @@ const animeReviewControllerGET = async (req, res) => {
             userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
             username: req.session.user.USERNAME,
             mainusername: req.session.user.USERNAME,
-            mainuserimage: req.session.user.USER_IMAGE
+            mainuserimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
         });
     } else {
         res.redirect("/login");
@@ -151,19 +155,23 @@ const mangaReviewControllerGET = async (req, res) => {
     const connection = await connect();
 
     allMangaReviews = (
-        await connection.execute(
-            `
+      await connection.execute(
+        `
         SELECT M.*, RM.*, U.*, (
             SELECT COUNT(*)
             FROM USER_LIKES_REVIEW_MANGA URM
             WHERE URM.REVIEW_MANGA_ID = RM.REVIEW_MANGA_ID 
         ) AS LIKES 
     FROM MANGA M JOIN REVIEW_MANGA RM ON M.MANGA_ID = RM.MANGA_ID JOIN USERR U ON RM.USER_ID = U.USER_ID
-    ORDER BY RM.DATE_OF_CREATION_MANGA DESC
+    ORDER BY (
+            SELECT COUNT(*)
+            FROM USER_LIKES_REVIEW_MANGA URM
+            WHERE URM.REVIEW_MANGA_ID = RM.REVIEW_MANGA_ID 
+        ) DESC, DATE_OF_CREATION_MANGA DESC
         `,
-            {},
-            { outFormat: oracledb.OUT_FORMAT_OBJECT }
-        )
+        {},
+        { outFormat: oracledb.OUT_FORMAT_OBJECT }
+      )
     ).rows;
 
     await connection.close();
