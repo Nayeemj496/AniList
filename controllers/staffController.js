@@ -123,16 +123,22 @@ const staffControllerPOST = async (req, res) => {
     isLiked = false;
   }
 
-  let counter = (
-    await connection.execute(
-      `
-        SELECT COUNT(*)
-        FROM USER_LIKES_STAFF
-        WHERE STAFF_ID = :staffid
-    `,
-      [staffid]
-    )
-  ).rows[0][0];
+  let counter = await connection.execute(
+    `
+        BEGIN
+            :result := GET_STAFF_LIKES_COUNT(:staffid);
+        END;`,
+    {
+      staffid: {
+        dir: oracledb.BIND_IN,
+        type: oracledb.NUMBER,
+        val: staffid,
+      },
+      result: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },
+    }
+  );
+
+  counter = counter.outBinds.result;
 
   await connection.close();
 
@@ -143,3 +149,21 @@ module.exports = {
   staffControllerGET,
   staffControllerPOST,
 };
+
+
+// let counter = await connection.execute(
+//   `
+//         BEGIN
+//             :result := GET_CHARACTER_LIKES_COUNT(:characterid);
+//         END;`,
+//   {
+//     characterid: {
+//       dir: oracledb.BIND_IN,
+//       type: oracledb.NUMBER,
+//       val: characterid,
+//     },
+//     result: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },
+//   }
+// );
+
+// counter = counter.outBinds.result;

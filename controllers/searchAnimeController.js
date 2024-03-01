@@ -272,25 +272,27 @@ const searchAnimeControllerGET = async (req, res) => {
         }
     }
 
+    
+
     await connection.close()
 
     if(req.session.user) {
         if (!Object.keys(req.query).length) {
-          res.render("anime", {
-            search: req.query,
-            animes: allAnimes,
-            isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
-            userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
-            username: req.session.user.USERNAME
-          });
+            res.render("anime", {
+                search: req.query,
+                animes: allAnimes,
+                isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
+                userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
+                username: req.session.user.USERNAME
+            });
         } else {
-          res.render("anime", {
-            search: req.query,
-            animes,
-            isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
-            userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
-            username: req.session.user.USERNAME
-          });
+            res.render("anime", {
+                search: req.query,
+                animes,
+                isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
+                userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
+                username: req.session.user.USERNAME
+            });
         }
     } else {
         res.redirect("/login")
