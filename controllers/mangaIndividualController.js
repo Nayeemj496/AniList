@@ -85,16 +85,18 @@ const mangaIndividualControllerGET = async (req, res) => {
         )
     ).rows;
 
-    // // staffs
-    // const staffs = (await connection.execute(`
-    //     SELECT S.*
-    //     FROM MANGA M JOIN MANGA_STAFF MST ON M.MANGA_ID = MST.MANGA_ID JOIN STAFF S ON MST.STAFF_ID = S.STAFF_ID
-    //     WHERE M.MANGA_ID = :id
-    // `, {
-    //     id: obj.id
-    // }, {
-    //     outFormat: oracledb.OUT_FORMAT_OBJECT
-    // })).rows
+    //staffs
+    const staffs = (await connection.execute(`
+        SELECT S.*
+        FROM MANGA_STAFF MST JOIN STAFF S ON MST.STAFF_ID = S.STAFF_ID
+        WHERE MST.MANGA_ID = :id
+    `, {
+        id: obj.id
+    }, {
+        outFormat: oracledb.OUT_FORMAT_OBJECT
+    })).rows
+
+    console.log(staffs)
 
     let isLiked = null;
     let preference = null;
@@ -206,6 +208,7 @@ const mangaIndividualControllerGET = async (req, res) => {
             genres,
             relations,
             characters,
+            staffs,
             isLiked,
             preference,
             watching,

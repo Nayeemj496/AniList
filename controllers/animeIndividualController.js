@@ -86,6 +86,15 @@ const animeIndividualControllerGET = async (req, res) => {
     )
   ).rows;
 
+  const producers = (await connection.execute(`
+      SELECT PRODUCER_NAME
+      FROM ANIME_PRODUCER AP JOIN PRODUCER P ON AP.PRODUCER_ID = P.PRODUCER_ID
+      WHERE AP.ANIME_ID = :id
+      ORDER BY P.PRODUCER_NAME
+  `, [obj.id], {outFormat: oracledb.OUT_FORMAT_OBJECT})).rows
+
+  console.log(producers)
+
   // manga
   const mangas = (
     await connection.execute(
@@ -252,6 +261,7 @@ const animeIndividualControllerGET = async (req, res) => {
       genres,
       relations,
       studios,
+      producers,
       mangas,
       characters,
       staffs,
@@ -341,6 +351,20 @@ const animeIndividualSocialControllerGET = async (req, res) => {
     )
   ).rows;
 
+  // producers
+  const producers = (
+    await connection.execute(
+      `
+      SELECT PRODUCER_NAME
+      FROM ANIME_PRODUCER AP JOIN PRODUCER P ON AP.PRODUCER_ID = P.PRODUCER_ID
+      WHERE AP.ANIME_ID = :id
+      ORDER BY P.PRODUCER_NAME
+  `,
+      [obj.id],
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    )
+  ).rows;
+
 
   let isLiked = null;
   let preference = null;
@@ -408,6 +432,7 @@ const animeIndividualSocialControllerGET = async (req, res) => {
       anime: animes[0],
       genres,
       studios,
+      producers,
       isLiked,
       preference,
       avgScore,

@@ -243,7 +243,31 @@
           </div>
         </div>
 
-        <div></div>
+        <% if(staffs.length) { %>
+          <div>
+            <a class="section-headline" href="">Staff</a>
+            <div class="staffs">
+              <% for(let i = 0; i < staffs.length; ++i) { %>
+              <div class="individual-staff">
+                <a
+                  href="/staff/<%= staffs[i].STAFF_ID %>/<%= staffs[i].FULL_NAME %>"
+                  class="staff-cover"
+                >
+                  <img
+                    src="<%= staffs[i].IMAGE %>"
+                    alt=""
+                    class="staff-cover-image"
+                  />
+                </a>
+                <div class="staff-description">
+                  <div class="name"><%= staffs[i].FULL_NAME %></div>
+                  <div class="role"><%= staffs[i].ROLE %></div>
+                </div>
+              </div>
+              <% } %>
+            </div>
+          </div>
+        <% } %>
         
         <div class="stats-status-wrap">
           <div class="stats-distribution">Status Distribution</div>

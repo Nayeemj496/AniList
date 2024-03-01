@@ -110,15 +110,19 @@
             <% } %>
           </div>
 
-          <div class="data-set">
-            <div class="type">Producers</div>
-            <div class="value">Pony Canyon</div>
-            <div class="value">Kodansha</div>
-            <div class="value">Production I.G</div>
-            <div class="value">Dentsu</div>
-            <div class="value">Pony Canyon EnterPrise</div>
-            <div class="value">Mainichi Broadcasting System</div>
-          </div>
+          <% if(producers.length) { %>
+            <div class="data-set">
+              <div class="type">Producers</div>
+                <% for(let i = 0; i < producers.length; ++i) { %>
+                  <div class="value"><%=producers[i].PRODUCER_NAME%></div>
+                  <!-- <div class="value">Kodansha</div>
+                  <div class="value">Production I.G</div>
+                  <div class="value">Dentsu</div>
+                  <div class="value">Pony Canyon EnterPrise</div>
+                  <div class="value">Mainichi Broadcasting System</div> -->
+                <% } %>
+            </div>
+          <% } %>
 
           <div class="data-set">
             <div class="type">Source</div>
