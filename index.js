@@ -1,32 +1,47 @@
+const http = require("http");
 const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
 const path = require("path");
 const routers = require("./routes/web");
+const {Server} = require("socket.io")
 
 const PORT = process.env.PORT || 8080;
 
-const server = express();
+const app = express();
 
-server.set("view engine", "ejs");
-server.use(express.static(path.join(__dirname, "public")));
-server.use(
+app.set("view engine", "ejs");
+app.use(express.static(path.join(__dirname, "public")));
+app.use(
   session({
     secret: "thisissecret!",
     resave: false,
     saveUninitialized: true,
   })
 );
-server.use(cors());
-server.use(express.json());
-server.use(express.urlencoded({ extended: true }));
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 
-server.use("/", routers.webRouter);
-server.use("/search", routers.searchRouter);
-// work in progress
-server.use("/admin", routers.adminRouter);
+const server = http.createServer(app);
+
+const io = new Server(server);
+
+io.on("connection", (clientSocket) => {
+  console.log("A new user is connected", clientSocket.id);
+});
+
+app.use((req, res, next) => {
+  console.log("in the middleware")
+  req.io = io
+  next()
+})
+app.use("/", routers.webRouter);
+app.use("/search", routers.searchRouter);
+app.use("/admin", routers.adminRouter);
 
 server.listen(PORT, () => {
-  console.log(`Server is running on PORT ${PORT}`);
-});
+  console.log(`Server is running on PORT ${PORT}`)
+})
+

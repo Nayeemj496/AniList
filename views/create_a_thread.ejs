@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Forum - Create Thread · AniList</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="https://anilist.co/img/icons/favicon-32x32.png" />
+    <link rel="stylesheet" href="/styles/media_individual.css" />
+    <link rel="stylesheet" href="/styles/required.css" />
+    <link rel="stylesheet" href="/styles/create_a_thread.css" />
+</head>
+
+<body>
+    <%- include("navcontainer.ejs", { isAdmin, userimage, username }) %>
+
+        <form class="create-thread" action="/forum/thread/editor/new" method="POST">
+            <textarea name="title" placeholder="Thread Title"></textarea>
+
+            <textarea name="body" rows="10" placeholder="Write thread body"></textarea>
+
+            <div class="headline">Categories</div>
+
+            <div class="categories generic">
+                <label for="general">
+                    <input type="checkbox" id="general" name="category" value="general"/>
+                    <span>General</span>
+                </label>
+
+                <label for="anime">
+                    <input type="checkbox" id="anime" name="category" value="anime"/>
+                    <span>Anime</span>
+                </label>
+
+                <label for="manga">
+                    <input type="checkbox" id="manga" name="category" value="manga"/>
+                    <span>Manga</span>
+                </label>
+
+                <label for="release-discussion">
+                    <input type="checkbox" id="release-discussion" name="category" value="release-discussion"/>
+                    <span>Release Discusssion</span>
+                </label>
+
+                <label for="site-announcements">
+                    <input type="checkbox" id="site-announcements" name="category" value="site-announcements"/>
+                    <span>Site Announcements</span>
+                </label>
+
+                <label for="news">
+                    <input type="checkbox" id="news" name="category" value="news"/>
+                    <span>News</span>
+                </label>
+
+                <label for="music">
+                    <input type="checkbox" id="music" name="category" value="music"/>
+                    <span>Music</span>
+                </label>
+
+                <label for="recommendations">
+                    <input type="checkbox" id="recommendations" name="category" value="recommendations"/>
+                    <span>Recommendations</span>
+                </label>
+
+                <label for="site-feedback">
+                    <input type="checkbox" id="site-feedback" name="category" value="site-feedback"/>
+                    <span>Site Feedback</span>
+                </label>
+
+                <label for="bug-reports">
+                    <input type="checkbox" id="bug-reports" name="category" value="bug-reports"/>
+                    <span>Bug Reports</span>
+                </label>
+
+                <label for="misc">
+                    <input type="checkbox" id="misc" name="category" value="misc"/>
+                    <span>Misc</span>
+                </label>
+            </div>
+
+            <div class="headline">Anime & Manga Categories</div>
+
+            <div class="search">
+                <input type="text" placeholder="Search" id="search-media" />
+                <div class="generic result"></div>
+            </div>
+
+            <button type="submit">Save</button>
+        </form>
+
+        <script src="/scripts/tooltip.js"></script>
+        <script>
+            let inputs = document.querySelectorAll("label input");
+            let labels = document.querySelectorAll("label")
+
+            labels[0].onclick = function() {
+                if(inputs[0].checked) {
+                    for(let i = 1; i < labels.length; ++i) {
+                        labels[i].style.display = "none"
+                    }
+                } else {
+                    for(let i = 0; i < labels.length; ++i) {
+                        labels[i].style.display = "block"
+                    }
+                }
+            }
+
+            labels[1].onclick = function() {
+                if(inputs[1].checked) inputs[2].checked = false
+            }
+
+            labels[2].onclick = function() {
+                if(inputs[2].checked) inputs[1].checked = false
+            }
+
+            for(let i = 1; i < labels.length; ++i) {
+                labels[i].addEventListener("click", () => {
+                    let counter = 0
+                    for(let i = 1; i < labels.length; ++i) {
+                        if(inputs[i].checked) counter++
+                    }
+
+                    counter ? labels[0].style.display = "none" : labels[0].style.display = "block"
+                })
+            }
+
+            const searchBar = document.querySelector("#search-media");
+            const result = document.querySelector(".result");
+
+            searchBar.addEventListener("input", async (event) => {
+                console.log(event.target.value);
+
+                const response = await fetch(
+                    "http://localhost:8080/forum/thread/editor/new",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Accept: "accplication/json",
+                        },
+                        body: JSON.stringify({
+                            search: event.target.value,
+                            post: false,
+                        }),
+                    }
+                );
+
+                const medias = (await response.json()).medias;
+
+                result.innerHTML = "";
+
+                for (let i = 0; i < medias.length; ++i) {
+                    result.innerHTML += `
+                        <label><input type="checkbox" name=${medias[i].type} value=${medias[i].ENGLISH}><span>${medias[i].ENGLISH + ' (' + medias[i].type + ')'}</span></label>
+                    `;
+                }
+            });
+        </script>
+</body>
+
+</html>

@@ -1,5 +1,6 @@
 const connect = require("../controllers/connect");
 const oracledb = require("oracledb");
+const strftime = require("strftime")
 
 const userProfileControllerGET = async (req, res) => {
   console.log("in the userProfileControllerGET");
@@ -749,6 +750,37 @@ const userSettingsControllerPOST = async (req, res) => {
         [cover, userid],
         { autoCommit: true }
       );
+
+      const io = req.io;
+
+      let string = null;
+      let parameter = `USER_IMAGE: ${cover}, USER_ID: ${userid}`;
+      let event = `Procedure: UPDATE_USER_IMAGE(USER_IMAGE, USER_ID)`;
+
+      const date = new Date();
+
+      const formattedDate = strftime("%Y-%m-%d %H:%M:%S", date);
+
+      string =
+        req.session.user.USERNAME +
+        "|" +
+        parameter +
+        "|" +
+        event +
+        "|" +
+        formattedDate;
+      console.log(string);
+
+      await connection.execute(
+        `
+          INSERT INTO DATABASE_LOG(USERNAME, PARAMETER, EVENT_TYPE) VALUES
+          (:username, :parameter, :event)
+      `,
+        [req.session.user.USERNAME, parameter, event],
+        { autoCommit: true }
+      );
+      
+      io.emit("adminLog", string);
     }
     if (req.body.Banner) {
       let banner = req.body.Banner;
@@ -761,6 +793,37 @@ const userSettingsControllerPOST = async (req, res) => {
         [banner, userid],
         { autoCommit: true }
       );
+
+        const io = req.io;
+
+        let string = null;
+        let parameter = `USER_BANNER_IMAGE: ${banner}, USER_ID: ${userid}`;
+        let event = `Procedure: UPDATE_USER_BANNER_IMAGE(USER_BANNER_IMAGE, USER_ID)`;
+
+        const date = new Date();
+
+        const formattedDate = strftime("%Y-%m-%d %H:%M:%S", date);
+
+        string =
+          req.session.user.USERNAME +
+          "|" +
+          parameter +
+          "|" +
+          event +
+          "|" +
+          formattedDate;
+        console.log(string);
+
+        await connection.execute(
+          `
+            INSERT INTO DATABASE_LOG(USERNAME, PARAMETER, EVENT_TYPE) VALUES
+            (:username, :parameter, :event)
+        `,
+          [req.session.user.USERNAME, parameter, event],
+          { autoCommit: true }
+        );
+
+        io.emit("adminLog", string);
     }
   }
 

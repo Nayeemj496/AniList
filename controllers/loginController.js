@@ -33,10 +33,10 @@ const loginControllerPOST = async (req, res) => {
             res.redirect("/home");
         } else {
             console.log("password didn't match");
-            res.render("login");
+            res.redirect("/login"); // changed here
         }
     } else {
-        res.render("login");
+        res.redirect("/login"); // changed here
     }
 };
 

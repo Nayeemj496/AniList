@@ -18,6 +18,7 @@ const writeReviewMangaController = require("../controllers/writeReviewMangaContr
 const userController = require("../controllers/userController");
 // work in progress
 const adminController = require("../controllers/adminController");
+const threadController = require("../controllers/threadController");
 
 
 // all routers
@@ -149,6 +150,13 @@ webRouter.post(
     writeReviewMangaController.writeReviewMangaControllerPOST
 );
 
+
+// thread
+webRouter.get("/forum/overview", threadController.forumControllerGET)
+webRouter.get("/forum/thread/editor/new", threadController.createThreadControllerGET)
+webRouter.post("/forum/thread/editor/new", threadController.createThreadControllerPOST)
+
+
 // search anime
 searchRouter.get("/anime", searchAnimeController.searchAnimeControllerGET);
 searchRouter.post("/anime", searchAnimeController.searchAnimeControllerPOST);
@@ -179,6 +187,7 @@ adminRouter.get("/delete/anime", adminController.adminDeleteAnimeControllerGET);
 adminRouter.post("/delete/anime", adminController.adminDeleteAnimeControllerPOST);
 adminRouter.get("/delete/manga", adminController.adminDeleteMangaControllerGET);
 adminRouter.post("/delete/manga", adminController.adminDeleteMangaControllerPOST);
+adminRouter.get("/log", adminController.adminDatabaseLogControllerGET)
 
 
 module.exports = {

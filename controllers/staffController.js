@@ -1,5 +1,6 @@
 const connect = require("./connect");
 const oracledb = require("oracledb");
+const strftime = require("strftime")
 
 const staffControllerGET = async (req, res) => {
   console.log("in the staffControllerGET");
@@ -139,6 +140,39 @@ const staffControllerPOST = async (req, res) => {
   );
 
   counter = counter.outBinds.result;
+
+  const io = req.io;
+
+  let string = null;
+  let parameter = `STAFF_ID: ${staffid}`;
+  let event = `Function: GET_STAFF_LIKES_COUNT(STAFF_ID)`;
+
+  if (req.session.user) {
+    const date = new Date();
+
+    const formattedDate = strftime("%Y-%m-%d %H:%M:%S", date);
+
+    string =
+      req.session.user.USERNAME +
+      "|" +
+      parameter +
+      "|" +
+      event +
+      "|" +
+      formattedDate;
+    console.log(string);
+
+    await connection.execute(
+      `
+            INSERT INTO DATABASE_LOG(USERNAME, PARAMETER, EVENT_TYPE) VALUES
+            (:username, :parameter, :event)
+        `,
+      [req.session.user.USERNAME, parameter, event],
+      { autoCommit: true }
+    );
+
+    io.emit("adminLog", string);
+  }
 
   await connection.close();
 

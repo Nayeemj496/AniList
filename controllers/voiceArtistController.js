@@ -1,5 +1,6 @@
 const connect = require("./connect")
 const oracledb = require("oracledb")
+const strftime = require("strftime")
 
 const voiceArtistControllerGET = async (req, res) => {
     console.log("in the voiceArtistControllerGET")
@@ -111,6 +112,37 @@ const voiceArtistControllerPOST = async (req, res) => {
       [userid, vaid],
       { autoCommit: true }
     );
+
+    const io = req.io;
+
+    let string = null;
+    let parameter = `USER_ID: ${userid}, VA_ID: ${vaid}`;
+    let event = `Procedure: UPDATE_USER_LIKES_VA(USER_ID, VA_ID)`;
+
+    const date = new Date();
+
+    const formattedDate = strftime("%Y-%m-%d %H:%M:%S", date);
+
+    string =
+      req.session.user.USERNAME +
+      "|" +
+      parameter +
+      "|" +
+      event +
+      "|" +
+      formattedDate;
+    console.log(string);
+
+    await connection.execute(
+      `
+          INSERT INTO DATABASE_LOG(USERNAME, PARAMETER, EVENT_TYPE) VALUES
+          (:username, :parameter, :event)
+      `,
+      [req.session.user.USERNAME, parameter, event],
+      { autoCommit: true }
+    );
+
+    io.emit("adminLog", string);
 
     isLiked = true;
   } else {

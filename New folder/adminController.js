@@ -60,8 +60,6 @@ const adminUpdateAnimeControllerGET = async (req, res) => {
   console.log("in the adminUpdateAnimeControllerGET");
   console.log(req.url, req.method);
 
-  console.log(req.body)
-
   if(req.session.user && req.session.user.ROLE === "ADMIN") {
     res.render("admin_update_anime", {
       isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
@@ -78,37 +76,23 @@ const adminUpdateAnimeControllerPOST = async (req, res) => {
   console.log(req.url, req.method);
 
   if(req.session.user && req.session.user.ROLE === "ADMIN") {
-    const obj = req.body
+    let title = req.body.title
 
     const connection = await connect()
 
-    if (obj.hasOwnProperty("update")) {
-        let title = obj.title
+    const animeTitles = (await connection.execute(`
+      SELECT ENGLISH
+      FROM ANIME A
+      WHERE LOWER(A.ENGLISH) LIKE '%' || LOWER(:title) || '%'
+    `, [title], {outFormat: oracledb.OUT_FORMAT_OBJECT})).rows
 
-        const animeTitles = (
-          await connection.execute(
-            `
-            SELECT ENGLISH
-            FROM ANIME A
-            WHERE LOWER(A.ENGLISH) LIKE '%' || LOWER(:title) || '%'
-          `,
-            [title],
-            { outFormat: oracledb.OUT_FORMAT_OBJECT }
-          )
-        ).rows;
+    res.json({
+      animeTitles
+    })
 
-        console.log(animeTitles);
-
-        res.json({
-          animeTitles,
-        });
-      } else {
-        console.log("in the update section code here")
-        console.log(obj)
-      } 
-    } else {
-      res.json({isAdmin: "You are not an admin"})
-    }
+  } else {
+    res.json({isAdmin: "You are not an admin"})
+  }
 };
 
 const adminUpdateMangaControllerGET = async (req, res) => {

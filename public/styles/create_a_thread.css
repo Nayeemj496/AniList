@@ -1,0 +1,70 @@
+.create-thread {
+    max-width: 670px;
+    padding: 0px 50px;
+    margin: 0px auto;
+    margin-top: 30px;
+}
+
+textarea {
+    background-color: rgb(21, 31, 46);
+    outline: none;
+    border: none;
+    width: 100%;
+    padding: 5px 15px;
+    color: rgb(159, 173, 189);
+    font-family: 'Roboto';
+    margin-bottom: 20px;
+}
+
+.generic {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 12px;
+    margin: 20px;
+}
+
+.headline {
+    color: #9FADBD;
+    font-size: 14px;
+    margin: 0px 0px 10px 5px;
+}
+
+.generic label input {
+    width: 12px;
+    height: 12px;
+}
+
+.generic label {
+    background-color: #151F2E;
+    padding: 7px 15px 5px 10px;
+    display: block;
+}
+
+.generic label span {
+    padding-left: 10px;
+    color: #9FADBD;
+    font-family: 'Roboto';
+    font-size: 12px;
+}
+
+label {
+    transition: color 0.2s;
+}
+
+label:hover {
+    outline: #3DB4F2 1px solid;
+}
+
+#search-media {
+    background-color: #151F2E;
+    width: 100%;
+}
+
+button {
+    background-color: #3DB4F2;
+    color: #fff;
+    width: 100%;
+    border: none;
+    padding: 10px;
+    margin-bottom: 50px;
+}

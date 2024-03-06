@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin &#183; AniList</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="https://anilist.co/img/icons/favicon-32x32.png" />
+  <link rel="stylesheet" href="/styles/add.css" />
+  <link rel="stylesheet" href="/styles/media_individual.css" />
+  <style>
+    .a-style {
+      text-decoration: none;
+      color: #a0b1c5;
+      font-size: 14px;
+    }
+
+    input,
+    select {
+      background-color: #151d2e;
+    }
+  </style>
+
+  <style>
+    .btn {
+      display: block;
+      width: 100px;
+      height: 36px;
+      text-align: center;
+      background-color: #3577ff;
+      padding: 10px;
+      border-radius: 4px;
+      font-size: 13px;
+      color: #fff;
+      text-decoration: none;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+
+<body>
+  <%-include("navcontainer.ejs", { isAdmin, userimage, username }) %>
+
+    <div class="addContainer">
+      <form action="/admin/update/anime" method="POST">
+        <div class="form-group">
+          <label for="english">Title (English)</label>
+          <input type="text" class="form-control" id="anime-title" name="title" />
+        </div>
+
+        <div class="form-group">
+          <select id="animeTitles" name="selectAnime">
+            <option value="">Select an anime</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="english">Update Title (English)</label>
+          <input type="text" class="form-control" id="english" name="english" />
+        </div>
+
+        <div class="form-group">
+          <label for="romaji">Update Title (Romaji)</label>
+          <input type="text" class="form-control" id="romaji" name="romaji" />
+        </div>
+
+        <div class="form-group">
+          <label for="native">Update Title (Native)</label>
+          <input type="text" class="form-control" id="native" name="native" />
+        </div>
+
+        <div class="form-group">
+          <label for="format">Update Format</label>
+          <input type="text" class="form-control" id="format" name="format" />
+        </div>
+
+        <div class="form-group">
+          <label for="status">Update Status</label>
+          <input type="text" class="form-control" id="status" name="status" />
+        </div>
+
+        <div class="form-group">
+          <label for="description">Update Description</label>
+          <textarea class="form-control" id="description" name="description" rows="18"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="startdate">Update Start Date</label>
+          <input type="date" class="form-control" id="startdate" name="startdate" />
+        </div>
+
+        <div class="form-group">
+          <label for="enddate">Update End Date</label>
+          <input type="date" class="form-control" id="enddate" name="enddate" />
+        </div>
+
+        <div class="form-group">
+          <label for="season">Update Season</label>
+          <input type="text" class="form-control" id="season" name="season" />
+        </div>
+
+        <div class="form-group">
+          <label for="episodes">Update Episodes</label>
+          <input type="number" class="form-control" id="episodes" name="episodes" />
+        </div>
+
+        <div class="form-group">
+          <label for="seasonyear">Update Season Year</label>
+          <input type="number" class="form-control" id="seasonyear" name="seasonyear" />
+        </div>
+
+        <div class="form-group">
+          <label for="duration">Update Duration(Mins)</label>
+          <input type="number" class="form-control" id="duration" name="duration" />
+        </div>
+
+        <div class="form-group">
+          <label for="origin">Update Country of Origin</label>
+          <input type="text" class="form-control" id="origin" name="origin" />
+        </div>
+
+        <div class="form-group">
+          <label for="source">Update Source</label>
+          <input type="text" class="form-control" id="source" name="source" />
+        </div>
+
+        <div class="form-group">
+          <label for="coverimage">Update Cover Image</label>
+          <textarea type="text" class="form-control" id="coverimage" name="coverimage" rows="10"
+            placeholder="paste url here..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="coverimagecolor">Update Cover Image Color</label>
+          <input type="text" class="form-control" id="coverimagecolor" name="coverimagecolor" placeholder="" />
+        </div>
+
+        <div class="form-group">
+          <label for="bannerimage">Update Banner Image</label>
+          <input type="text" class="form-control" id="bannerimage" name="bannerimage" placeholder="paste url here..." />
+        </div>
+
+        <div class="form-group">
+          <label for="animeurl">Update Anime URL</label>
+          <input type="text" class="form-control" id="animeurl" name="animeurl" placeholder="paste url here..." />
+        </div>
+
+        <button type="submit" class="submit-add">Submit</button>
+      </form>
+    </div>
+
+    <script src="/scripts/tooltip.js"></script>
+    <script>
+      const title = document.querySelector("#anime-title");
+      const select = document.querySelector("#animeTitles");
+
+      title.addEventListener("input", async (event) => {
+        console.log(event.target.value);
+
+        const response = await fetch(
+          "http://localhost:8080/admin/update/anime",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            body: JSON.stringify({
+              title: event.target.value,
+              update: false,
+            }),
+          }
+        );
+
+        const animeTitles = await response.json();
+
+        console.log(animeTitles);
+
+        select.innerHTML = "<option value=''>Select an anime</option>";
+
+        let animes = animeTitles.animeTitles
+
+        for (let i = 0; i < animes.length; ++i) {
+          select.innerHTML += `<option value="${animes[i].ENGLISH}">${animes[i].ENGLISH}</option>`;
+        }
+
+      });
+    </script>
+</body>
+
+</html>
