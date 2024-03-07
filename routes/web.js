@@ -152,7 +152,12 @@ webRouter.post(
 
 
 // thread
-webRouter.get("/forum/overview", threadController.forumControllerGET)
+webRouter.get("/forum/overview", threadController.forumOverviewControllerGET)
+webRouter.get("/forum/recent", threadController.forumRecentActivityControllerGET)
+webRouter.get("/forum/new", threadController.forumNewThreadControllerGET)
+webRouter.get("/forum/subscribed", threadController.forumSubscribedThreadControllerGET)
+webRouter.get("/forum/thread/:id", threadController.forumThreadControllerGET)
+webRouter.post("/forum/thread/:id", threadController.forumThreadControllerPOST)
 webRouter.get("/forum/thread/editor/new", threadController.createThreadControllerGET)
 webRouter.post("/forum/thread/editor/new", threadController.createThreadControllerPOST)
 
@@ -161,17 +166,21 @@ webRouter.post("/forum/thread/editor/new", threadController.createThreadControll
 searchRouter.get("/anime", searchAnimeController.searchAnimeControllerGET);
 searchRouter.post("/anime", searchAnimeController.searchAnimeControllerPOST);
 
+
 // search manga
 searchRouter.get("/manga", searchMangaController.searchMangaControllerGET);
 searchRouter.post("/manga", searchMangaController.searchMangaControllerPOST);
+
 
 // search character
 searchRouter.get("/characters", searchCharacterController.searchCharacterControllerGET);
 searchRouter.post("/characters", searchCharacterController.searchCharacterControllerPOST);
 
+
 // search staff
 searchRouter.get("/staff", searchStaffController.searchStaffControllerGET);
 searchRouter.post("/staff", searchStaffController.searchStaffControllerPOST);
+
 
 // work in progress
 adminRouter.get("/", adminController.adminControllerGET);

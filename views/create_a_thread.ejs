@@ -14,9 +14,9 @@
     <%- include("navcontainer.ejs", { isAdmin, userimage, username }) %>
 
         <form class="create-thread" action="/forum/thread/editor/new" method="POST">
-            <textarea name="title" placeholder="Thread Title"></textarea>
+            <textarea name="title" placeholder="Thread Title" required></textarea>
 
-            <textarea name="body" rows="10" placeholder="Write thread body"></textarea>
+            <textarea name="body" rows="10" placeholder="Write thread body" required></textarea>
 
             <div class="headline">Categories</div>
 
@@ -37,12 +37,12 @@
                 </label>
 
                 <label for="release-discussion">
-                    <input type="checkbox" id="release-discussion" name="category" value="release-discussion"/>
+                    <input type="checkbox" id="release-discussion" name="category" value="release discussion"/>
                     <span>Release Discusssion</span>
                 </label>
 
                 <label for="site-announcements">
-                    <input type="checkbox" id="site-announcements" name="category" value="site-announcements"/>
+                    <input type="checkbox" id="site-announcements" name="category" value="site announcements"/>
                     <span>Site Announcements</span>
                 </label>
 
@@ -62,12 +62,12 @@
                 </label>
 
                 <label for="site-feedback">
-                    <input type="checkbox" id="site-feedback" name="category" value="site-feedback"/>
+                    <input type="checkbox" id="site-feedback" name="category" value="site feedback"/>
                     <span>Site Feedback</span>
                 </label>
 
                 <label for="bug-reports">
-                    <input type="checkbox" id="bug-reports" name="category" value="bug-reports"/>
+                    <input type="checkbox" id="bug-reports" name="category" value="bug reports"/>
                     <span>Bug Reports</span>
                 </label>
 
@@ -148,9 +148,11 @@
 
                 result.innerHTML = "";
 
+                console.log(medias)
+
                 for (let i = 0; i < medias.length; ++i) {
                     result.innerHTML += `
-                        <label><input type="checkbox" name=${medias[i].type} value=${medias[i].ENGLISH}><span>${medias[i].ENGLISH + ' (' + medias[i].type + ')'}</span></label>
+                        <label><input type="checkbox" name=${medias[i].type} value="${medias[i].ENGLISH}"><span>${medias[i].ENGLISH + ' (' + medias[i].type + ')'}</span></label>
                     `;
                 }
             });

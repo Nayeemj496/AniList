@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Forum - Create Thread · AniList</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="https://anilist.co/img/icons/favicon-32x32.png" />
+    <link rel="stylesheet" href="/styles/media_individual.css" />
+    <link rel="stylesheet" href="/styles/forum.css" />
+    <link rel="stylesheet" href="/styles/required.css" />
+</head>
+
+<body>
+    <%- include("navcontainer.ejs", { isAdmin, userimage, username }) %>
+
+    <%
+        function relativeTime(date) {
+            let time = new Date() - date;
+            let timeString = "";
+
+            let seconds = Math.floor(time / 1000);
+            let minutes = Math.floor(seconds / 60);
+            let hours = Math.floor(minutes / 60);
+            let days = Math.floor(hours / 24);
+            let months = Math.floor(days / 30);
+            let years = Math.floor(months / 12);
+
+            if (years) timeString += `${years} years ago`;
+            else if (months) timeString += `${months} months ago`;
+            else if (days) timeString += `${days} days ago`;
+            else if (hours) timeString += `${hours} hours ago`;
+            else if (minutes) timeString += `${minutes} minutes ago`;
+            else timeString += `${seconds} seconds ago`;
+
+            return timeString;
+        }
+    %>
+
+    <%
+        function getColor(category) {
+            category = category.toUpperCase()
+            if(category === "GENERAL") return "#4EA3E6";
+            else if(category === "ANIME") return "#00AAFF";
+            else if(category === "MANGA") return "#4CAF50";
+            else if(category === "RELEASE DISCUSSION") return "#673AB7";
+            else if(category === "SITE ANNOUNCEMENTS") return "#E91E63";
+            else if(category === "NEWS") return "#009688";
+            else if(category === "MUSIC") return "#607D8B";
+            else if(category === "RECOMMENDATIONS") return "#B85AC7";
+            else if(category === "SITE FEEDBACK") return "#FB471E";
+            else if(category === "BUG REPORTS") return "#EF3051";
+            else if(category === "MISC") return "#795548";
+        }
+        
+    %>
+
+
+
+    <div class="forum-feed">
+        <div class="section-one">
+            <a href="/forum/thread/editor/new" class="create-btn">Create Thread</a>
+            <div class="filter-group">
+                <div class="group-header">Feed</div>
+                <a href="/forum/overview" class="route-link">Overview</a>
+                <a href="/forum/recent" class="route-link route-link-active">Recent Activity</a>
+                <a href="/forum/new" class="route-link">New Threads</a>
+                <a href="/forum/subscribed" class="route-link">Subscribed</a>
+            </div>
+
+            <div class="filter-group">
+                <div class="group-header">Categories</div>
+                <a href="" class="route-link route-link-active">All</a>
+                <a href="" class="route-link">General</a>
+                <a href="" class="route-link">Anime</a>
+                <a href="" class="route-link">Manga</a>
+                <a href="" class="route-link">Release Discussion</a>
+                <a href="" class="route-link">Site Announcements</a>
+                <a href="" class="route-link">News</a>
+                <a href="" class="route-link">Music</a>
+                <a href="" class="route-link">Recommendations</a>
+                <a href="" class="route-link">Site Feedback</a>
+                <a href="" class="route-link">Bug Reports</a>
+                <a href="" class="route-link">Misc</a>
+            </div>
+        </div>
+
+        <div class="section-two">
+
+            <% if(recentThreads.length) { %>
+
+                <div class="thread-section">
+                    <a class="overview-header" href="">Recently Active Threads</a>
+
+                    <% for(let i = 0; i < recentThreads.length; ++i) { %>
+
+                        <div class="thread-card">
+                            <a href="" class="thread-card-headline">
+                                <%=recentThreads[i].THREAD_TITLE%>
+                            </a>
+
+                            <div class="body-preview">
+                                <%=recentThreads[i].THREAD_BODY%>
+                            </div>
+
+                            <div class="footer">
+
+                                <% if(recentThreads[i].COMMENT_COUNT) { %>
+                                    <a href="/user/<%=recentThreads[i].USERNAME_COMMENT%>">
+                                        <img src="<%=recentThreads[i].USER_IMAGE_COMMENT%>"
+                                            alt="" />
+                                    </a>
+
+                                    <div class="name">
+                                        <a href="/user/<%=recentThreads[i].USERNAME_COMMENT%>">By
+                                            <span style="font-family: Roboto; color: #3db4f2"><%=recentThreads[i].USERNAME_COMMENT%>
+                                            </span>
+                                            <span style="font-family: Roboto">replied <%=relativeTime(recentThreads[i].COMMENT_CREATION)%></span>
+                                        </a>
+                                    </div>
+                                <% } else { %>
+
+                                    <a href="/user/<%=recentThreads[i].USERNAME%>">
+                                        <img src="<%=recentThreads[i].USER_IMAGE%>"
+                                            alt="" />
+                                    </a>
+
+                                    <div class="name">
+                                        <a href="/user/<%=recentThreads[i].USERNAME%>">By
+                                            <span style="font-family: Roboto; color: #3db4f2"><%=recentThreads[i].USERNAME%>
+                                            </span>
+                                        </a>
+                                    </div>
+
+                                <% } %>
+
+                                <% let categories = recentThreads[i].CATEGORIES ? recentThreads[i].CATEGORIES.split(",") : null %>
+
+                                <div class="categories">
+                                    <% if(categories) { %>
+                                        <% for(let i = 0; i < categories.length; ++i) { %>
+                                            <span class="category" style="background-color: <%=getColor(categories[i])%>"><%=categories[i].toLowerCase()%></span>
+                                        <% } %>
+                                    <% } %>
+                                    
+                                    <% if(recentThreads[i].ANIME_ID) { %>
+                                        <span class="category" style="background-color: #00BCD4"><%=recentThreads[i].ANIME_NAME%></span>
+                                    <% } else { %>
+                                        <span class="category" style="background-color: #00BCD4"><%=recentThreads[i].MANGA_NAME%></span>
+                                    <% } %>
+                                </div>
+                            </div>
+
+                            <div class="info">
+                                <span>
+                                    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="comments"
+                                        role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"
+                                        class="svg-inline--fa fa-comments fa-w-18 fa-sm">
+                                        <path data-v-550f7194="" fill="currentColor"
+                                            d="M416 192c0-88.4-93.1-160-208-160S0 103.6 0 192c0 34.3 14.1 65.9 38 92-13.4 30.2-35.5 54.2-35.8 54.5-2.2 2.3-2.8 5.7-1.5 8.7S4.8 352 8 352c36.6 0 66.9-12.3 88.7-25 32.2 15.7 70.3 25 111.3 25 114.9 0 208-71.6 208-160zm122 220c23.9-26 38-57.7 38-92 0-66.9-53.5-124.2-129.3-148.1.9 6.6 1.3 13.3 1.3 20.1 0 105.9-107.7 192-240 192-10.8 0-21.3-.8-31.7-1.9C207.8 439.6 281.8 480 368 480c41 0 79.1-9.2 111.3-25 21.8 12.7 52.1 25 88.7 25 3.2 0 6.1-1.9 7.3-4.8 1.3-2.9.7-6.3-1.5-8.7-.3-.3-22.4-24.2-35.8-54.5z"
+                                            class=""></path>
+                                    </svg>
+                                    <%=recentThreads[i].COMMENT_COUNT%>
+                                </span>
+                            </div>
+
+                        </div>
+
+                    <% } %>
+
+                </div>
+
+            <% } %>
+
+        </div>
+        
+    </div>
+
+    <script src="/scripts/tooltip.js"></script>
+    <script>
+        
+    </script>
+</body>
+
+</html>
