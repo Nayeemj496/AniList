@@ -2,6 +2,49 @@ const connect = require("./connect")
 const oracledb = require("oracledb")
 const threadQuery = require("../queries/threadQuery")
 
+class Comment {
+    constructor(
+        commentId,
+        commentBody,
+        parentId,
+        userId,
+        userName,
+        userImage,
+        threadId,
+        dateOfCreation
+    ) {
+        this.commentId = commentId;
+        this.commentBody = commentBody;
+        this.parentId = parentId;
+        this.userId = userId;
+        this.userName = userName;
+        this.userImage = userImage;
+        this.threadId = threadId;
+        this.dateOfCreation = dateOfCreation;
+        this.children = [];
+    }
+
+    addChild(childComment) {
+        this.children.push(childComment);
+    }
+}
+
+function buildCommentTree(comments, parentId = null) {
+    const rootComments = comments.filter(
+        (comment) => comment.parentId === parentId
+    )
+    if (rootComments.length === 0) {
+        return []
+    }
+    return rootComments.map((comment) => {
+        const children = buildCommentTree(comments, comment.commentId);
+        comment.children = children
+        return comment
+    })
+}
+
+// const commentTree = buildCommentTree(comments);
+
 
 const forumOverviewControllerGET = async (req, res) => {
     console.log("in the forumControllerGET")
@@ -258,8 +301,41 @@ const forumThreadControllerGET = async (req, res) => {
     console.log(req.url, req.method)
     console.log(req.params)
 
+    let threadid = req.params.id
+    let userid = req.session.user ? req.session.user.USER_ID : null
+
+    const connection = await connect()
+
+    const thread = (await connection.execute(threadQuery.sqlIndividualThread, {userid, threadid}, {outFormat: oracledb.OUT_FORMAT_OBJECT})).rows[0]
+
+    let comments = (await connection.execute(`
+        SELECT C.COMMENT_ID, C.COMMENT_BODY, C.PARENT_COMMENT_ID, C.USER_ID, U.USERNAME, U.USER_IMAGE, C.THREAD_ID, C.DATE_OF_CREATION 
+        FROM COMMENTT C JOIN USERR U ON C.USER_ID = U.USER_ID
+        WHERE THREAD_ID = :threadid
+    `, [threadid], {outFormat: oracledb.OUT_FORMAT_OBJECT})).rows
+
+    console.log(comments)
+
+
+    for(let i = 0; i < comments.length; ++i) {
+        comments[i] = new Comment(comments[i].COMMENT_ID, comments[i].COMMENT_BODY, 
+                        comments[i].PARENT_COMMENT_ID, comments[i].USER_ID, 
+                        comments[i].USERNAME, comments[i].USER_IMAGE,
+                        comments[i].THREAD_ID, comments[i].DATE_OF_CREATION)
+    }
+
+    comments = buildCommentTree(comments)
+
+    for(let i = 0; i < comments.length; ++i) {
+        console.log(comments[i])
+    }
+
+    await connection.close()
+
     if(req.session.user) {
         res.render("thread", {
+            thread,
+            comments,
             isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
             userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
             username: req.session.user.USERNAME
@@ -272,6 +348,64 @@ const forumThreadControllerGET = async (req, res) => {
 const forumThreadControllerPOST = async (req, res) => {
     console.log("in the forumThreadControllerPOST")
     console.log(req.url, req.method)
+    console.log(req.params)
+    
+    const obj = req.body
+    let threadid = req.params.id
+    let userid = req.session.user ? req.session.user.USER_ID : null
+
+    const connection = await connect()
+
+    const thread = (await connection.execute(threadQuery.sqlIndividualThread, {userid, threadid}, {
+        outFormat: oracledb.OUT_FORMAT_OBJECT
+    })).rows[0]
+
+    console.log(thread)
+
+    if(req.session.user) {
+        console.log(obj)
+        if(obj.type.toUpperCase() === "LIKE") {
+            if(thread.IS_LIKED) {
+                await connection.execute(`
+                    DELETE FROM USER_LIKES_THREAD
+                    WHERE USER_ID = :userid AND THREAD_ID = :threadid
+                `, [userid, threadid], {autoCommit: true})
+
+                await connection.close()
+
+                res.json({isLiked: false, counter: thread.LIKES - 1})
+            } else {
+                await connection.execute(`
+                    INSERT INTO USER_LIKES_THREAD VALUES (:userid, :threadid)
+                `, [userid, threadid], {autoCommit: true})
+
+                await connection.close()
+
+                res.json({isLiked: true, counter: thread.LIKES + 1})
+            }
+
+        } else if(obj.type.toUpperCase() === "SUBSCRIBE") {
+            if(thread.IS_SUBSCRIBED) {
+
+                await connection.execute(`
+                    DELETE FROM USER_FOLLOWS_THREAD 
+                    WHERE USER_ID = :userid AND THREAD_ID = :threadid
+                `, [userid, threadid], {autoCommit: true})
+
+                res.json({isSubscribed: false})
+            } else {
+
+                await connection.execute(`
+                    INSERT INTO USER_FOLLOWS_THREAD VALUES (:userid, :threadid)
+                `, [userid, threadid], {autoCommit: true})
+
+                res.json({isSubscribed: true})
+            }
+        }
+
+    } else {
+        res.json({result: "log in again"})
+    }
 }
 
 

@@ -1,6 +1,7 @@
-const connect = require("../controllers/connect");
-const oracledb = require("oracledb");
+const connect = require("../controllers/connect")
+const oracledb = require("oracledb")
 const strftime = require("strftime")
+const threadQuery = require("../queries/threadQuery")
 
 const userProfileControllerGET = async (req, res) => {
   console.log("in the userProfileControllerGET");
@@ -692,10 +693,17 @@ const userHomeControllerGET = async (req, res) => {
     )
   ).rows;
 
+  const recentThreads = (
+    await connection.execute(threadQuery.sqlRecentActiveThread, [], {
+      outFormat: oracledb.OUT_FORMAT_OBJECT,
+    })
+  ).rows;
+
   await connection.close();
 
   if (req.session.user) {
     res.render("user_homepage", {
+      recentThreads,
       activities,
       watching,
       reading,

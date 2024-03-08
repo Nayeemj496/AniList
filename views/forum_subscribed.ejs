@@ -63,8 +63,8 @@
                 <div class="group-header">Feed</div>
                 <a href="/forum/overview" class="route-link">Overview</a>
                 <a href="/forum/recent" class="route-link">Recent Activity</a>
-                <a href="/forum/new" class="route-link route-link-active">New Threads</a>
-                <a href="/forum/subscribed" class="route-link">Subscribed</a>
+                <a href="/forum/new" class="route-link">New Threads</a>
+                <a href="/forum/subscribed" class="route-link route-link-active">Subscribed</a>
             </div>
 
             <div class="filter-group">
@@ -94,7 +94,7 @@
                     <% for(let i = 0; i < subscribedThreads.length; ++i) { %>
 
                         <div class="thread-card">
-                            <a href="" class="thread-card-headline">
+                            <a href="/forum/thread/<%=subscribedThreads[i].THREAD_ID%>" class="thread-card-headline">
                                 <%=subscribedThreads[i].THREAD_TITLE%>
                             </a>
 
@@ -143,9 +143,9 @@
                                     <% } %>
                                     
                                     <% if(subscribedThreads[i].ANIME_ID) { %>
-                                        <span class="category" style="background-color: #00BCD4"><%=subscribedThreads[i].ANIME_NAME%></span>
-                                    <% } else { %>
-                                        <span class="category" style="background-color: #00BCD4"><%=subscribedThreads[i].MANGA_NAME%></span>
+                                        <span class="category" style="background-color: <%=getColor('anime')%>"><%=subscribedThreads[i].ANIME_NAME%></span>
+                                    <% } else if (subscribedThreads[i].MANGA_ID){ %>
+                                        <span class="category" style="background-color: <%=getColor('manga')%>"><%=subscribedThreads[i].MANGA_NAME%></span>
                                     <% } %>
                                 </div>
                             </div>

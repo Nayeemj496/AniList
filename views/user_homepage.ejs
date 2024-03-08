@@ -24,6 +24,49 @@
   <body>
     <%- include("navcontainer.ejs", { isAdmin, userimage, username }) %>
 
+    <%
+        function relativeTime(date) {
+            let time = new Date() - date;
+            let timeString = "";
+
+            let seconds = Math.floor(time / 1000);
+            let minutes = Math.floor(seconds / 60);
+            let hours = Math.floor(minutes / 60);
+            let days = Math.floor(hours / 24);
+            let months = Math.floor(days / 30);
+            let years = Math.floor(months / 12);
+
+            if (years) timeString += `${years} years ago`;
+            else if (months) timeString += `${months} months ago`;
+            else if (days) timeString += `${days} days ago`;
+            else if (hours) timeString += `${hours} hours ago`;
+            else if (minutes) timeString += `${minutes} minutes ago`;
+            else timeString += `${seconds} seconds ago`;
+
+            return timeString;
+        }
+    %>
+
+    <%
+        function getColor(category) {
+            category = category.toUpperCase()
+            if(category === "GENERAL") return "#4EA3E6";
+            else if(category === "ANIME") return "#00AAFF";
+            else if(category === "MANGA") return "#4CAF50";
+            else if(category === "RELEASE DISCUSSION") return "#673AB7";
+            else if(category === "SITE ANNOUNCEMENTS") return "#E91E63";
+            else if(category === "NEWS") return "#009688";
+            else if(category === "MUSIC") return "#607D8B";
+            else if(category === "RECOMMENDATIONS") return "#B85AC7";
+            else if(category === "SITE FEEDBACK") return "#FB471E";
+            else if(category === "BUG REPORTS") return "#EF3051";
+            else if(category === "MISC") return "#795548";
+        }
+        
+    %>
+
+
+
     <div class="container">
       <div class="activity-feed-wrap">
         <h2 class="section-headline">Activity</h2>
@@ -159,68 +202,52 @@
         </div>
         <% } %>
 
-        <div class="recent-threads">
-          <h2 class="section-headline">Forum Activity</h2>
-          <div class="thread-card">
-            <a href="">
-              Guess who the above user's favorites will be from the series
-              they're watching
-            </a>
-            <div class="footer">
-              <a href="">
-                <img
-                  src="https://s4.anilist.co/file/anilistcdn/user/avatar/large/b6031105-KfZpkiEIo69a.png"
-                  alt=""
-                />
-              </a>
-              <div class="thread-user">
-                <a class="user">Taki17</a> replied
-                <span style="font-family: 'Roboto'">18 minutes</span> ago
-              </div>
-              <a href="" class="type">anime</a>
-            </div>
-          </div>
 
-          <div class="thread-card">
-            <a href="">
-              Guess who the above user's favorites will be from the series
-              they're watching
-            </a>
-            <div class="footer">
-              <a href="">
-                <img
-                  src="https://s4.anilist.co/file/anilistcdn/user/avatar/large/b6031105-KfZpkiEIo69a.png"
-                  alt=""
-                />
-              </a>
-              <div class="thread-user">
-                <a class="user">Taki17</a> replied
-                <span style="font-family: 'Roboto'">18 minutes</span> ago
-              </div>
-              <a href="" class="type">anime</a>
-            </div>
-          </div>
+        <% if(recentThreads.length) { %>
+          <div class="recent-threads">
+            <h2 class="section-headline">Forum Activity</h2>
 
-          <div class="thread-card">
-            <a href="">
-              Guess who the above user's favorites will be from the series
-              they're watching
-            </a>
-            <div class="footer">
-              <a href="">
-                <img
-                  src="https://s4.anilist.co/file/anilistcdn/user/avatar/large/b6031105-KfZpkiEIo69a.png"
-                  alt=""
-                />
-              </a>
-              <div class="thread-user">
-                <a class="user">Taki17</a> replied
-                <span style="font-family: 'Roboto'">18 minutes</span> ago
-              </div>
-              <a href="" class="type">anime</a>
-            </div>
+            <% for(let i = 0; i < recentThreads.length; ++i) { %>
+
+              <% if(i < 3) { %>
+                <div class="thread-card">
+                  <a href="/forum/thread/<%=recentThreads[i].THREAD_ID%>">
+                    <%=recentThreads[i].THREAD_TITLE%>
+                  </a>
+                  <div class="footer">
+
+                    <% if(recentThreads[i].COMMENT_COUNT) { %>
+
+                      <a href="/user/<%=recentThreads[i].USERNAME_COMMENT%>">
+                        <img
+                          src="<%=recentThreads[i].USER_IMAGE_COMMENT%>"
+                          alt=""
+                        />
+                      </a>
+                      <div class="thread-user">
+                        <a class="user" href="/user/<%=recentThreads[i].USERNAME_COMMENT%>"><%=recentThreads[i].USERNAME_COMMENT%></a> replied
+                        <span style="font-family: 'Roboto'"><%=relativeTime(recentThreads[i].DATE_OF_CREATION)%></span>
+                      </div>
+                    <% } else { %>
+                        <a href="/user/<%=recentThreads[i].USERNAME%>">
+                        <img
+                          src="<%=recentThreads[i].USER_IMAGE%>"
+                          alt=""
+                        />
+                      </a>
+                      <div class="thread-user">
+                        <a class="user" href="/user/<%=recentThreads[i].USERNAME%>">By <%=recentThreads[i].USERNAME%></a>
+                      </div>
+
+                    <% } %>
+
+                  </div>
+                </div>
+              <% } %>
+
+            <% } %>
           </div>
-        </div>
+        <% } %>
 
         <% if(recentAnimeReviews.length) { %>
         <div class="recent-reviews">
