@@ -2,6 +2,16 @@ const connect = require("./connect")
 const oracledb = require("oracledb")
 const threadQuery = require("../queries/threadQuery")
 
+const sortCommentsByDate = (comments) => {
+    comments.sort((a, b) => a.dateOfCreation - b.dateOfCreation);
+
+    for (const comment of comments) {
+        if (comment.children.length > 0) {
+        sortCommentsByDate(comment.children);
+        }
+    }
+};
+
 class Comment {
     constructor(
         commentId,
@@ -42,8 +52,6 @@ function buildCommentTree(comments, parentId = null) {
         return comment
     })
 }
-
-// const commentTree = buildCommentTree(comments);
 
 
 const forumOverviewControllerGET = async (req, res) => {
@@ -314,8 +322,6 @@ const forumThreadControllerGET = async (req, res) => {
         WHERE THREAD_ID = :threadid
     `, [threadid], {outFormat: oracledb.OUT_FORMAT_OBJECT})).rows
 
-    console.log(comments)
-
 
     for(let i = 0; i < comments.length; ++i) {
         comments[i] = new Comment(comments[i].COMMENT_ID, comments[i].COMMENT_BODY, 
@@ -326,9 +332,14 @@ const forumThreadControllerGET = async (req, res) => {
 
     comments = buildCommentTree(comments)
 
-    for(let i = 0; i < comments.length; ++i) {
-        console.log(comments[i])
-    }
+    sortCommentsByDate(comments);
+
+    // for (let i = 0; i < comments.length; ++i) {
+    //     console.log(comments[i].dateOfCreation);
+    //     let date = new Date(comments[i].dateOfCreation);
+    //     date = date.toLocaleTimeString("en-US", { hour12: true });
+    //     console.log(date);
+    // }
 
     await connection.close()
 
@@ -401,6 +412,49 @@ const forumThreadControllerPOST = async (req, res) => {
 
                 res.json({isSubscribed: true})
             }
+        } else if(obj.type.toUpperCase() === "COMMENT") {
+            console.log(obj)
+
+            let userid = (await connection.execute(`
+                SELECT USER_ID
+                FROM USERR U 
+                WHERE U.USERNAME = :username
+            `, [obj.username])).rows[0][0]
+
+            console.log("userid: " + userid)
+
+            let parentCommentId = obj.parentCommentId === null ? null : Number(obj.parentCommentId)
+
+            await connection.execute(`
+                INSERT INTO COMMENTT(COMMENT_BODY, PARENT_COMMENT_ID, USER_ID, THREAD_ID) VALUES 
+                (:commentBody, :parent, :userid, :threadid)
+            `, [obj.commentBody, parentCommentId, userid, Number(obj.threadid)], {autoCommit: true})
+
+            const commentid = (await connection.execute(`
+                SELECT MAX(COMMENT_ID)
+                FROM COMMENTT
+            `)).rows[0][0]
+
+            const total = (await connection.execute(`
+                SELECT COUNT(*)
+                FROM COMMENTT C
+                WHERE C.THREAD_ID = :threadid
+            `, [Number(obj.threadid)])).rows[0][0]
+
+            const io = req.io
+
+            io.emit("newComment", {
+                commentid,
+                commentBody: obj.commentBody,
+                username: obj.username,
+                userimage: obj.userimage,
+                threadid: Number(obj.threadid),
+                parent: parentCommentId,
+                depth: Number(obj.depth),
+                total,
+            })
+
+            res.json({successful: true})
         }
 
     } else {

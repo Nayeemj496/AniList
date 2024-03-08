@@ -159,8 +159,9 @@ a {
 .comment-wrap {
     display: flex;
     flex-direction: row;
-    background-color: #151F2E;
+    /* background-color: #151F2E; */
     border-radius: 4px;
+    margin-bottom: 20px;
 }
 
 .collapse {

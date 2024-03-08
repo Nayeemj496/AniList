@@ -25,11 +25,26 @@
             let months = Math.floor(days / 30);
             let years = Math.floor(months / 12);
 
-            if (years) timeString += `${years} years ago`;
-            else if (months) timeString += `${months} months ago`;
-            else if (days) timeString += `${days} days ago`;
-            else if (hours) timeString += `${hours} hours ago`;
-            else if (minutes) timeString += `${minutes} minutes ago`;
+            if (years) {
+                if(years == 1) timeString += `${years} year ago`;
+                else timeString += `${years} years ago`;
+            }
+            else if (months) {
+                if(months == 1) timeString += `${months} month ago`;
+                else timeString += `${months} months ago`;
+            }
+            else if (days) {
+                if(days == 1) timeString += `${days} day ago`;
+                else timeString += `${days} days ago`;
+            }
+            else if (hours) {
+                if(hours == 1) timeString += `${hours} hour ago`;
+                else timeString += `${hours} hours ago`;
+            }
+            else if (minutes) {
+                if(minutes == 1) timeString += `${minutes} minute ago`;
+                else timeString += `${minutes} minutes ago`;
+            }
             else timeString += `${seconds} seconds ago`;
 
             return timeString;
@@ -58,7 +73,7 @@
 
         <% comments.forEach(comment => { %>
             <% if(depth % 2 == 0) { %>
-                <div class="comment-wrap">
+                <div class="comment-wrap" style="background-color: rgb(21, 31, 46);" id="comment-<%=comment.commentId%>" depth="<%=depth%>">
                     <div class="collapse"></div>
                     <div class="grow">
                         <div class="comment">
@@ -70,7 +85,7 @@
                                 <div class="username"><%=comment.userName%></div>
                                 <div class="timee"><%=relativeTime(comment.dateOfCreation)%></div>
 
-                                <div class="comment-link" onclick="openCommentEditor(5)">
+                                <div class="comment-link" onclick="openCommentEditor('<%=comment.commentId%>')">
                                     <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="reply" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                         <path data-v-20438142="" fill="currentColor" d="M8.309 189.836L184.313 37.851C199.719 24.546 224 35.347 224 56.015v80.053c160.629 1.839 288 34.032 288 186.258 0 61.441-39.581 122.309-83.333 154.132-13.653 9.931-33.111-2.533-28.077-18.631 45.344-145.012-21.507-183.51-176.59-185.742V360c0 20.7-24.3 31.453-39.687 18.164l-176.004-152c-11.071-9.562-11.086-26.753 0-36.328z">
                                         </path>
@@ -89,13 +104,15 @@
                             <div class="children">
                                 <% renderComments(comment.children, depth + 1); %>
                             </div>
+                        <% } else { %>
+                            <div class="children"></div>
                         <% } %>
 
                     </div>
                     
                 </div>
             <% } else { %>
-                <div class="comment-wrap" style="background-color: #151F2E;">
+                <div class="comment-wrap" style="background-color: rgb(11, 22, 34);" id="comment-<%=comment.commentId%>" depth="<%=depth%>">
                     <div class="collapse"></div>
                     <div class="grow">
                         <div class="comment">
@@ -107,7 +124,7 @@
                                 <div class="username"><%=comment.userName%></div>
                                 <div class="timee"><%=relativeTime(comment.dateOfCreation)%></div>
 
-                                <div class="comment-link" onclick="openCommentEditor(5)">
+                                <div class="comment-link" onclick="openCommentEditor('<%=comment.commentId%>')">
                                     <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="reply" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                         <path data-v-20438142="" fill="currentColor" d="M8.309 189.836L184.313 37.851C199.719 24.546 224 35.347 224 56.015v80.053c160.629 1.839 288 34.032 288 186.258 0 61.441-39.581 122.309-83.333 154.132-13.653 9.931-33.111-2.533-28.077-18.631 45.344-145.012-21.507-183.51-176.59-185.742V360c0 20.7-24.3 31.453-39.687 18.164l-176.004-152c-11.071-9.562-11.086-26.753 0-36.328z">
                                         </path>
@@ -126,6 +143,8 @@
                             <div class="children">
                                 <% renderComments(comment.children, depth + 1); %>
                             </div>
+                        <% } else { %>
+                            <div class="children"></div>
                         <% } %>
 
                     </div>
@@ -188,13 +207,21 @@
                                 class=""></path>
                         </svg>
                     </div>
-                    <div class="comment" onclick="openCommentEditor(0)">Comment</div>
+                    <div class="comment" onclick="openCommentEditor(null)">Comment</div>
                 </div>
             </div>
         </div>
 
         <div>
-            <div class="comments-header"><%=thread.COMMENT_COUNT%> Replies</div>
+            <div class="comments-header">
+                <% if(thread.COMMENT_COUNT) { %>
+                    <%=thread.COMMENT_COUNT%> Replies
+                <% } else if(thread.COMMENT_COUNT === 1) { %>
+                    <%=thread.COMMENT_COUNT%> Reply
+                <% } else { %>
+                    <%=thread.COMMENT_COUNT%> Replies
+                <% } %>
+            </div>
 
             <div class="comments">
 
@@ -207,7 +234,7 @@
 
     <div class="comment-editor-wrapper">
         <div class="comment-editor">
-            <textarea name="" id="" cols="30" rows="10" placeholder="Write comment"></textarea>
+            <textarea id="" cols="30" rows="10" placeholder="Write comment"></textarea>
             <div class="actions">
                 <button class="close" onclick="closeCommentEditor()">Close</button>
                 <button class="send" onclick="sendComment()">Send</button>
@@ -275,10 +302,12 @@
             }
         }
     </script>
+    <script src="/socket.io/socket.io.js"></script>
     <script>
         const commentEditor = document.querySelector(".comment-editor-wrapper")
         const closeBtn = document.querySelector(".actions .close")
         const sendBtn = document.querySelector(".actions .send")
+        const comment = document.querySelector(".comment-editor-wrapper div textarea")
 
         function openCommentEditor(id) {
             commentEditor.id = id
@@ -291,10 +320,152 @@
             commentEditor.classList.remove("active")
         }
         
+        function relativeTime(date) {
+            let time = new Date() - date;
+            let timeString = "";
 
-        function sendComment() {
-            console.log("sendComment: ", commentEditor.id)
+            let seconds = Math.floor(time / 1000);
+            let minutes = Math.floor(seconds / 60);
+            let hours = Math.floor(minutes / 60);
+            let days = Math.floor(hours / 24);
+            let months = Math.floor(days / 30);
+            let years = Math.floor(months / 12);
+
+            if (years) {
+                if(years == 1) timeString += `${years} year ago`;
+                else timeString += `${years} years ago`;
+            }
+            else if (months) {
+                if(months == 1) timeString += `${months} month ago`;
+                else timeString += `${months} months ago`;
+            }
+            else if (days) {
+                if(days == 1) timeString += `${days} day ago`;
+                else timeString += `${days} days ago`;
+            }
+            else if (hours) {
+                if(hours == 1) timeString += `${hours} hour ago`;
+                else timeString += `${hours} hours ago`;
+            }
+            else if (minutes) {
+                if(minutes == 1) timeString += `${minutes} minute ago`;
+                else timeString += `${minutes} minutes ago`;
+            }
+            else timeString += `${seconds} seconds ago`;
+
+            return timeString;
         }
+
+        let username = "<%=username%>"
+        let userimage = "<%=userimage%>"
+
+        async function sendComment() {
+            console.log("sendComment: ", commentEditor.id)
+            let commentBody = comment.value
+            comment.value = ""
+
+            let url = "http://localhost:8080/forum/thread/<%=thread.THREAD_ID%>"
+
+            let depth = -1;
+
+            if(commentEditor.id != "null") {
+                let ID = `#comment-${commentEditor.id}`
+                let parentComment = document.querySelector(ID)
+                depth = parentComment.getAttribute("depth")
+            }
+            
+            
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json"
+                },
+                body: JSON.stringify({
+                    type: "comment",
+                    commentBody,
+                    threadid: "<%=thread.THREAD_ID%>",
+                    username: "<%=username%>",
+                    userimage: "<%=userimage%>",
+                    parentCommentId: commentEditor.id === "null" ? null : commentEditor.id,
+                    depth,
+                })
+            })
+
+            const data = await response.json()
+            console.log(data)
+            closeCommentEditor() 
+        }
+
+        const socket = io()
+
+        socket.on("newComment", message => {
+
+            const newCommentWrap = document.createElement('div');
+
+            newCommentWrap.classList.add("comment-wrap")
+
+            const content = `
+                <div class="collapse"></div>
+                    <div class="grow">
+                        <div class="comment">
+                            <div class="header-margin">
+                                <a href="/user/${message.username}">
+                                    <img src="${message.userimage}" alt="">
+                                </a>
+                                <div class="username">${message.username}</div>
+                                <div class="timee">${relativeTime(new Date())}</div>
+
+                                <div class="comment-link" onclick="openCommentEditor(${message.commentid})">
+                                    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="reply" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                        <path data-v-20438142="" fill="currentColor" d="M8.309 189.836L184.313 37.851C199.719 24.546 224 35.347 224 56.015v80.053c160.629 1.839 288 34.032 288 186.258 0 61.441-39.581 122.309-83.333 154.132-13.653 9.931-33.111-2.533-28.077-18.631 45.344-145.012-21.507-183.51-176.59-185.742V360c0 20.7-24.3 31.453-39.687 18.164l-176.004-152c-11.071-9.562-11.086-26.753 0-36.328z">
+                                        </path>
+                                    </svg>
+                                </div>
+
+                            </div>
+
+                            <div class="comment-description">
+                                    ${message.commentBody}
+                            </div>
+
+                        </div>
+
+                        <div class="children">
+                            
+                        </div>
+
+                    </div>
+            `
+
+            newCommentWrap.innerHTML = content
+            newCommentWrap.setAttribute("depth", message.depth + 1)
+            const childcommentid = `comment-${message.commentid}`
+            newCommentWrap.setAttribute("id", childcommentid)
+
+            if(message.depth % 2 === 0) {
+                newCommentWrap.style.backgroundColor = "rgb(11, 22, 34)"
+            } else {    
+                newCommentWrap.style.backgroundColor = "rgb(21, 31, 46)"
+            }
+
+            const replySection = document.querySelector(".comments-header")
+
+            if(message.parent === null) {
+                const comments = document.querySelector(".comments")
+                comments.appendChild(newCommentWrap)
+                message.total === 1 ? replySection.innerHTML = `${message.total} reply` : replySection.innerHTML = `${message.total} replies`
+            } else {
+                const ID = `#comment-${message.parent} .grow .children`
+                const parentComment = document.querySelector(ID)
+
+                console.log(ID, parentComment)
+
+                parentComment.appendChild(newCommentWrap)
+                message.total === 1 ? replySection.innerHTML = `${message.total} reply` : replySection.innerHTML = `${message.total} replies`
+            }  
+        })
+
     </script>
 </body>
 
