@@ -720,6 +720,41 @@ const userHomeControllerGET = async (req, res) => {
   }
 };
 
+const userSocialControllerGET = async (req, res) => {
+  console.log("in the userSocialControllerGET")
+  console.log(req.url, req.method)
+  console.log(req.params)
+
+  const connection = await connect();
+
+  let username = req.params.name
+
+  let userid = (await connection.execute(`
+    SELECT USER_ID 
+    FROM USERR U
+    WHERE U.USERNAME = :username
+  `, [username])).rows[0][0]
+
+  const subscribedThreads = (
+    await connection.execute(threadQuery.sqlSubscribedThread, [userid], {
+      outFormat: oracledb.OUT_FORMAT_OBJECT,
+    })
+  ).rows;
+
+  await connection.close();
+
+  if (req.session.user) {
+    res.render("forum_subscribed", {
+      subscribedThreads,
+      isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
+      userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
+      username: req.session.user.USERNAME,
+    });
+  } else {
+    res.redirect("/login");
+  }
+}
+
 const userSettingsControllerGET = async (req, res) => {
   console.log("in the userSettingsController");
   console.log(req.url, req.method);
@@ -855,6 +890,7 @@ module.exports = {
   userAnimeListControllerGET,
   userMangaListControllerGET,
   userHomeControllerGET,
+  userSocialControllerGET,
   userSettingsControllerGET,
   userSettingsControllerPOST,
 };

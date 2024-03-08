@@ -25,11 +25,26 @@
             let months = Math.floor(days / 30);
             let years = Math.floor(months / 12);
 
-            if (years) timeString += `${years} years ago`;
-            else if (months) timeString += `${months} months ago`;
-            else if (days) timeString += `${days} days ago`;
-            else if (hours) timeString += `${hours} hours ago`;
-            else if (minutes) timeString += `${minutes} minutes ago`;
+            if (years) {
+                if(years == 1) timeString += `${years} year ago`;
+                else timeString += `${years} years ago`;
+            }
+            else if (months) {
+                if(months == 1) timeString += `${months} month ago`;
+                else timeString += `${months} months ago`;
+            }
+            else if (days) {
+                if(days == 1) timeString += `${days} day ago`;
+                else timeString += `${days} days ago`;
+            }
+            else if (hours) {
+                if(hours == 1) timeString += `${hours} hour ago`;
+                else timeString += `${hours} hours ago`;
+            }
+            else if (minutes) {
+                if(minutes == 1) timeString += `${minutes} minute ago`;
+                else timeString += `${minutes} minutes ago`;
+            }
             else timeString += `${seconds} seconds ago`;
 
             return timeString;
@@ -139,7 +154,9 @@
                                     <div class="categories">
                                         <% if(categories) { %>
                                             <% for(let i = 0; i < categories.length; ++i) { %>
+                                                <% if(i < 3) { %>
                                                 <span class="category" style="background-color: <%=getColor(categories[i])%>"><%=categories[i].toLowerCase()%></span>
+                                                <% } %>
                                             <% } %>
                                         <% } %>
                                         
@@ -226,7 +243,9 @@
                                     <div class="categories">
                                         <% if(categories) { %>
                                             <% for(let i = 0; i < categories.length; ++i) { %>
+                                                <% if(i < 3) { %>
                                                 <span class="category" style="background-color: <%=getColor(categories[i])%>"><%=categories[i].toLowerCase()%></span>
+                                                <% } %>
                                             <% } %>
                                         <% } %>
                                         

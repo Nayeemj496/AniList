@@ -110,6 +110,7 @@ webRouter.get(
     "/user/:name/manga/reviews",
     reviewController.userMangaReviewControllerGET
 );
+webRouter.get("/user/:name/social", userController.userSocialControllerGET)
 
 
 // review individual
