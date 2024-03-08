@@ -51,6 +51,7 @@ const characterControllerGET = async (req, res) => {
     await connection.close()
 
     if(req.session.user) {
+        
         res.render("character", {
             character: characters[0],
             isLiked,

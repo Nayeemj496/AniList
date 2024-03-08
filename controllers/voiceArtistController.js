@@ -61,6 +61,7 @@ const voiceArtistControllerGET = async (req, res) => {
     await connection.close()
 
     if(req.session.user) {
+        
         res.render("voice_artist", {
             voiceArtist: voiceArtists[0],
             isLiked,
