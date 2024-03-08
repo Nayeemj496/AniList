@@ -157,6 +157,8 @@ const userProfileControllerGET = async (req, res) => {
     )
   ).rows;
 
+
+
   for (let i = 0; i < animeActivities.length; ++i) {
 
     let time = new Date() - animeActivities[i].DATE_OF_CREATION;
@@ -169,12 +171,22 @@ const userProfileControllerGET = async (req, res) => {
     let months = Math.floor(days / 30);
     let years = Math.floor(months / 12);
 
-    if (years) timeString += `${years} years ago`;
-    else if (months) timeString += `${months} months ago`;
-    else if (days) timeString += `${days} days ago`;
-    else if (hours) timeString += `${hours} hours ago`;
-    else if (minutes) timeString += `${minutes} minutes ago`;
-    else timeString += `${seconds} seconds ago`;
+    if (years) {
+      if (years == 1) timeString += `${years} year ago`;
+      else timeString += `${years} years ago`;
+    } else if (months) {
+      if (months == 1) timeString += `${months} month ago`;
+      else timeString += `${months} months ago`;
+    } else if (days) {
+      if (days == 1) timeString += `${days} day ago`;
+      else timeString += `${days} days ago`;
+    } else if (hours) {
+      if (hours == 1) timeString += `${hours} hour ago`;
+      else timeString += `${hours} hours ago`;
+    } else if (minutes) {
+      if (minutes == 1) timeString += `${minutes} minute ago`;
+      else timeString += `${minutes} minutes ago`;
+    } else timeString += `${seconds} seconds ago`;
 
     animeActivities[i].time = timeString;
     animeActivities[i].type = "ANIME";
@@ -209,12 +221,22 @@ const userProfileControllerGET = async (req, res) => {
     let months = Math.floor(days / 30);
     let years = Math.floor(months / 12);
 
-    if (years) timeString += `${years} years ago`;
-    else if (months) timeString += `${months} months ago`;
-    else if (days) timeString += `${days} days ago`;
-    else if (hours) timeString += `${hours} hours ago`;
-    else if (minutes) timeString += `${minutes} minutes ago`;
-    else timeString += `${seconds} seconds ago`;
+    if (years) {
+      if (years == 1) timeString += `${years} year ago`;
+      else timeString += `${years} years ago`;
+    } else if (months) {
+      if (months == 1) timeString += `${months} month ago`;
+      else timeString += `${months} months ago`;
+    } else if (days) {
+      if (days == 1) timeString += `${days} day ago`;
+      else timeString += `${days} days ago`;
+    } else if (hours) {
+      if (hours == 1) timeString += `${hours} hour ago`;
+      else timeString += `${hours} hours ago`;
+    } else if (minutes) {
+      if (minutes == 1) timeString += `${minutes} minute ago`;
+      else timeString += `${minutes} minutes ago`;
+    } else timeString += `${seconds} seconds ago`;
 
     mangaActivities[i].time = timeString;
     mangaActivities[i].type = "MANGA"
@@ -551,12 +573,22 @@ const userHomeControllerGET = async (req, res) => {
     let months = Math.floor(days / 30);
     let years = Math.floor(months / 12);
 
-    if (years) timeString += `${years} years ago`;
-    else if (months) timeString += `${months} months ago`;
-    else if (days) timeString += `${days} days ago`;
-    else if (hours) timeString += `${hours} hours ago`;
-    else if (minutes) timeString += `${minutes} minutes ago`;
-    else timeString += `${seconds} seconds ago`;
+    if (years) {
+      if (years == 1) timeString += `${years} year ago`;
+      else timeString += `${years} years ago`;
+    } else if (months) {
+      if (months == 1) timeString += `${months} month ago`;
+      else timeString += `${months} months ago`;
+    } else if (days) {
+      if (days == 1) timeString += `${days} day ago`;
+      else timeString += `${days} days ago`;
+    } else if (hours) {
+      if (hours == 1) timeString += `${hours} hour ago`;
+      else timeString += `${hours} hours ago`;
+    } else if (minutes) {
+      if (minutes == 1) timeString += `${minutes} minute ago`;
+      else timeString += `${minutes} minutes ago`;
+    } else timeString += `${seconds} seconds ago`;
 
     animeActivities[i].time = timeString;
     animeActivities[i].type = "ANIME";
@@ -595,12 +627,22 @@ const userHomeControllerGET = async (req, res) => {
     let months = Math.floor(days / 30);
     let years = Math.floor(months / 12);
 
-    if (years) timeString += `${years} years ago`;
-    else if (months) timeString += `${months} months ago`;
-    else if (days) timeString += `${days} days ago`;
-    else if (hours) timeString += `${hours} hours ago`;
-    else if (minutes) timeString += `${minutes} minutes ago`;
-    else timeString += `${seconds} seconds ago`;
+    if (years) {
+      if (years == 1) timeString += `${years} year ago`;
+      else timeString += `${years} years ago`;
+    } else if (months) {
+      if (months == 1) timeString += `${months} month ago`;
+      else timeString += `${months} months ago`;
+    } else if (days) {
+      if (days == 1) timeString += `${days} day ago`;
+      else timeString += `${days} days ago`;
+    } else if (hours) {
+      if (hours == 1) timeString += `${hours} hour ago`;
+      else timeString += `${hours} hours ago`;
+    } else if (minutes) {
+      if (minutes == 1) timeString += `${minutes} minute ago`;
+      else timeString += `${minutes} minutes ago`;
+    } else timeString += `${seconds} seconds ago`;
 
     mangaActivities[i].time = timeString;
     mangaActivities[i].type = "MANGA";
@@ -698,6 +740,8 @@ const userHomeControllerGET = async (req, res) => {
       outFormat: oracledb.OUT_FORMAT_OBJECT,
     })
   ).rows;
+
+  console.log(recentThreads)
 
   await connection.close();
 
