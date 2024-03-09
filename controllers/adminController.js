@@ -6,7 +6,7 @@ const adminControllerGET = async (req, res) => {
   console.log("in the adminControllerAddGET");
   console.log(req.url, req.method);
 
-  if (req.session.user) {
+  if (req.session.user && req.session.user.ROLE === "ADMIN") {
     res.render("admin", {
       isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
       userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
@@ -21,7 +21,7 @@ const adminAddAnimeControllerGET = async (req, res) => {
   console.log("in the adminAddAnimeControllerGET");
   console.log(req.url, req.method);
 
-  if (req.session.user) {
+  if (req.session.user && req.session.user.ROLE === "ADMIN") {
     res.render("admin_add_anime", {
       isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
       userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
@@ -57,7 +57,7 @@ const sqlforinsertingstaff = `
 const adminAddAnimeControllerPOST = async (req, res) => {
   console.log("in the adminAddAnimeControllerPOST");
   console.log(req.url, req.method);
-  if (req.session.user) {
+  if (req.session.user && req.session.user.ROLE === "ADMIN") {
     const connection = await connect();
     const existingAnime = await connection.execute(
       `SELECT * FROM ANIME WHERE ROMAJI = :romaji OR ENGLISH = :english`,
@@ -125,7 +125,7 @@ const adminAddMangaControllerGET = async (req, res) => {
   console.log("in the adminAddMangaControllerGET");
   console.log(req.url, req.method);
 
-  if (req.session.user) {
+  if (req.session.user && req.session.user.ROLE === "ADMIN") {
     res.render("admin_add_manga", {
       isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
       userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
@@ -139,7 +139,7 @@ const adminAddMangaControllerGET = async (req, res) => {
 const adminAddMangaControllerPOST = async (req, res) => {
   console.log("in the adminAddMangaControllerPOST");
   console.log(req.url, req.method);
-  if (req.session.user) {
+  if (req.session.user && req.session.user.ROLE === "ADMIN") {
     const connection = await connect();
     const existingManga = await connection.execute(
       `SELECT * FROM MANGA WHERE ROMAJI = :romaji OR ENGLISH = :english`,
@@ -408,7 +408,7 @@ const adminUpdateAnimeControllerPOST = async (req, res) => {
 const adminUpdateAnimeCharacterControllerGET = async (req, res) => {
   console.log("in the adminUpdateAnimeCharacterControllerGET");
   console.log(req.url, req.method);
-  if (req.session.user) {
+  if (req.session.user && req.session.user.ROLE === "ADMIN") {
     res.render("admin_add_character", {
       isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
       userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
@@ -422,7 +422,7 @@ const adminUpdateAnimeCharacterControllerGET = async (req, res) => {
 const adminUpdateAnimeCharacterControllerPOST = async (req, res) => {
   console.log("in the adminUpdateAnimeCharacterControllerPOST");
   console.log(req.url, req.method);
-  if (req.session.user) {
+  if (req.session.user && req.session.user.ROLE === "ADMIN") {
     const connection = await connect();
     const existingcharacter = await connection.execute(
       `SELECT * FROM CHARACTER WHERE FULL_NAME = :fullname`,
@@ -506,10 +506,11 @@ const adminUpdateAnimeCharacterControllerPOST = async (req, res) => {
     res.redirect("/login");
   }
 };
+
 const adminUpdateAnimeCharacterVAControllerGET = async (req, res) => {
   console.log("in the adminUpdateAnimeCharacterVAControllerGET");
   console.log(req.url, req.method);
-  if (req.session.user) {
+  if (req.session.user && req.session.user.ROLE === "ADMIN") {
     res.render("admin_add_va", {
       isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
       userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
@@ -519,10 +520,11 @@ const adminUpdateAnimeCharacterVAControllerGET = async (req, res) => {
     res.redirect("/login");
   }
 };
+
 const adminUpdateAnimeCharacterVAControllerPOST = async (req, res) => {
   console.log("in the adminUpdateAnimeCharacterVAControllerPOST");
   console.log(req.url, req.method);
-  if (req.session.user) {
+  if (req.session.user && req.session.user.ROLE === "ADMIN") {
     const connection = await connect();
     const existingva = await connection.execute(
       `SELECT * FROM VOICE_ARTIST WHERE FULL_NAME = :fullname`,
@@ -635,7 +637,7 @@ const adminUpdateAnimeCharacterVAControllerPOST = async (req, res) => {
 const adminUpdateAnimeStaffControllerGET = async (req, res) => {
   console.log("in the adminUpdateAnimeStaffControllerGET");
   console.log(req.url, req.method);
-  if (req.session.user) {
+  if (req.session.user && req.session.user.ROLE === "ADMIN") {
     res.render("admin_add_staff", {
       isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
       userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
@@ -649,7 +651,7 @@ const adminUpdateAnimeStaffControllerGET = async (req, res) => {
 const adminUpdateAnimeStaffControllerPOST = async (req, res) => {
   console.log("in the adminUpdateAnimeStaffControllerPOST");
   console.log(req.url, req.method);
-  if (req.session.user) {
+  if (req.session.user && req.session.user.ROLE === "ADMIN") {
     const connection = await connect();
     const existingstaff = await connection.execute(
       `SELECT * FROM STAFF WHERE FULL_NAME = :fullname`,
@@ -822,7 +824,7 @@ const adminUpdateAnimeStaffControllerPOST = async (req, res) => {
 const adminUpdateAnimeStaffStudioProducerControllerGET = async (req, res) => {
   console.log("in the adminUpdateAnimeStaffStudioProducerControllerGET");
   console.log(req.url, req.method);
-  if (req.session.user) {
+  if (req.session.user && req.session.user.ROLE === "ADMIN") {
     res.render("admin_add_studio_producer", {
       isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
       userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
@@ -836,7 +838,7 @@ const adminUpdateAnimeStaffStudioProducerControllerGET = async (req, res) => {
 const adminUpdateAnimeStaffStudioProducerControllerPOST = async (req, res) => {
   console.log("in the adminUpdateAnimeStaffStudioProducerControllerPOST");
   console.log(req.url, req.method);
-  if (req.session.user) {
+  if (req.session.user && req.session.user.ROLE === "ADMIN") {
     const connection = await connect();
     const existingstudio = await connection.execute(
       `SELECT * FROM STUDIO WHERE STUDIO_NAME = :studioname`,
@@ -1030,7 +1032,7 @@ const adminUpdateAnimeStaffStudioProducerControllerPOST = async (req, res) => {
 const adminUpdateMangaControllerGET = async (req, res) => {
   console.log("in the adminUpdateMangaControllerGET");
   console.log(req.url, req.method);
-  if (req.session.user) {
+  if (req.session.user && req.session.user.ROLE === "ADMIN") {
     res.render("admin_update_manga", {
       isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
       userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
@@ -1225,7 +1227,7 @@ const adminUpdateMangaControllerPOST = async (req, res) => {
 const adminDeleteAnimeControllerGET = async (req, res) => {
   console.log("in the adminDeleteAnimeControllerGET");
   console.log(req.url, req.method);
-  if (req.session.user) {
+  if (req.session.user && req.session.user.ROLE === "ADMIN") {
     res.render("admin_delete_anime", {
       isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
       userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
@@ -1280,7 +1282,7 @@ const adminDeleteAnimeControllerPOST = async (req, res) => {
 const adminDeleteMangaControllerGET = async (req, res) => {
   console.log("in the adminDeleteMangaControllerGET");
   console.log(req.url, req.method);
-  if (req.session.user) {
+  if (req.session.user && req.session.user.ROLE === "ADMIN") {
     res.render("admin_delete_manga", {
       isAdmin: req.session.user.ROLE === "ADMIN" ? true : false,
       userimage: req.session.user.USER_IMAGE || "/images/photos/user.png",
@@ -1331,7 +1333,6 @@ const adminDeleteMangaControllerPOST = async (req, res) => {
   }
 };
 
-
 const adminDatabaseLogControllerGET = async (req, res) => {
   console.log("in the adminDatabaseLogControllerGET");
   console.log(req.url, req.method);
@@ -1363,6 +1364,7 @@ const adminDatabaseLogControllerGET = async (req, res) => {
     res.redirect("/login");
   }
 };
+
 
 module.exports = {
   adminControllerGET,
