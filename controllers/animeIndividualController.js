@@ -30,7 +30,7 @@ const animeIndividualControllerGET = async (req, res) => {
       }
     )
   ).rows;
-
+  
   req.session.anime.banner = animes[0].BANNER_IMAGE;
 
   // genres

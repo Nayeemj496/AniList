@@ -109,7 +109,7 @@ const adminAddAnimeControllerPOST = async (req, res) => {
         source: req.body.source,
         coverimage: req.body.coverimage,
         coverimagecolor: req.body.coverimagecolor,
-        bannerimage: req.body.bannerimage,
+        bannerimage: req.body.bannerimage || "/images/photos/default_background_image.jpg",
         animeurl: req.body.animeurl,
         mangaid: null,
       });
@@ -186,7 +186,8 @@ const adminAddMangaControllerPOST = async (req, res) => {
         source: req.body.source,
         coverimage: req.body.coverimage,
         coverimagecolor: req.body.coverimagecolor,
-        bannerimage: req.body.bannerimage,
+        bannerimage:
+          req.body.bannerimage || "/images/photos/default_background_image.jpg",
         mangaurl: req.body.mangaurl,
       });
       await connection.commit();
