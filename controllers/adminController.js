@@ -122,8 +122,8 @@ const adminAddAnimeControllerPOST = async (req, res) => {
 };
 
 const adminAddMangaControllerGET = async (req, res) => {
-  console.log("in the adminAddMangaControllerGET");
-  console.log(req.url, req.method);
+    console.log("in the adminAddMangaControllerGET");
+    console.log(req.url, req.method);
 
   if (req.session.user && req.session.user.ROLE === "ADMIN") {
     res.render("admin_add_manga", {
@@ -1335,8 +1335,8 @@ const adminDeleteMangaControllerPOST = async (req, res) => {
 };
 
 const adminDatabaseLogControllerGET = async (req, res) => {
-  console.log("in the adminDatabaseLogControllerGET");
-  console.log(req.url, req.method);
+    console.log("in the adminDatabaseLogControllerGET");
+    console.log(req.url, req.method);
 
   if (req.session.user && req.session.user.ROLE === "ADMIN") {
     const connection = await connect();
@@ -1365,7 +1365,6 @@ const adminDatabaseLogControllerGET = async (req, res) => {
     res.redirect("/login");
   }
 };
-
 
 module.exports = {
   adminControllerGET,
