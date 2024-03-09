@@ -185,18 +185,64 @@ searchRouter.post("/staff", searchStaffController.searchStaffControllerPOST);
 
 // work in progress
 adminRouter.get("/", adminController.adminControllerGET);
-adminRouter.get("/add/anime", adminController.adminAddAnimeControllerGET)
-adminRouter.post("/add/anime", adminController.adminAddAnimeControllerPOST)
+adminRouter.get("/add/anime", adminController.adminAddAnimeControllerGET);
+adminRouter.post("/add/anime", adminController.adminAddAnimeControllerPOST);
 adminRouter.get("/add/manga", adminController.adminAddMangaControllerGET);
 adminRouter.post("/add/manga", adminController.adminAddMangaControllerPOST);
 adminRouter.get("/update/anime", adminController.adminUpdateAnimeControllerGET);
-adminRouter.post("/update/anime", adminController.adminUpdateAnimeControllerPOST);
+adminRouter.post(
+    "/update/anime",
+    adminController.adminUpdateAnimeControllerPOST
+);
+adminRouter.get(
+    "/update/anime/character",
+    adminController.adminUpdateAnimeCharacterControllerGET
+);
+adminRouter.post(
+    "/update/anime/character",
+    adminController.adminUpdateAnimeCharacterControllerPOST
+);
+adminRouter.get(
+    "/update/anime/character/va",
+    adminController.adminUpdateAnimeCharacterVAControllerGET
+);
+adminRouter.post(
+    "/update/anime/character/va",
+    adminController.adminUpdateAnimeCharacterVAControllerPOST
+);
+adminRouter.get(
+    "/update/anime/staff",
+    adminController.adminUpdateAnimeStaffControllerGET
+);
+adminRouter.post(
+    "/update/anime/staff",
+    adminController.adminUpdateAnimeStaffControllerPOST
+);
+adminRouter.get(
+    "/update/anime/staff/studioproducer",
+    adminController.adminUpdateAnimeStaffStudioProducerControllerGET
+);
+adminRouter.post(
+    "/update/anime/staff/studioproducer",
+    adminController.adminUpdateAnimeStaffStudioProducerControllerPOST
+);
 adminRouter.get("/update/manga", adminController.adminUpdateMangaControllerGET);
-adminRouter.post("/update/manga", adminController.adminUpdateMangaControllerPOST);
+adminRouter.post(
+    "/update/manga",
+    adminController.adminUpdateMangaControllerPOST
+);
+
 adminRouter.get("/delete/anime", adminController.adminDeleteAnimeControllerGET);
-adminRouter.post("/delete/anime", adminController.adminDeleteAnimeControllerPOST);
+adminRouter.post(
+    "/delete/anime",
+    adminController.adminDeleteAnimeControllerPOST
+);
+
 adminRouter.get("/delete/manga", adminController.adminDeleteMangaControllerGET);
-adminRouter.post("/delete/manga", adminController.adminDeleteMangaControllerPOST);
+adminRouter.post(
+    "/delete/manga",
+    adminController.adminDeleteMangaControllerPOST
+);
 adminRouter.get("/log", adminController.adminDatabaseLogControllerGET)
 
 

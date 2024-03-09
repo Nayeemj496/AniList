@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Admin Add Studio & Producer &#183; AniList</title>
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://anilist.co/img/icons/favicon-32x32.png"
+    />
+    <link rel="stylesheet" href="/styles/add.css">
+    <link rel="stylesheet" href="/styles/media_individual.css" />
+    <style>
+      .a-style {
+        text-decoration: none;
+        color: #a0b1c5;
+        font-size: 14px;
+      }
+
+      input {
+        background-color: #151d2e;
+      }
+    </style>
+
+    <style>
+        .btn {
+            display: block;
+            width: 100px;
+            height: 36px;
+            text-align: center;
+            background-color: #3577FF;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #fff;
+            text-decoration: none;
+            margin-top: 50px;
+        }
+    </style>
+
+  </head>
+
+  <body>
+    <%-include("navcontainer.ejs", { isAdmin, userimage, username }) %>
+
+        <div class="addContainer">
+        <form action="/admin/update/anime/staff/studioproducer" method="POST">
+            <div class="form-group">
+                <label for="animename">Anime Name</label>
+                <input type="text" class="form-control" id="animename" name="animename" >
+            </div>
+
+            <div class="form-group">
+                <label for="studio">Studio</label>
+                <input type="text" class="form-control" id="studio" name="studio" >
+            </div>
+
+            <div class="form-group">
+                <label for="producer1">Producer 1</label>
+                <input type="text" class="form-control" id="producer1" name="producer1" >
+            </div>
+
+            <div class="form-group">
+                <label for="producer2">Producer 2</label>
+                <input type="text" class="form-control" id="producer2" name="producer2" >
+            </div>
+
+            <div class="form-group">
+                <label for="producer3">Producer 3</label>
+                <input type="text" class="form-control" id="producer3" name="producer3" >
+            </div>
+
+            <div class="form-group">
+                <label for="producer4">Producer 4</label>
+                <input type="text" class="form-control" id="producer4" name="producer4" >
+            </div>
+
+            
+            <button type="submit" class="submit-add">Submit</button>
+        </form>
+    </div>
+    
+    
+
+    <script src="/scripts/tooltip.js"></script>
+  </body>
+</html>

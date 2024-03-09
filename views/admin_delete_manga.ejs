@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Delete Manga &#183; AniList</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="https://anilist.co/img/icons/favicon-32x32.png" />
+  <link rel="stylesheet" href="/styles/add.css" />
+  <link rel="stylesheet" href="/styles/media_individual.css" />
+  <style>
+    .a-style {
+      text-decoration: none;
+      color: #a0b1c5;
+      font-size: 14px;
+    }
+
+    input,
+    select {
+      background-color: #151d2e;
+    }
+  </style>
+
+  <style>
+    .btn {
+      display: block;
+      width: 100px;
+      height: 36px;
+      text-align: center;
+      background-color: #3577ff;
+      padding: 10px;
+      border-radius: 4px;
+      font-size: 13px;
+      color: #fff;
+      text-decoration: none;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+
+<body>
+  <%-include("navcontainer.ejs", { isAdmin, userimage, username }) %>
+
+    <div class="addContainer">
+      <form action="/admin/delete/manga" method="POST">
+        <div class="form-group">
+          <label for="english">Title (English)</label>
+          <input type="text" class="form-control" id="manga-title" name="title" />
+        </div>
+
+        <div class="form-group">
+          <select id="mangaTitles" name="selectManga">
+            <option value="">Select a manga</option>
+          </select>
+        </div>
+
+        <button type="submit" class="submit-add">Submit</button>
+      </form>
+    </div>
+
+    <script src="/scripts/tooltip.js"></script>
+    <script>
+      const title = document.querySelector("#manga-title");
+      const select = document.querySelector("#mangaTitles");
+
+      title.addEventListener("input", async (event) => {
+        console.log(event.target.value);
+
+        const response = await fetch(
+          "http://localhost:8080/admin/delete/manga",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            body: JSON.stringify({
+              title: event.target.value,
+              update: false,
+            }),
+          }
+        );
+
+        const mangaTitles = await response.json();
+
+        console.log(mangaTitles);
+
+        select.innerHTML = "<option value=''>Select a manga</option>";
+
+        let mangas = mangaTitles.mangaTitles
+
+        for (let i = 0; i < mangas.length; ++i) {
+          select.innerHTML += `<option value="${mangas[i].ENGLISH}">${mangas[i].ENGLISH}</option>`;
+        }
+
+      });
+    </script>
+</body>
+
+</html>

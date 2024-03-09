@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Admin Add Manga &#183; AniList</title>
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://anilist.co/img/icons/favicon-32x32.png"
+    />
+    <link rel="stylesheet" href="/styles/add.css">
+    <link rel="stylesheet" href="/styles/media_individual.css" />
+    <style>
+      .a-style {
+        text-decoration: none;
+        color: #a0b1c5;
+        font-size: 14px;
+      }
+
+      input {
+        background-color: #151d2e;
+      }
+    </style>
+
+    <style>
+        .btn {
+            display: block;
+            width: 100px;
+            height: 36px;
+            text-align: center;
+            background-color: #3577FF;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #fff;
+            text-decoration: none;
+            margin-top: 50px;
+        }
+    </style>
+
+  </head>
+
+  <body>
+    <%-include("navcontainer.ejs", { isAdmin, userimage, username }) %>
+
+<div class="addContainer">
+    <form action="/admin/add/manga" method="POST">
+        <div class="form-group">
+            <label for="english">Title (English)</label>
+            <input type="text" class="form-control" id="english" name="english" required>
+        </div>
+
+        <div class="form-group">
+            <label for="romaji">Title (Romaji)</label>
+            <input type="text" class="form-control" id="romaji" name="romaji" required>
+        </div>
+
+        <div class="form-group">
+            <label for="native">Title (Native)</label>
+            <input type="text" class="form-control" id="native" name="native">
+        </div>
+
+        <div class="form-group">
+            <label for="format">Format</label>
+            <input type="text" class="form-control" id="format" name="format" required>
+        </div>
+
+        <div class="form-group">
+            <label for="status">Status</label>
+            <input type="text" class="form-control" id="status" name="status" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="18" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="startdate">Start Date</label>
+            <input type="date" class="form-control" id="startdate" name="startdate" required>
+        </div>
+
+        <div class="form-group">
+            <label for="enddate">End Date</label>
+            <input type="date" class="form-control" id="enddate" name="enddate" >
+        </div>
+
+        <div class="form-group">
+            <label for="chapters">Chapters</label>
+            <input type="text" class="form-control" id="chapters" name="chapters">
+        </div>
+
+        <div class="form-group">
+            <label for="volumes">Volumes</label>
+            <input type="number" class="form-control" id="volumes" name="volumes" required>
+        </div>
+        
+
+        <div class="form-group">
+            <label for="origin">Country of Origin</label>
+            <input type="text" class="form-control" id="origin" name="origin" required>
+        </div>
+
+        <div class="form-group">
+            <label for="source">Source</label>
+            <input type="text" class="form-control" id="source" name="source" required>
+        </div>
+
+        <div class="form-group">
+            <label for="coverimage">Cover Image</label>
+            <textarea type="text" class="form-control" id="coverimage" name="coverimage" rows="10" required placeholder="paste url here..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="coverimagecolor">Cover Image Color</label>
+            <input type="text" class="form-control" id="coverimagecolor" name="coverimagecolor" placeholder="">
+        </div>
+
+        <div class="form-group">
+            <label for="bannerimage">Banner Image</label>
+            <input type="text" class="form-control" id="bannerimage" name="bannerimage" placeholder="paste url here...">
+        </div>
+
+        <div class="form-group">
+            <label for="mangaurl">Manga URL</label>
+            <input type="text" class="form-control" id="mangaurl" name="mangaurl"
+            placeholder="paste url here...">
+        </div>
+
+        
+        
+
+        <button type="submit" class="submit-add">Submit</button>
+    </form>
+</div>
+
+<script src="/scripts/tooltip.js"></script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>Forum - Create Thread · AniList</title>
+    <title>Forum - Anime & Manga Discussion · AniList</title>
     <link rel="icon" type="image/png" sizes="32x32" href="https://anilist.co/img/icons/favicon-32x32.png" />
     <link rel="stylesheet" href="/styles/media_individual.css" />
     <link rel="stylesheet" href="/styles/forum.css" />
@@ -251,7 +251,7 @@
                                         
                                         <% if(newThreads[i].ANIME_ID) { %>
                                             <span class="category" style="background-color: <%=getColor('anime')%>"><%=newThreads[i].ANIME_NAME%></span>
-                                        <% } else { %>
+                                        <% } else if(newThreads[i].MANGA_ID){ %>
                                             <span class="category" style="background-color: <%=getColor('manga')%>"><%=newThreads[i].MANGA_NAME%></span>
                                         <% } %>
                                     </div>

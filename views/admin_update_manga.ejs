@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Admin Update Anime &#183; AniList</title>
+  <title>Admin Update Manga &#183; AniList</title>
   <link rel="icon" type="image/png" sizes="32x32" href="https://anilist.co/img/icons/favicon-32x32.png" />
   <link rel="stylesheet" href="/styles/add.css" />
   <link rel="stylesheet" href="/styles/media_individual.css" />
@@ -41,15 +41,15 @@
   <%-include("navcontainer.ejs", { isAdmin, userimage, username }) %>
 
     <div class="addContainer">
-      <form action="/admin/update/anime" method="POST">
+      <form action="/admin/update/manga" method="POST">
         <div class="form-group">
           <label for="english">Title (English)</label>
-          <input type="text" class="form-control" id="anime-title" name="title" />
+          <input type="text" class="form-control" id="manga-title" name="title" />
         </div>
 
         <div class="form-group">
-          <select id="animeTitles" name="selectAnime">
-            <option value="">Select an anime</option>
+          <select id="mangaTitles" name="selectManga">
+            <option value="">Select a manga</option>
           </select>
         </div>
 
@@ -94,23 +94,13 @@
         </div>
 
         <div class="form-group">
-          <label for="season">Update Season</label>
-          <input type="text" class="form-control" id="season" name="season" />
+            <label for="chapters">Update Chapters</label>
+            <input type="text" class="form-control" id="chapters" name="chapters">
         </div>
 
         <div class="form-group">
-          <label for="episodes">Update Episodes</label>
-          <input type="number" class="form-control" id="episodes" name="episodes" />
-        </div>
-
-        <div class="form-group">
-          <label for="seasonyear">Update Season Year</label>
-          <input type="number" class="form-control" id="seasonyear" name="seasonyear" />
-        </div>
-
-        <div class="form-group">
-          <label for="duration">Update Duration(Mins)</label>
-          <input type="number" class="form-control" id="duration" name="duration" />
+            <label for="volumes">Update Volumes</label>
+            <input type="number" class="form-control" id="volumes" name="volumes">
         </div>
 
         <div class="form-group">
@@ -140,21 +130,9 @@
         </div>
 
         <div class="form-group">
-          <label for="animeurl">Update Anime URL</label>
-          <input type="text" class="form-control" id="animeurl" name="animeurl" placeholder="paste url here..." />
+          <label for="animeurl">Update Manga URL</label>
+          <input type="text" class="form-control" id="animeurl" name="mangaurl" placeholder="paste url here..." />
         </div>
-
-        <div class="form-group">
-          <a href="/admin/update/anime/character" class="btn">Add Character</a>
-          <!-- <label for="manga">Manga</label>
-          <input type="text" class="form-control" id="manga" name="manga"> -->
-      </div>
-
-      <div class="form-group">
-        <a href="/admin/update/anime/staff" class="btn">Add Staff</a>
-        <!-- <label for="manga">Manga</label>
-        <input type="text" class="form-control" id="manga" name="manga"> -->
-    </div>
 
         <button type="submit" class="submit-add">Submit</button>
       </form>
@@ -162,14 +140,14 @@
 
     <script src="/scripts/tooltip.js"></script>
     <script>
-      const title = document.querySelector("#anime-title");
-      const select = document.querySelector("#animeTitles");
+      const title = document.querySelector("#manga-title");
+      const select = document.querySelector("#mangaTitles");
 
       title.addEventListener("input", async (event) => {
         console.log(event.target.value);
 
         const response = await fetch(
-          "http://localhost:8080/admin/update/anime",
+          "http://localhost:8080/admin/update/manga",
           {
             method: "POST",
             headers: {
@@ -183,16 +161,16 @@
           }
         );
 
-        const animeTitles = await response.json();
+        const mangaTitles = await response.json();
 
-        console.log(animeTitles);
+        console.log(mangaTitles);
 
-        select.innerHTML = "<option value=''>Select an anime</option>";
+        select.innerHTML = "<option value=''>Select a manga</option>";
 
-        let animes = animeTitles.animeTitles
+        let mangas = mangaTitles.mangaTitles
 
-        for (let i = 0; i < animes.length; ++i) {
-          select.innerHTML += `<option value="${animes[i].ENGLISH}">${animes[i].ENGLISH}</option>`;
+        for (let i = 0; i < mangas.length; ++i) {
+          select.innerHTML += `<option value="${mangas[i].ENGLISH}">${mangas[i].ENGLISH}</option>`;
         }
 
       });

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Admin Add VoiceArtist &#183; AniList</title>
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://anilist.co/img/icons/favicon-32x32.png"
+    />
+    <link rel="stylesheet" href="/styles/add.css">
+    <link rel="stylesheet" href="/styles/media_individual.css" />
+    <style>
+      .a-style {
+        text-decoration: none;
+        color: #a0b1c5;
+        font-size: 14px;
+      }
+
+      input {
+        background-color: #151d2e;
+      }
+    </style>
+
+    <style>
+        .btn {
+            display: block;
+            width: 100px;
+            height: 36px;
+            text-align: center;
+            background-color: #3577FF;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #fff;
+            text-decoration: none;
+            margin-top: 50px;
+        }
+    </style>
+
+  </head>
+
+  <body>
+    <%-include("navcontainer.ejs", { isAdmin, userimage, username }) %>
+
+        <div class="addContainer">
+        <form action="/admin/update/anime/character/va" method="POST">
+            <div class="form-group">
+                <label for="character">Character Name</label>
+                <input type="text" class="form-control" id="character" name="character" >
+            </div>
+
+            <div class="form-group">
+                <label for="image">Image of VA</label>
+                <input type="text" class="form-control" id="image" name="image" >
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="18" ></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="fullname">Full Name</label>
+                <input type="text" class="form-control" id="fullname" name="fullname" >
+            </div>
+
+            <div class="form-group">
+                <label for="native">Native</label>
+                <input type="text" class="form-control" id="native" name="native">
+            </div>
+           
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <input type="text" class="form-control" id="gender" name="gender">
+            </div>
+        
+            <div class="form-group">
+                <label for="birthdate">Date of Birth</label>
+                <input type="date" class="form-control" id="birthdate" name="birthdate" >
+            </div>
+            
+            <div class="form-group">
+                <label for="deathdate">Date of Death</label>
+                <input type="date" class="form-control" id="deathdate" name="deathdate" >
+            </div>
+
+            <div class="form-group">
+                <label for="yearsactivestart">Years Active (Start)</label>
+                <input type="number" class="form-control" id="yearsactivestart" name="yearsactivestart">
+            </div>
+
+            <div class="form-group">
+                <label for="yearsactiveend">Years Active (End)</label>
+                <input type="number" class="form-control" id="yearsactiveend" name="yearsactiveend">
+            </div>
+            
+            <button type="submit" class="submit-add">Submit</button>
+        </form>
+    </div>
+    
+    
+
+    <script src="/scripts/tooltip.js"></script>
+  </body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Admin Add Character &#183; AniList</title>
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://anilist.co/img/icons/favicon-32x32.png"
+    />
+    <link rel="stylesheet" href="/styles/add.css">
+    <link rel="stylesheet" href="/styles/media_individual.css" />
+    <style>
+      .a-style {
+        text-decoration: none;
+        color: #a0b1c5;
+        font-size: 14px;
+      }
+
+      input {
+        background-color: #151d2e;
+      }
+    </style>
+
+    <style>
+        .btn {
+            display: block;
+            width: 100px;
+            height: 36px;
+            text-align: center;
+            background-color: #3577FF;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #fff;
+            text-decoration: none;
+            margin-top: 50px;
+        }
+    </style>
+
+  </head>
+
+  <body>
+    <%-include("navcontainer.ejs", { isAdmin, userimage, username }) %>
+
+        <div class="addContainer">
+        <form action="/admin/update/anime/character" method="POST">
+          <div class="form-group">
+            <label for="animename">Anime Name</label>
+            <input type="text" class="form-control" id="animename" name="animename" required>
+        </div>
+
+            <div class="form-group">
+                <label for="fullname">Full Name</label>
+                <input type="text" class="form-control" id="fullname" name="fullname" required>
+            </div>
+
+            <div class="form-group">
+                <label for="native">Native</label>
+                <input type="text" class="form-control" id="native" name="native" required>
+            </div>
+
+            <div class="form-group">
+                <label for="image">Image</label>
+                <input type="text" class="form-control" id="image" name="image" required>
+            </div>
+
+            <div class="form-group">
+                <label for="mangaid">Manga id</label>
+                <input type="number" class="form-control" id="mangaid" name="mangaid" required>
+            </div>
+
+            <div class="form-group">
+                <label for="role">Role</label>
+                <input type="text" class="form-control" id="role" name="role" required>
+            </div>
+
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <input type="text" class="form-control" id="gender" name="gender" required>
+            </div>
+
+
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input type="text" class="form-control" id="age" name="age" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="18" required></textarea>
+            </div>
+            
+            <div class="form-group">
+              <a href="/admin/update/anime/character/va" class="btn">Add Voice Artist</a>
+              <!-- <label for="manga">Manga</label>
+              <input type="text" class="form-control" id="manga" name="manga"> -->
+          </div>
+            
+            <button type="submit" class="submit-add">Submit</button>
+        </form>
+    </div>
+    
+    
+
+    <script src="/scripts/tooltip.js"></script>
+  </body>
+</html>
